@@ -53,3 +53,9 @@ secret*
 **/.output
 **/node_modules
 /.idea/
+
+#gradle
+.gradle
+
+# structurizr
+.structurizr
