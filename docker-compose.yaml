@@ -1,0 +1,36 @@
+services:
+  webwallet-frontend:
+    build:
+      context: Waltid-wallet/Dashboard
+      dockerfile: Dockerfile
+    ports:
+      - "7101:7101"
+    restart: "no"
+    container_name: WID-WW-Frontend
+
+  webwallet-backend:
+    build:
+      context: Waltid-wallet/API
+      dockerfile: Dockerfile
+    ports:
+      - "7001:7001"
+    restart: "no"
+    container_name: WID-WW-API
+
+  waltid-api-issue:
+    build:
+      context: Waltid-api/Waltid-Issue
+      dockerfile: Dockerfile
+    ports:
+      - "7002:7002"
+    restart: "no"
+    container_name: WID-API-Issue
+
+  waltid-api-verify:
+    build:
+      context: Waltid-api/Waltid-Verify
+      dockerfile: Dockerfile
+    ports:
+      - "7003:7003"
+    restart: "no"
+    container_name: WID-API-Verify
