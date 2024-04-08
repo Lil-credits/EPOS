@@ -9,7 +9,6 @@ In this project we will focus on the issuance side of the micro-credentials ecos
 
 
 ## Architectural Overview
-High-level description of the architecture, including key components, interactions, and design principles.
 ![Architecture Diagram](https://raw.githubusercontent.com/Lil-credits/EPOS/d6d1e60fc6ff4d649df468e9f442f79e327890ab/Docs/software-architecture/diagrams/Context-diagram.svg?token=APDHMT3LA6FOUXGAXTFMAUDGCP53Y)
 
 
