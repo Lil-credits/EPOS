@@ -41,7 +41,7 @@ The EPOS (Educational Platform for Open Standards) comprises several key compone
 - **Wallet**: 
   - This component represents the personal wallet of a user within the EPOS ecosystem. It serves as a secure repository for storing and managing verifiable credentials and other relevant information. By providing users with control over their own data and credentials, the wallet empowers them to engage confidently within the educational landscape.
   - **Rationale**: The inclusion of a personal wallet for users enhances data privacy and security by decentralizing credential storage and management. By adopting a user-centric approach to credential management, we prioritize data sovereignty and empower individuals to maintain control over their digital identities.
--- **PostgreSQL**:
+- **PostgreSQL**:
     - PostgreSQL serves as the relational database management system (RDBMS) for storing and managing structured data within the EPOS ecosystem. It is only being used by the issuer service. In the future, we want to leverage the EBSI blockchain, so we need to research what to store in the database and what to store on EBSI, taking into account scalability, privacy, and other factors.
     - **Rationale**: Utilizing PostgreSQL for data storage provides reliability, scalability, and flexibility for managing structured data within the issuer service. As we explore integrating with the EBSI blockchain in the future, careful consideration of data storage requirements will be essential to optimize performance, scalability, and data privacy while leveraging the benefits of blockchain technology.
 
