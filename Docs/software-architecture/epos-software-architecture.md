@@ -15,9 +15,34 @@ In this project we will focus on the issuance side of the micro-credentials ecos
 ## System Components
 ![Container Diagram](https://github.com/Lil-credits/EPOS/raw/docs/Docs/software-architecture/diagrams/Container-diagram.svg)
 
-- **Component 1**: Description of responsibilities, interfaces, and dependencies.
-- **Component 2**: Description of responsibilities, interfaces, and dependencies.
-- ...
+## System Components
+
+The EPOS (Educational Platform for Open Standards) comprises several key components, each playing a crucial role in its functionality. Below is an overview of these components along with their descriptions:
+
+![Container Diagram](https://github.com/Lil-credits/EPOS/raw/docs/Docs/software-architecture/diagrams/Container-diagram.svg)
+## System Components
+
+The EPOS (Educational Platform for Open Standards) comprises several key components, each carefully chosen to fulfill specific requirements and objectives. Below is an overview of these components along with the rationale behind their selection:
+
+![Container Diagram](https://github.com/Lil-credits/EPOS/raw/docs/Docs/software-architecture/diagrams/Container-diagram.svg)
+
+- **Education Web Portal**: 
+  - This component serves as the user interface (UI) where teachers can seamlessly create modules and issue micro-credentials to their students. It provides an intuitive platform for managing educational content and interactions.
+
+- **Education Web Portal API**: 
+  - Serving as the backend server of the web portal, this component is built using vert.x, a powerful toolkit for building reactive applications on the Java Virtual Machine (JVM). The API facilitates seamless communication between the frontend UI and various backend services, ensuring smooth operation and responsiveness.
+  - **Rationale**: We opted for a separate Web Portal API to enhance the maintainability and scalability of the project. By decoupling the frontend and backend, we ensure better code organization and easier updates. Additionally, vert.x's reactive architecture enables efficient handling of concurrent requests, enhancing scalability and responsiveness.
+
+- **Issuer Service**: 
+  - The Issuer Service, often referred to as the organizational wallet, is a critical component responsible for issuing verifiable credentials. This component is open-source software developed by walt.id, configured, and deployed in our environment. Our Education Web Portal API depends on this issuer service to issue micro-credentials on EBSI.
+  - **Rationale**: While the issuer service provided by walt.id offers robust functionality for issuing credentials, we chose not to build our entire backend on top of it to maintain flexibility and control over our system's architecture. By integrating with the issuer service as a separate component, we can adapt and scale our platform independently, ensuring agility and future-proofing.
+
+- **Wallet**: 
+  - This component represents the personal wallet of a user within the EPOS ecosystem. It serves as a secure repository for storing and managing verifiable credentials and other relevant information. By providing users with control over their own data and credentials, the wallet empowers them to engage confidently within the educational landscape.
+
+Through thoughtful consideration of these components and their respective roles within the system architecture, we aim to create a robust, scalable, and user-centric educational platform that leverages the latest technologies and standards while maintaining flexibility and control over our infrastructure.
+
+Together, these components form the backbone of the EPOS platform, enabling seamless collaboration, credential issuance, and data management within the educational domain.
 
 ## Key Technologies
 
