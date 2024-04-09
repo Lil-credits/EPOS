@@ -13,6 +13,8 @@ In this project we will focus on the issuance side of the micro-credentials ecos
 
 
 ## System Components
+![Container Diagram](https://raw.githubusercontent.com/Lil-credits/EPOS/91c19d55ee484fa0e2f35196c51a1323fbb5190a/Docs/software-architecture/diagrams/Container-diagram.svg?token=APDHMTYS6OFROOAYYETWUPLGCWPZG)
+
 - **Component 1**: Description of responsibilities, interfaces, and dependencies.
 - **Component 2**: Description of responsibilities, interfaces, and dependencies.
 - ...
