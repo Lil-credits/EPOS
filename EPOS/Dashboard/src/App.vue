@@ -1,10 +1,5 @@
 <template>
   <v-app>
-    <!-- App Bar -->
-    <v-app-bar app color="indigo" dark>
-      <v-toolbar-title>Form Wizard</v-toolbar-title>
-    </v-app-bar>
-
     <!-- Main content -->
     <v-main>
       <v-container>
@@ -12,11 +7,6 @@
         <router-view></router-view>
       </v-container>
     </v-main>
-
-    <!-- Footer -->
-    <v-footer app color="indigo" dark>
-      <span class="white--text">&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
   </v-app>
 </template>
 

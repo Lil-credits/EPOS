@@ -1,32 +1,53 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import StepOne from '../views/StepOne.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+
+import StepOne from '../views/StepOne.vue';
+import StepTwo from '../views/StepTwo.vue';
+import StepThree from '../views/StepThree';
+import StepFour from '../views/StepFour';
+import StepFive from '../views/StepFive';
+import SummaryPage from '../views/SummaryPage'
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+    path: '/', // Corrected and changed to kebab-case
+    name: 'StepOne',
+    component: StepOne
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/step-two', // Changed to kebab-case for consistency
+    name: 'StepTwo',
+    component: StepTwo,
+    props: true // This allows route params to be passed as props to the component
   },
- {
- paht: '/stepone',
-  name: 'StepOne',
-  component: StepOne
- }
-
-]
+  {
+  path: '/step-three', // Changed to kebab-case for consistency
+  name: 'StepThree',
+  component: StepThree,
+  props: true // This allows route params to be passed as props to the component
+},
+{
+  path: '/step-four', // Changed to kebab-case for consistency
+  name: 'StepFour',
+  component: StepFour,
+  props: true // This allows route params to be passed as props to the component
+},
+{
+  path: '/step-five', // Changed to kebab-case for consistency
+  name: 'StepFive',
+  component: StepFive,
+  props: true // This allows route params to be passed as props to the component
+},
+{
+  path: '/Summary-Page',
+  name: 'SummaryPage',
+  component: SummaryPage,
+  props: true 
+}
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
-})
+});
 
-export default router
+export default router;
