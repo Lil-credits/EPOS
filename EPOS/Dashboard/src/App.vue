@@ -1,26 +1,32 @@
 <template>
-  <img alt="Vue logo" src="assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <v-app>
+    <!-- App Bar -->
+    <v-app-bar app color="indigo" dark>
+      <v-toolbar-title>Form Wizard</v-toolbar-title>
+    </v-app-bar>
+
+    <!-- Main content -->
+    <v-main>
+      <v-container>
+        <!-- Where your page components will be rendered -->
+        <router-view></router-view>
+      </v-container>
+    </v-main>
+
+    <!-- Footer -->
+    <v-footer app color="indigo" dark>
+      <span class="white--text">&copy; {{ new Date().getFullYear() }}</span>
+    </v-footer>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: 'App'
+  // If you have any global components, they can be registered here
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+/* Add global styles here */
 </style>
