@@ -9,7 +9,7 @@ In this project we will focus on the issuance side of the micro-credentials ecos
 
 
 ## Architectural Overview
-![Architecture Diagram](https://github.com/Lil-credits/EPOS/raw/docs/Docs/software-architecture/diagrams/Context-diagram.svg)
+![Architecture Diagram](https://github.com/Lil-credits/EPOS/blob/main/Docs/software-architecture/diagrams/Container-diagram.svg)
 
 ## System Components
 
