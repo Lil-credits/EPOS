@@ -11,15 +11,6 @@ In this project we will focus on the issuance side of the micro-credentials ecos
 ## Architectural Overview
 ![Architecture Diagram](https://github.com/Lil-credits/EPOS/raw/docs/Docs/software-architecture/diagrams/Context-diagram.svg)
 
-
-## System Components
-![Container Diagram](https://github.com/Lil-credits/EPOS/raw/docs/Docs/software-architecture/diagrams/Container-diagram.svg)
-
-## System Components
-
-The EPOS (Educational Platform for Open Standards) comprises several key components, each playing a crucial role in its functionality. Below is an overview of these components along with their descriptions:
-
-![Container Diagram](https://github.com/Lil-credits/EPOS/raw/docs/Docs/software-architecture/diagrams/Container-diagram.svg)
 ## System Components
 
 The EPOS (Educational Platform for Open Standards) comprises several key components, each carefully chosen to fulfill specific requirements and objectives. Below is an overview of these components along with the rationale behind their selection:
