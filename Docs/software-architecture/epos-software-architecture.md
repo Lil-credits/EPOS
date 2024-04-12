@@ -13,7 +13,7 @@ In this project we will focus on the issuance side of the micro-credentials ecos
 )
 ## System Components
 
-The EPOS (Educational Platform for Open Standards) comprises several key components, each carefully chosen to fulfill specific requirements and objectives. Below is an overview of these components along with the rationale behind their selection:
+EPOS comprises several key components, each carefully chosen to fulfill specific requirements and objectives. Below is an overview of these components along with the rationale behind their selection:
 
 ![Container Diagram](https://github.com/Lil-credits/EPOS/blob/main/Docs/software-architecture/diagrams/Container-diagram.svg)
 
