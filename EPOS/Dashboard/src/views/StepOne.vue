@@ -1,17 +1,29 @@
 <template>
-  <div class="step-one-container">
-    <div class="image-uploader" @click="triggerFileUpload">
-      <input type="file" ref="fileInput" @change="handleFileUpload" style="display: none;" accept="image/*" />
-      <div v-if="uploadedImage">
-        <img :src="uploadedImage" alt="Uploaded Image Preview" class="uploaded-image-preview"/>
-      </div>
-      <div v-else>Add Image</div>
-    </div>
+  <v-container class="step-one-container" fluid>
+    <v-row justify="center">
+      <v-col cols="12" sm="8" md="6" lg="4" class="text-center">
+        <!-- Image uploader avatar -->
+        <v-avatar size="150" color="grey lighten-4" class="image-uploader" @click="triggerFileUpload">
+          <input ref="fileInput" type="file" @change="handleFileUpload" hidden accept="image/*" />
+          <v-img v-if="uploadedImage" :src="uploadedImage" class="white--text" />
+          <v-icon v-else size="55">mdi-plus</v-icon>
+        </v-avatar>
 
-    <input type="text" placeholder="Type your Credential Title here" class="credential-input" v-model="credentialTitle"/>
+        <!-- Credential title text field -->
+        <v-text-field
+          v-model="credentialTitle"
+          label="Type your Credential Title here"
+          solo
+          class="my-4"
+        ></v-text-field>
 
-    <button @click="goToNextStep" class="get-started-btn">Get Started</button>
-  </div>
+        <!-- Get started button -->
+        <v-btn color="primary" class="white--text" @click="goToNextStep">
+          Get Started
+        </v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -30,7 +42,7 @@ export default {
       const file = event.target.files[0];
       if (file && file.type.startsWith('image/')) {
         const reader = new FileReader();
-        reader.onload = e => {
+        reader.onload = (e) => {
           this.uploadedImage = e.target.result;
         };
         reader.readAsDataURL(file);
@@ -38,6 +50,7 @@ export default {
     },
     goToNextStep() {
       if (this.uploadedImage && this.credentialTitle) {
+        // Navigate to the next step with the necessary params
         this.$router.push({
           name: 'StepTwo',
           params: {
@@ -46,7 +59,8 @@ export default {
           }
         });
       } else {
-        alert('Please upload an image and enter a credential title.');
+        // Notify the user to upload an image and enter a title
+        this.$toast.error('Please upload an image and enter a credential title.');
       }
     }
   }
@@ -55,66 +69,15 @@ export default {
 
 <style scoped>
 .step-one-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
   height: 100vh; /* Full height */
-  box-sizing: border-box;
 }
 
 .image-uploader {
-  background-color: #3498db; /* Blue background */
-  border-radius: 50%; /* Circular shape */
-  width: 150px; /* Circle size */
-  height: 150px; /* Circle size */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 30px; /* Space below the circle */
-  position: relative; /* Needed for absolute positioning of '+' icon */
   cursor: pointer;
+  margin-bottom: 20px; /* Space below the uploader */
 }
 
-.upload-icon {
+.white--text {
   color: white;
-  font-size: 2rem; /* Larger '+' sign */
-  position: absolute;
 }
-
-.uploaded-image-preview {
-  width: 100%; /* Full width of the circle */
-  height: 100%; /* Full height of the circle */
-  border-radius: 50%; /* Circular shape */
-  object-fit: cover; /* Cover the circle area with the image */
-}
-
-.credential-input {
-  border: 2px solid red; /* Red border */
-  border-radius: 25px; /* Rounded corners */
-  padding: 10px 20px;
-  font-size: 1rem;
-  width: calc(100% - 40px); /* Full width minus padding */
-  box-sizing: border-box;
-}
-
-.get-started-btn {
-  background-color: #e74c3c; /* Red background */
-  color: white;
-  padding: 15px 30px;
-  border: none;
-  border-radius: 25px; /* Rounded corners */
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  transition: background-color 0.3s ease; /* Smooth background color change on hover */
-}
-
-.get-started-btn:hover {
-  background-color: #c0392b; /* Darker red on hover */
-}
-
-/* If you have a specific font to be used, add it here */
 </style>
