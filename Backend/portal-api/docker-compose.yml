@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  books-postgresql:
+    container_name: book-store-postgresql
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_DB: books
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: AXEe263eqPFqwy4z
+    ports:
+      - "5432:5432"  # Mapping container port 5432 to host port 5432
+    volumes:
+      - book-store-postgresql-local:/var/lib/postgresql/data  # Mounting a volume for persistent data storage
+
+volumes:
+  book-store-postgresql-local:  # Defining a named volume for PostgreSQL data
