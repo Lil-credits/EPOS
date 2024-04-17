@@ -47,7 +47,7 @@ public class ApiVerticle extends AbstractVerticle {
   private void buildHttpServer(Vertx vertx,
                                Promise<Void> promise,
                                Router router) {
-    final int port = 8888;
+    final int port = 8080;
 
     vertx.createHttpServer()
       .requestHandler(router)
