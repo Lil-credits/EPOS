@@ -2,6 +2,7 @@ package io.epos.portal_api.verticle;
 
 import io.epos.portal_api.api.handler.BookHandler;
 import io.epos.portal_api.api.handler.BookValidationHandler;
+import io.epos.portal_api.api.handler.ErrorHandler;
 import io.epos.portal_api.api.repository.BookRepository;
 import io.epos.portal_api.api.router.BookRouter;
 import io.epos.portal_api.api.router.HealthCheckRouter;
@@ -29,7 +30,7 @@ public class ApiVerticle extends AbstractVerticle {
     final Router router = Router.router(vertx);
     // test endpoint
     router.get("/").handler(ctx -> ctx.response().end("Hello World!"));
-//    ErrorHandler.buildHandler(router);
+    ErrorHandler.buildHandler(router);
     HealthCheckRouter.setRouter(vertx, router, dbClient);
     bookRouter.setRouter(router);
 
