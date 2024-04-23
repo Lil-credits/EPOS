@@ -7,6 +7,8 @@ import io.vertx.ext.web.validation.BodyProcessorException;
 import io.vertx.ext.web.validation.ParameterProcessorException;
 import io.vertx.ext.web.validation.RequestPredicateException;
 
+import java.util.NoSuchElementException;
+
 public class ErrorHandler {
 
   private ErrorHandler() {
@@ -34,5 +36,8 @@ public class ErrorHandler {
         // Something went wrong while parsing/validating the body
         ResponseUtils.buildErrorResponse(rc, new IllegalArgumentException("Request body is really invalid"));
       }
+    });
+    router.errorHandler(404, rc -> {
+      ResponseUtils.buildErrorResponse(rc, new NoSuchElementException("Resource not found"));
     });
   }}
