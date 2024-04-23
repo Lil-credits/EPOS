@@ -4,6 +4,7 @@ package io.epos.portal_api.util;
 import io.vertx.core.Vertx;
 import io.vertx.pgclient.PgConnectOptions;
 import io.vertx.pgclient.PgPool;
+import io.vertx.sqlclient.Pool;
 import io.vertx.sqlclient.PoolOptions;
 import org.flywaydb.core.api.configuration.Configuration;
 import org.flywaydb.core.api.configuration.FluentConfiguration;
@@ -26,7 +27,7 @@ public class DbUtils {
    * @param vertx Vertx context
    * @return PostgreSQL pool
    */
-  public static PgPool buildDbClient(Vertx vertx) {
+  public static Pool buildDbClient(Vertx vertx) {
     final Properties properties = ConfigUtils.getInstance().getProperties();
 
     final PgConnectOptions connectOptions = new PgConnectOptions()
@@ -38,7 +39,7 @@ public class DbUtils {
 
     final PoolOptions poolOptions = new PoolOptions().setMaxSize(5);
 
-    return PgPool.pool(vertx, connectOptions, poolOptions);
+    return Pool.pool(vertx, connectOptions, poolOptions);
   }
 
   /**

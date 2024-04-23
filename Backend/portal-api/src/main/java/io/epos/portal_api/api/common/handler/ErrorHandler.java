@@ -1,4 +1,4 @@
-package io.epos.portal_api.api.handler;
+package io.epos.portal_api.api.common.handler;
 
 import io.epos.portal_api.util.ResponseUtils;
 import io.vertx.ext.web.Router;
@@ -29,6 +29,10 @@ public class ErrorHandler {
           // Something went wrong while parsing/validating the body
           ResponseUtils.buildErrorResponse(rc, new IllegalArgumentException("Request body is invalid"));
         }
+        }
+      else if (rc.failure() instanceof Exception) {
+        // Something went wrong while parsing/validating the body
+        ResponseUtils.buildErrorResponse(rc, new IllegalArgumentException("Request body is really invalid"));
       }
     });
   }}

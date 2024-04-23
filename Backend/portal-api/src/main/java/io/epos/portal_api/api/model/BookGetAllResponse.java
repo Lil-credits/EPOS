@@ -2,12 +2,15 @@ package io.epos.portal_api.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 public class BookGetAllResponse implements Serializable {
 
+
+  @Serial
   private static final long serialVersionUID = -8964658883487451260L;
 
   @JsonProperty(value = "total")
