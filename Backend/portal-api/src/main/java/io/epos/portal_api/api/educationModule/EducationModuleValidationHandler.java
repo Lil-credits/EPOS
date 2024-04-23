@@ -1,13 +1,12 @@
-package io.epos.portal_api.api.handler;
+package io.epos.portal_api.api.educationModule;
 
-import io.epos.portal_api.api.service.BookService;
+import io.epos.portal_api.api.book.BookService;
 import io.vertx.core.Vertx;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.ext.web.validation.BodyProcessorException;
 import io.vertx.json.schema.*;
 import static io.epos.portal_api.util.FileUtils.readJsonSchema;
 

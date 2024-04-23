@@ -1,9 +1,8 @@
-package io.epos.portal_api.api.handler;
+package io.epos.portal_api.api.book;
 
-import io.epos.portal_api.api.model.Book;
-import io.epos.portal_api.api.model.BookGetAllResponse;
-import io.epos.portal_api.api.model.BookGetByIdResponse;
-import io.epos.portal_api.api.service.BookService;
+import io.epos.portal_api.api.book.model.Book;
+import io.epos.portal_api.api.book.model.BookGetAllResponse;
+import io.epos.portal_api.api.book.model.BookGetByIdResponse;
 import io.epos.portal_api.util.ResponseUtils;
 import io.vertx.core.Future;
 import io.vertx.ext.web.RoutingContext;

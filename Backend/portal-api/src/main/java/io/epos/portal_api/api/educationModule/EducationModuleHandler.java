@@ -1,6 +1,5 @@
-package io.epos.portal_api.api.handler;
+package io.epos.portal_api.api.educationModule;
 
-import io.epos.portal_api.api.service.EducationModuleService;
 import io.vertx.ext.web.RoutingContext;
 
 public class EducationModuleHandler {

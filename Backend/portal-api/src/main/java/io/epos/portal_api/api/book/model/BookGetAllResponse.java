@@ -1,4 +1,4 @@
-package io.epos.portal_api.api.model;
+package io.epos.portal_api.api.book.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

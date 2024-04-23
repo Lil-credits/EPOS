@@ -1,15 +1,13 @@
-package io.epos.portal_api.api.service;
+package io.epos.portal_api.api.book;
 
-import io.epos.portal_api.api.model.Book;
-import io.epos.portal_api.api.model.BookGetAllResponse;
-import io.epos.portal_api.api.model.BookGetByIdResponse;
-import io.epos.portal_api.api.repository.BookRepository;
+import io.epos.portal_api.api.book.model.Book;
+import io.epos.portal_api.api.book.model.BookGetAllResponse;
+import io.epos.portal_api.api.book.model.BookGetByIdResponse;
 import io.epos.portal_api.util.LogUtils;
 import io.epos.portal_api.util.QueryUtils;
 import io.vertx.core.Future;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
-import io.vertx.pgclient.PgPool;
 import io.vertx.sqlclient.Pool;
 
 import java.util.List;

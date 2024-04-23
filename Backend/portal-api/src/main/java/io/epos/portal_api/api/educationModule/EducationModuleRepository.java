@@ -1,6 +1,7 @@
-package io.epos.portal_api.api.repository;
+package io.epos.portal_api.api.educationModule;
 
-import io.epos.portal_api.api.model.Book;
+import io.epos.portal_api.api.book.model.Book;
+import io.epos.portal_api.api.book.BookRepository;
 import io.epos.portal_api.util.LogUtils;
 import io.vertx.core.Future;
 import io.vertx.core.impl.logging.Logger;
@@ -12,8 +13,7 @@ import io.vertx.sqlclient.templates.SqlTemplate;
 
 import java.util.*;
 
-public class BookRepository {
-
+public class EducationModuleRepository {
   private static final Logger LOGGER = LoggerFactory.getLogger(BookRepository.class);
 
   private static final String SQL_SELECT_ALL = "SELECT * FROM books LIMIT #{limit} OFFSET #{offset}";
@@ -25,7 +25,7 @@ public class BookRepository {
   private static final String SQL_DELETE = "DELETE FROM books WHERE id = #{id}";
   private static final String SQL_COUNT = "SELECT COUNT(*) AS total FROM books";
 
-  public BookRepository() {
+  public EducationModuleRepository() {
   }
 
   /**
@@ -171,5 +171,4 @@ public class BookRepository {
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Count books", SQL_COUNT)))
       .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Count book", throwable.getMessage())));
   }
-
 }

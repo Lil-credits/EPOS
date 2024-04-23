@@ -1,4 +1,4 @@
-package io.epos.portal_api.api.router;
+package io.epos.portal_api.api.common.router;
 
 import io.vertx.core.Vertx;
 import io.vertx.ext.healthchecks.HealthCheckHandler;
@@ -19,7 +19,7 @@ public class HealthCheckRouter {
    * @param router   Router
    * @param dbClient PostgreSQL pool
    */
-  public static void setRouter(Vertx vertx,
+  public static void buildRouter(Vertx vertx,
                                Router router,
                                Pool dbClient) {
     final HealthCheckHandler healthCheckHandler = HealthCheckHandler.create(vertx);

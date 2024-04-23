@@ -1,9 +1,5 @@
-package io.epos.portal_api.api.router;
+package io.epos.portal_api.api.educationModule;
 
-import io.epos.portal_api.api.handler.BookHandler;
-import io.epos.portal_api.api.handler.BookValidationHandler;
-import io.epos.portal_api.api.handler.EducationModuleHandler;
-import io.epos.portal_api.api.handler.EducationModuleValidationHandler;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
