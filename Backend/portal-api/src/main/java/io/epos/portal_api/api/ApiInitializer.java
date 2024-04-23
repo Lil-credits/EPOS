@@ -1,6 +1,5 @@
 package io.epos.portal_api.api;
 
-import io.epos.portal_api.api.book.*;
 import io.epos.portal_api.api.common.handler.ErrorHandler;
 import io.epos.portal_api.api.common.router.HealthCheckRouter;
 import io.epos.portal_api.api.educationModule.*;
@@ -17,14 +16,6 @@ public class ApiInitializer {
 
     // Health check API
     HealthCheckRouter.buildRouter(vertx, router, dbClient);
-
-    // Book API
-    BookRepository bookRepository = new BookRepository();
-    BookService bookService = new BookService(dbClient, bookRepository);
-    BookHandler bookHandler = new BookHandler(bookService);
-    BookValidationHandler bookValidationHandler = new BookValidationHandler(vertx);
-    BookRouter bookRouter = new BookRouter(vertx, bookHandler, bookValidationHandler);
-    bookRouter.setRouter(router);
 
     // Education Module API
     EducationModuleRepository educationModuleRepository = new EducationModuleRepository();

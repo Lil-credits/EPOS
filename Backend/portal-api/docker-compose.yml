@@ -11,22 +11,22 @@ services:
     depends_on:
       books-postgresql:
         condition: service_healthy
-  books-postgresql:
-    container_name: book-store-postgresql
+  epos-postgresql:
+    container_name: epos-postgresql
     image: postgres:12-alpine
     environment:
-      POSTGRES_HOST: books-postgresql
-      POSTGRES_DB: books
+      POSTGRES_HOST: epos-postgresql
+      POSTGRES_DB: epos
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: AXEe263eqPFqwy4z
     ports:
       - "5432:5432"  # Mapping container port 5432 to host port 5432
     volumes:
-      - book-store-postgresql-local:/var/lib/postgresql/data  # Mounting a volume for persistent data storage
+      - epos-postgresql-local:/var/lib/postgresql/data  # Mounting a volume for persistent data storage
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -q -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
 volumes:
-  book-store-postgresql-local:  # Defining a named volume for PostgreSQL data
+  epos-postgresql-local:  # Defining a named volume for PostgreSQL data

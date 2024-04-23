@@ -1,6 +1,5 @@
 package io.epos.portal_api.api.educationModule;
 
-import io.epos.portal_api.api.book.BookService;
 import io.vertx.core.Vertx;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
@@ -12,7 +11,7 @@ import static io.epos.portal_api.util.FileUtils.readJsonSchema;
 
 public class EducationModuleValidationHandler {
   // logger
-  private static final Logger LOGGER = LoggerFactory.getLogger(BookService.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(EducationModuleValidationHandler.class);
   private final SchemaRepository schemaRepository = SchemaRepository.create(new JsonSchemaOptions().setBaseUri("app://"));
   public EducationModuleValidationHandler(Vertx vertx) {
     schemaRepository.dereference("education_module.json", readJsonSchema("education_module.json", vertx));

@@ -54,7 +54,8 @@ public class DbUtils {
     FluentConfiguration configuration = new FluentConfiguration().dataSource(url, properties.getProperty(USERNAME_CONFIG), properties.getProperty(PASSWORD_CONFIG));
     // set location to search migrations in resources folder
     configuration.locations("classpath:db/migration");
-    return new FluentConfiguration().dataSource(url, properties.getProperty(USERNAME_CONFIG), properties.getProperty(PASSWORD_CONFIG));
+
+    return new FluentConfiguration().dataSource(url, properties.getProperty(USERNAME_CONFIG), properties.getProperty(PASSWORD_CONFIG)).baselineOnMigrate(true);
   }
 
 }
