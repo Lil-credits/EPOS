@@ -11,8 +11,9 @@
 
     <div class="dropdowns-container">
       <div class="dropdown" v-for="(dropdown, index) in dropdowns" :key="index">
+        <label :for="'dropdown-' + index">{{ dropdown.label }}</label>
         <div class="select-wrapper">
-          <select v-model="dropdown.selectedValue">
+          <select :id="'dropdown-' + index" v-model="dropdown.selectedValue">
             <option disabled value="">{{ dropdown.placeholder }}</option>
             <option v-for="option in dropdown.options" :key="option" :value="option">{{ option }}</option>
           </select>
@@ -35,7 +36,24 @@ defineProps({
 const emit = defineEmits(['update-step-data', 'go-back']);
 
 const dropdowns = ref([
-  // Initial dropdown configuration
+  {
+    label: 'Language',
+    placeholder: '- Select -',
+    options: ['English', 'Spanish', 'Mandarin'],
+    selectedValue: ''
+  },
+  {
+    label: 'Study Load',
+    placeholder: '- Select -',
+    options: ['Full-time', 'Part-time'],
+    selectedValue: ''
+  },
+  {
+    label: 'Indicative EQF',
+    placeholder: '- Select -',
+    options: ['Level 5', 'Level 6', 'Level 7'],
+    selectedValue: ''
+  }
 ]);
 
 function addDropdown() {
@@ -97,46 +115,77 @@ function submitStep() {
   margin-bottom: 20px;
 }
 
+.dropdown label {
+  display: block;
+  background-color: #007bff; /* Blue background */
+  color: white;
+  padding: 8px;
+  border-radius: 10px 10px 0 0; /* Rounded top corners */
+  font-size: 18px;
+}
+
 .select-wrapper {
-  position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
+}
+
+.select-wrapper select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 12px;
+  width: 100%;
+  border-radius: 0 0 10px 10px; /* Rounded bottom corners */
+  border: 1px solid #007bff;
+  background-color: white;
+  color: black;
+  font-size: 16px;
 }
 
 .select-wrapper::after {
-  content: '▼';
+  content: '⌵';
+  color: black;
   position: absolute;
-  right: 10px;
+  right: 15px;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-}
-
-.dropdown select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 25px;
-  border: 1px solid #ccc;
-  appearance: none; /* Removes default styling from select elements */
-  -webkit-appearance: none;
-  -moz-appearance: none;
+  font-size: 12px;
 }
 
 .add-button {
-  background-color: blue;
-  border: none;
+  background-color: #007bff; /* Blue background */
   color: white;
   padding: 10px 20px;
-  border-radius: 25px;
+  border-radius: 10px;
+  margin-top: 10px; /* Spacing between the last dropdown and the button */
+  border: none;
   cursor: pointer;
+  font-size: 18px;
+  width: auto;
+  display: inline-block;
 }
 
 .next-button {
-  background-color: blue;
+  background-color: #007bff; /* Blue background */
   color: white;
   padding: 10px 20px;
+  border-radius: 10px;
   border: none;
-  border-radius: 25px;
   cursor: pointer;
+  font-size: 18px;
   width: 100%;
+  box-sizing: border-box;
+  margin-top: 20px; /* Spacing between the ADD button and the Next button */
+}
+
+.back-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: #007bff;
+  padding: 10px;
+  font-size: 24px;
+  position: absolute;
+  left: 0;
 }
 </style>
