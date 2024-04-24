@@ -19,11 +19,11 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import StepOne from '../components/StepOneForm.vue';
-import StepTwo from '../components/StepTwoFrom.vue';
-import StepThree from '../components/StepThreeFrom.vue';
-import StepFour from '../components/StepFourForm.vue';
-import StepFive from '../components/StepFiveForm.vue';
+import StepOne from '../components/form-components/StepOneForm.vue';
+import StepTwo from '../components/form-components/StepTwoFrom.vue';
+import StepThree from '../components/form-components/StepThreeFrom.vue';
+import StepFour from '../components/form-components/StepFourForm.vue';
+import StepFive from '../components/form-components/StepFiveForm.vue';
 
 const currentStep = ref(1);
 const formData = ref({
