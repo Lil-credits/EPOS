@@ -166,17 +166,20 @@ function submitStep() {
 }
 
 .next-button {
-  background-color: #007bff; /* Blue background */
+  background-color: #007bff;
   color: white;
-  padding: 10px 20px;
-  border-radius: 10px;
   border: none;
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-size: 1.25rem;
   cursor: pointer;
-  font-size: 18px;
   width: 100%;
-  box-sizing: border-box;
-  margin-top: 20px; /* Spacing between the ADD button and the Next button */
+  position: fixed; /* Fixed positioning relative to the viewport */
+  left: 0;
+  bottom: 0; /* Anchored to the bottom of the viewport */
+  box-sizing: border-box; /* Makes sure the padding doesn't affect the final width */
 }
+
 
 .back-button {
   background-color: transparent;
