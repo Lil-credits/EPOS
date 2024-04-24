@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  portal-api:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    container_name: portal-api-container
+    ports:
+      - "8080:8080"  # Mapping container port 8080 to host port 8080
+    depends_on:
+      books-postgresql:
+        condition: service_healthy
+  epos-postgresql:
+    container_name: epos-postgresql
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_HOST: epos-postgresql
+      POSTGRES_DB: epos
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: AXEe263eqPFqwy4z
+    ports:
+      - "5432:5432"  # Mapping container port 5432 to host port 5432
+    volumes:
+      - epos-postgresql-local:/var/lib/postgresql/data  # Mounting a volume for persistent data storage
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -q -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+volumes:
+  epos-postgresql-local:  # Defining a named volume for PostgreSQL data
