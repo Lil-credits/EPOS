@@ -138,7 +138,7 @@ function submitStep() {
   border: 1px solid #007bff;
   background-color: white;
   color: black;
-  font-size: 16px;
+  font-size: 20px;
 }
 
 .select-wrapper::after {

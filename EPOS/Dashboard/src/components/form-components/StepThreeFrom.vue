@@ -17,6 +17,7 @@
         placeholder="Type here the description..."
         v-model="courseDescription"
       ></textarea>
+
     </div>
 
     <button class="next-button" @click="submitStep">Next</button>
@@ -35,7 +36,6 @@ function submitStep() {
     emit('update-step-data', { step: 3, data: { description: courseDescription.value } });
   } else {
     // Handle the case where the description is empty
-    alert('Please enter a description.');
   }
 }
 </script>
