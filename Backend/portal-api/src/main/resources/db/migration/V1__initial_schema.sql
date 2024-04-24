@@ -46,8 +46,8 @@ CREATE TABLE IF NOT EXISTS EducationModuleVersion (
   Version INT NOT NULL,
   Description TEXT,
   Attributes JSONB,
-  RequiredAchievements TEXT[],
-  Skills TEXT[],
+  RequiredAchievements JSONB,
+  Skills JSONB,
   EducationModuleID INT,
   Status VARCHAR(50),
   FOREIGN KEY (EducationModuleID) REFERENCES EducationModule(Id)
