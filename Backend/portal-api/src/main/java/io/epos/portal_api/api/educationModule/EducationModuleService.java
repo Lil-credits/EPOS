@@ -4,7 +4,6 @@ import io.epos.portal_api.api.educationModule.model.CreateEducationModuleRequest
 import io.epos.portal_api.domain.EducationModule;
 import io.epos.portal_api.domain.EducationModuleVersion;
 import io.epos.portal_api.util.LogUtils;
-import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
@@ -21,7 +20,7 @@ public class EducationModuleService {
     this.dbClient = dbClient;
     this.educationModuleRepository = educationModuleRepository;
   }
-  public Future<EducationModule> create(CreateEducationModuleRequest createEducationModuleRequest) {
+  public Future<EducationModuleVersion> create(CreateEducationModuleRequest createEducationModuleRequest) {
     // create a EducationModule object from the request body
     EducationModule educationModule = new EducationModule();
     educationModule.setName(createEducationModuleRequest.getCourseName());
@@ -54,7 +53,10 @@ public class EducationModuleService {
 
         // Combine both futures into one
         return Future.all(insertModuleFuture, createVersionFuture)
-          .map(compositeFuture -> educationModule);
+          .map(compositeFuture -> {
+            // combine results of both futures into a response object
+
+            return createVersionFuture.result();});
       })
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Create one education module", success)))
       .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Create one education module", throwable.getMessage())));

@@ -1,5 +1,6 @@
 package io.epos.portal_api.api;
 
+import io.epos.portal_api.api.Image.*;
 import io.epos.portal_api.api.common.handler.ErrorHandler;
 import io.epos.portal_api.api.common.router.HealthCheckRouter;
 import io.epos.portal_api.api.educationModule.*;
@@ -25,6 +26,12 @@ public class ApiInitializer {
     EducationModuleRouter educationModuleRouter = new EducationModuleRouter(vertx, educationModuleHandler, educationModuleValidationHandler);
     educationModuleRouter.setRouter(router);
 
-    // Additional apis can be initialized here
+// Image API
+    ImageRepository imageRepository = new ImageRepository();
+    ImageService imageService = new ImageService(dbClient, imageRepository);
+    ImageHandler imageHandler = new ImageHandler(imageService);
+    ImageValidationHandler imageValidationHandler = new ImageValidationHandler(vertx);
+    ImageRouter imageRouter = new ImageRouter(vertx, imageHandler, imageValidationHandler);
+    imageRouter.setRouter(router);
   }
 }

@@ -25,13 +25,13 @@ public class EducationModuleRouter {
    * @param router Router
    */
   public void setRouter(Router router) {
-    router.route("/api/v1/*").subRouter(buildBookRouter());}
+    router.route("/api/v1/*").subRouter(buildEducationModuleRouter());}
 
   /**
    * Build education module API
    * All routes are composed by an error handler, a validation handler and the actual business logic handler
    */
-  private Router buildBookRouter() {
+  private Router buildEducationModuleRouter() {
     final Router educationModudleRouter = Router.router(vertx);
 
     //test book router
