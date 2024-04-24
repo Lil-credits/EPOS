@@ -2,12 +2,11 @@
   <div class="step-two">
     <div class="header">
       <div class="image-container">
-        <!-- Received from step one -->
-        <img src="/micro.png" class="badge-image"/>
-        <!-- <img :src="stepData.badgeImage" alt="Course Badge" class="badge-image" /> -->
+        <img :src="stepData[1]['badgeImage']" alt="Course Badge" class="badge-image"/>
       </div>
-      <div class="course-title">Test <!-- {{ stepData.courseTitle }} --></div>
+      <div class="course-title">{{ stepData[1]['courseTitle'] }}</div>
     </div>
+
 
     <div class="dropdowns-container">
       <div class="dropdown" v-for="(dropdown, index) in dropdowns" :key="index">
@@ -33,6 +32,7 @@ import { ref, defineProps, defineEmits } from 'vue';
 defineProps({
   stepData: Object
 });
+
 const emit = defineEmits(['update-step-data', 'go-back']);
 
 const dropdowns = ref([

@@ -4,11 +4,12 @@
     <div v-if="currentStep <= totalSteps">
       <!-- Dynamic component based on current step -->
       <component
-        :is="currentComponent"
-        :step-data="formData[currentStep]"
-        @update-step-data="handleUpdateStepData"
-        @validate-step="validateStep"
+          :is="currentComponent"
+          :step-data="formData"
+          @update-step-data="handleUpdateStepData"
+          @validate-step="validateStep"
       ></component>
+
     </div>
     <div v-else>
       <h2>Form Submitted Successfully!</h2>
@@ -27,7 +28,7 @@ import StepFive from '../components/form-components/StepFiveForm.vue';
 
 const currentStep = ref(1);
 const formData = ref({
-  1: { badgeImage: '', courseTitle: '' }, // Assuming StepOne collects these details
+  1: {courseTitle: '', badgeImage: ''},
   2: {},
   3: {},
   4: {},
@@ -49,7 +50,8 @@ const totalSteps = 5;
 
 function nextStep() {
   if (isStepValid.value && currentStep.value < totalSteps) {
-    currentStep.value++; 
+    console.log(formData.value)
+    currentStep.value++;
   } else if (isStepValid.value && currentStep.value === totalSteps) {
     submitForm();
   }
@@ -66,11 +68,9 @@ function validateStep(valid) {
 }
 
 const handleUpdateStepData = ({ step, data }) => {
-  // Update the formData with the data from Step One
-  formData[step] = data;
-  // Move to the next step
+  formData.value[step] = data;
   nextStep();
-}
+};
 
 function submitForm() {
   console.log('Submitting form data:', formData.value);

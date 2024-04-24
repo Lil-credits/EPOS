@@ -36,13 +36,14 @@ const handleImageUpload = (event) => {
 };
 
 const submitStepOne = () => {
-  // Here you can add any validation logic before emitting the event
-  if (courseDetails.value.courseTitle) { // Check if the title is not empty
+  if (courseDetails.value.courseTitle) {
     emit('update-step-data', { step: 1, data: courseDetails.value });
   } else {
-    // Handle validation failure (e.g., show an error message)
+    // Optionally, handle validation failure, e.g., show an error message
+    console.error('Course title is required');
   }
 };
+
 </script>
 
 <style scoped>
