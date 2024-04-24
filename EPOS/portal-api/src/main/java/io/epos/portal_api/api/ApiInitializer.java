@@ -1,6 +1,6 @@
 package io.epos.portal_api.api;
 
-import io.epos.portal_api.api.Image.*;
+import io.epos.portal_api.api.image.*;
 import io.epos.portal_api.api.common.handler.ErrorHandler;
 import io.epos.portal_api.api.common.router.HealthCheckRouter;
 import io.epos.portal_api.api.educationModule.*;
