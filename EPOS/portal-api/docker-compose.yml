@@ -9,7 +9,7 @@ services:
     ports:
       - "8080:8080"  # Mapping container port 8080 to host port 8080
     depends_on:
-      books-postgresql:
+      epos-postgresql:
         condition: service_healthy
   epos-postgresql:
     container_name: epos-postgresql
