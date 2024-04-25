@@ -67,8 +67,17 @@ function addDropdown() {
 
 
 function submitStep() {
+
+  var data = {}
+
+  dropdowns.value.forEach(dropdown => {
+    const label = dropdown.label
+    data.push({label: dropdown.selectedValue})
+  })
   // Emit the selected values from the dropdowns
-  emit('update-step-data', { step: 2, data: dropdowns.value.map(d => d.selectedValue) });
+  console.log(FormData)
+  emit('update-step-data', { step: 2, data: data}); // save to dictonary instead of array key should be the labels of the dropdowns
+  //emit('update-step-data', { step: 2, data: dropdowns.value.map(d => d.selectedValue) }); // save to dictonary instead of array key should be the labels of the dropdowns
 }
 </script>
 

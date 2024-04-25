@@ -1,14 +1,13 @@
 <template>
   <div class="step-three">
     <div class="header">
+    <div class="header">
       <div class="image-container">
-        <!-- Received from step one -->
-        <img src="/micro.png" class="badge-image"/>
-        <!-- <img :src="stepData.badgeImage" alt="Course Badge" class="badge-image" /> -->
+        <img :src="stepData[1]['badgeImage']" alt="Course Badge" class="badge-image"/>
       </div>
-      <div class="course-title">Test <!-- {{ stepData.courseTitle }} --></div>
+      <div class="course-title">{{ stepData[1]['courseTitle'] }}</div>
     </div>
-
+    </div>
     <div class="description-container">
       <label for="course-description" class="description-label">Description</label>
       <textarea 
@@ -25,7 +24,11 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref, defineProps, defineEmits } from 'vue';
+
+defineProps({
+  stepData: Object
+});
 
 const courseDescription = ref('');
 const emit = defineEmits(['update-step-data', 'go-back']);
