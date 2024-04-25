@@ -37,10 +37,12 @@
 
 <script setup>
 import { ref, defineEmits } from "vue";
+import axios from "axios";
 
 const courseDetails = ref({
   courseTitle: "",
   badgeImage: "",
+  imageUrl: "",
 });
 const emit = defineEmits(["update-step-data"]);
 
@@ -50,6 +52,15 @@ const handleImageUpload = (event) => {
     const reader = new FileReader();
     reader.onload = (e) => {
       courseDetails.value.badgeImage = e.target.result;
+      axios
+        .post("http://localhost:8080/api/v1/images")
+        .then((response) => {
+          // Update imageUrl in courseDetails with the received image URL
+          courseDetails.value.imageUrl = response.data.imageUrl;
+          console.log("Image uploaded successfully");
+          console.log("Image URL:", response.data.imageUrl);
+        })
+        .catch((error) => console.error("Error:", error));
     };
     reader.readAsDataURL(file);
   }
