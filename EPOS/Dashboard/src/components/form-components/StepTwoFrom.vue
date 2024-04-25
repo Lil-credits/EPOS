@@ -50,13 +50,13 @@ const dropdowns = ref([
     selectedValue: ''
   },
   {
-    label: 'Study Load',
+    label: 'EC',
     placeholder: '- Select -',
-    options: ['Full-time', 'Part-time'],
+    options: [1, 2, 3, 5, 10, 15, 20, 30],
     selectedValue: ''
   },
   {
-    label: 'Indicative EQF',
+    label: 'EQF',
     placeholder: '- Select -',
     options: [5, 6, 7],
     selectedValue: ''
