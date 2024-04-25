@@ -8,28 +8,17 @@
     </div>
   
       <div class="info-sections">
-        <v-container>
+  <v-container>
     <v-row align="start">
-      <v-col cols="12" md="4">
+      <v-col cols="12" md="4" v-for="(value, key) in stepData[2]" :key="key">
         <div class="info-section">
-          <h2>Study Load</h2>
-          <p>{{ formData.studyLoad }} ECTS</p>
-        </div>
-      </v-col>
-      <v-col cols="12" md="4">
-        <div class="info-section">
-          <h2>Language</h2>
-          <p>{{ formData.language }}</p>
-        </div>
-      </v-col>
-      <v-col cols="12" md="4">
-        <div class="info-section">
-          <h2>Indicative EQF</h2>
-          <p>EQF {{ formData.eqfLevel }}</p>
+          <h2>{{ key }}</h2>
+          <p>{{ value }}</p>
         </div>
       </v-col>
     </v-row>
   </v-container>
+
   
         <div class="info-section">
           <h2>Skills</h2>
