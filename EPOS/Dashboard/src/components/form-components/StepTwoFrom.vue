@@ -39,7 +39,7 @@ const dropdowns = ref([
   {
     label: 'Language',
     placeholder: '- Select -',
-    options: ['English', 'Spanish', 'Mandarin'],
+    options: ['English', 'Dutch', 'German'],
     selectedValue: ''
   },
   {
