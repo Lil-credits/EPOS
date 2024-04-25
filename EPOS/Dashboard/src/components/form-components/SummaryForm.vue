@@ -1,118 +1,130 @@
 <template>
-    <div class="summary-page">
+  <div class="summary-page">
     <div class="header">
       <div class="image-container">
-        <img :src="stepData[1]['badgeImage']" alt="Course Badge" class="badge-image"/>
+        <img
+          :src="stepData[1]['badgeImage']"
+          alt="Course Badge"
+          class="badge-image"
+        />
       </div>
-      <div class="course-title">{{ stepData[1]['courseTitle'] }}</div>
+      <div class="course-title">{{ stepData[1]["courseTitle"] }}</div>
     </div>
-  
-      <div class="info-sections">
-        <v-container>
-    <v-row align="start">
-      <v-col cols="12" md="4">
-        <div class="info-section">
-          <h2>Study Load</h2>
-          <p>{{ formData.studyLoad }} ECTS</p>
-        </div>
-      </v-col>
-      <v-col cols="12" md="4">
-        <div class="info-section">
-          <h2>Language</h2>
-          <p>{{ formData.language }}</p>
-        </div>
-      </v-col>
-      <v-col cols="12" md="4">
-        <div class="info-section">
-          <h2>Indicative EQF</h2>
-          <p>EQF {{ formData.eqfLevel }}</p>
-        </div>
-      </v-col>
-    </v-row>
-  </v-container>
-  
-        <div class="info-section">
-          <h2>Skills</h2>
-          <ul>
-            <li v-for="(skill, index) in formData.skills" :key="index">{{ skill }}</li>
-          </ul>
-        </div>
-  
-        <div class="info-section">
-          <h2>Admission Requirements</h2>
-          <ul>
-            <li v-for="(requirement, index) in formData.requirements" :key="index">{{ requirement }}</li>
-          </ul>
-        </div>
+
+    <div class="info-sections">
+      <v-container>
+        <v-row align="start">
+          <v-col cols="12" md="4">
+            <div class="info-section">
+              <h2>Study Load</h2>
+              <p>{{ formData.studyLoad }} ECTS</p>
+            </div>
+          </v-col>
+          <v-col cols="12" md="4">
+            <div class="info-section">
+              <h2>Language</h2>
+              <p>{{ formData.language }}</p>
+            </div>
+          </v-col>
+          <v-col cols="12" md="4">
+            <div class="info-section">
+              <h2>Indicative EQF</h2>
+              <p>EQF {{ formData.eqfLevel }}</p>
+            </div>
+          </v-col>
+        </v-row>
+      </v-container>
+
+      <div class="info-section">
+        <h2>Skills</h2>
+        <ul>
+          <li v-for="(skill, index) in formData.skills" :key="index">
+            {{ skill }}
+          </li>
+        </ul>
       </div>
-  
-      <button class="send-button" @click="submitForm">Send for review</button>
+
+      <div class="info-section">
+        <h2>Admission Requirements</h2>
+        <ul>
+          <li
+            v-for="(requirement, index) in formData.requirements"
+            :key="index"
+          >
+            {{ requirement }}
+          </li>
+        </ul>
+      </div>
     </div>
-  </template>
+
+    <button class="send-button" @click="submitForm">Send for review</button>
+  </div>
+</template>
   
   <script setup>
-  import { ref, defineProps, defineEmits } from 'vue';
-  import axios from "axios";
+import { ref, defineProps, defineEmits } from "vue";
+import axios from "axios";
 
-  defineProps({
-  stepData: Object  
-  });
-  
-  // Mock data, replace with actual data collection logic from previous steps
-  const formData = ref({
-    courseTitle: 'Fullstack Webdevelopment',
-    studyLoad: '11', // Example data
-    language: 'Dutch',
-    eqfLevel: '5',
-    description: 'In-depth course to become a Fullstack Developer.',
-    skills: ['Responsive Design', 'RESTful Services', 'Backend Integration'],
-    requirements: ['Completed Application', 'Passed Interview']
-  });
-  
-  const emit = defineEmits(['send-for-review']);
-  
-  /*function sendForReview() {
+defineProps({
+  stepData: Object,
+});
+
+// Mock data, replace with actual data collection logic from previous steps
+const formData = ref({
+  courseTitle: "Fullstack Webdevelopment",
+  studyLoad: "11", // Example data
+  language: "Dutch",
+  eqfLevel: "5",
+  description: "In-depth course to become a Fullstack Developer.",
+  skills: ["Responsive Design", "RESTful Services", "Backend Integration"],
+  requirements: ["Completed Application", "Passed Interview"],
+  badgeImage: "https://via.placeholder.com/150", // Placeholder image
+});
+
+const emit = defineEmits(["send-for-review"]);
+
+/*function sendForReview() {
     // Here you would handle the submission of the summary for review
     // For example, send formData to a server or transition to a "review sent" state
     console.log('Sending for review:', formData.value);
     emit('send-for-review', formData.value);
   } */
-  const loading = ref(false); 
-  const submitForm = async() => {
-    if (!formData.value.courseTitle || !formData.value.skills.length) {
-      alert('Error missing fields');
-      return;
-    }
+const loading = ref(false);
+const submitForm = async () => {
+  if (!formData.value.courseTitle || !formData.value.skills.length) {
+    alert("Error missing fields");
+    return;
+  }
 
-    const payload = {
+  const payload = {
     courseName: formData.value.courseTitle,
-    studyYear: new Date().getFullYear(), 
+    studyYear: new Date().getFullYear(),
     description: formData.value.description,
-    imageUrl: formData.value.badgeImage, 
+    imageUrl: formData.value.badgeImage,
     requiredAchievements: formData.value.requirements,
     skills: formData.value.skills,
     attributes: {
       EC: parseInt(formData.value.studyLoad),
       language: formData.value.language,
-      EQF: parseInt(formData.value.eqfLevel)
-    }
+      EQF: parseInt(formData.value.eqfLevel),
+    },
   };
-    
-    try {
+
+  try {
     loading.value = true;
     const response = await axios.post(
       "http://localhost:8080/api/v1/education-modules",
       payload
     );
     const invitationUrl = response.data.invitationUrl;
-    emit('review-sent', invitationUrl); // Notify parent component
+    emit("review-sent", invitationUrl); // Notify parent component
     loading.value = false;
   } catch (error) {
-    console.error('Submission failed: ', error);
+    console.error("Submission failed: ", error);
     loading.value = false;
-    }
-  };
-  /*
+  }
+};
+/*
   {
   "courseName": "Nederlands",
   "studyYear": 2021,
@@ -127,12 +139,12 @@
   }
 }
  
-  */ 
-  </script>
+  */
+</script>
   
   
  <style scoped>
- .header {
+.header {
   margin-bottom: 20px;
 }
 .badge-container {
@@ -213,7 +225,8 @@
   margin-bottom: 10px;
 }
 
-.info-section p, .info-section ul {
+.info-section p,
+.info-section ul {
   color: #333; /* Dark text for content */
   text-align: left;
 }

@@ -2,16 +2,33 @@
   <div class="step-one">
     <form @submit.prevent="submitStepOne" class="form-container">
       <div class="image-upload">
-        <input type="file" id="course-badge" @change="handleImageUpload" accept="image/*" hidden>
+        <input
+          type="file"
+          id="course-badge"
+          @change="handleImageUpload"
+          accept="image/*"
+          hidden
+        />
         <label for="course-badge" class="upload-label">
           <div v-if="courseDetails.badgeImage" class="image-preview">
-            <img :src="courseDetails.badgeImage" alt="Uploaded image preview" class="preview-image"/>
+            <img
+              :src="courseDetails.badgeImage"
+              alt="Uploaded image preview"
+              class="preview-image"
+            />
           </div>
           <div v-else>Add Image</div>
         </label>
       </div>
       <div class="form-group">
-        <input type="text" id="course-title" v-model="courseDetails.courseTitle" required placeholder="Type you here Your Credential Title" class="title-input">
+        <input
+          type="text"
+          id="course-title"
+          v-model="courseDetails.courseTitle"
+          required
+          placeholder="Type you here Your Credential Title"
+          class="title-input"
+        />
       </div>
       <button class="submit-button" type="submit">Get Started</button>
     </form>
@@ -19,13 +36,13 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref, defineEmits } from "vue";
 
 const courseDetails = ref({
-  courseTitle: '',
-  badgeImage: ''
+  courseTitle: "",
+  badgeImage: "",
 });
-const emit = defineEmits(['update-step-data']);
+const emit = defineEmits(["update-step-data"]);
 
 const handleImageUpload = (event) => {
   const file = event.target.files[0];
@@ -40,13 +57,12 @@ const handleImageUpload = (event) => {
 
 const submitStepOne = () => {
   if (courseDetails.value.courseTitle) {
-    emit('update-step-data', { step: 1, data: courseDetails.value });
+    emit("update-step-data", { step: 1, data: courseDetails.value });
   } else {
     // Optionally, handle validation failure, e.g., show an error message
-    console.error('Course title is required');
+    console.error("Course title is required");
   }
 };
-
 </script>
 
 <style scoped>
@@ -79,7 +95,6 @@ const submitStepOne = () => {
   position: relative;
   overflow: hidden;
 }
-
 
 .add-image-icon {
   color: white;
