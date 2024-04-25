@@ -41,7 +41,7 @@ const addSkill = () => {
 
 function submitStep() {
   if (skills.value.length > 0) {
-    emit('update-step-data', { step: 4, data: { skills: skills.value } });
+    emit('update-step-data', { step: 4, data: skills });
   } else {
     alert('Please enter at least one skill.');
   }

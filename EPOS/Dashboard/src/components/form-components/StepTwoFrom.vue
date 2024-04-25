@@ -51,7 +51,7 @@ const dropdowns = ref([
   {
     label: 'Indicative EQF',
     placeholder: '- Select -',
-    options: ['Level 5', 'Level 6', 'Level 7'],
+    options: [5, 6, 7],
     selectedValue: ''
   }
 ]);
