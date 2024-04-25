@@ -53,14 +53,7 @@ function submitStep() {
   margin-bottom: 20px;
 }
 
-.back-button {
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: #007bff;
-  font-size: 2rem;
-  margin-bottom: 10px;
-}
+
 
 .badge-container {
   display: flex;

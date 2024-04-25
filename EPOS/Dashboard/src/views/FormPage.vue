@@ -25,6 +25,7 @@ import StepTwo from '../components/form-components/StepTwoFrom.vue';
 import StepThree from '../components/form-components/StepThreeFrom.vue';
 import StepFour from '../components/form-components/StepFourForm.vue';
 import StepFive from '../components/form-components/StepFiveForm.vue';
+import SummaryForm from '../components/form-components/SummaryForm.vue';
 
 const currentStep = ref(1);
 const formData = ref({
@@ -43,10 +44,11 @@ const componentsMap = {
   3: StepThree,
   4: StepFour,
   5: StepFive,
+  6: SummaryForm
 };
 
 const currentComponent = computed(() => componentsMap[currentStep.value]);
-const totalSteps = 5;
+const totalSteps = 6;
 
 function nextStep() {
   if (isStepValid.value && currentStep.value < totalSteps) {
