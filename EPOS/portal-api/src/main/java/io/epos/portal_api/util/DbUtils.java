@@ -19,6 +19,9 @@ public class DbUtils {
   private static final String USERNAME_CONFIG = "datasource.username";
   private static final String PASSWORD_CONFIG = "datasource.password";
 
+  private static final boolean DOCKER = Boolean.parseBoolean(System.getenv("DOCKER"));
+
+
   private DbUtils() {}
 
   /**
@@ -30,12 +33,22 @@ public class DbUtils {
   public static Pool buildDbClient(Vertx vertx) {
     final Properties properties = ConfigUtils.getInstance().getProperties();
 
-    final PgConnectOptions connectOptions = new PgConnectOptions()
-      .setPort(Integer.parseInt(properties.getProperty(PORT_CONFIG)))
-      .setHost(properties.getProperty(HOST_CONFIG))
-      .setDatabase(properties.getProperty(DATABASE_CONFIG))
-      .setUser(properties.getProperty(USERNAME_CONFIG))
-      .setPassword(properties.getProperty(PASSWORD_CONFIG));
+    PgConnectOptions connectOptions;
+    if (DOCKER) {
+      connectOptions = new PgConnectOptions()
+        .setHost(properties.getProperty(HOST_CONFIG))
+        .setPort(Integer.parseInt(properties.getProperty(PORT_CONFIG)))
+        .setDatabase(properties.getProperty(DATABASE_CONFIG))
+        .setUser(properties.getProperty(USERNAME_CONFIG))
+        .setPassword(properties.getProperty(PASSWORD_CONFIG));
+    } else {
+      connectOptions = new PgConnectOptions()
+        .setHost("localhost")
+        .setPort(Integer.parseInt(properties.getProperty(PORT_CONFIG)))
+        .setDatabase(properties.getProperty(DATABASE_CONFIG))
+        .setUser(properties.getProperty(USERNAME_CONFIG))
+        .setPassword(properties.getProperty(PASSWORD_CONFIG));
+    }
 
     final PoolOptions poolOptions = new PoolOptions().setMaxSize(5);
 
@@ -50,7 +63,12 @@ public class DbUtils {
   public static Configuration buildMigrationsConfiguration() {
     final Properties properties = ConfigUtils.getInstance().getProperties();
 
-    final String url = "jdbc:postgresql://" + properties.getProperty(HOST_CONFIG) + ":" + properties.getProperty(PORT_CONFIG) + "/" + properties.getProperty(DATABASE_CONFIG);
+    String url;
+    if (DOCKER) {
+      url = "jdbc:postgresql://" + properties.getProperty(HOST_CONFIG) + ":" + properties.getProperty(PORT_CONFIG) + "/" + properties.getProperty(DATABASE_CONFIG);
+    } else {
+      url = "jdbc:postgresql://localhost" + ":" + properties.getProperty(PORT_CONFIG) + "/" + properties.getProperty(DATABASE_CONFIG);
+    }
     FluentConfiguration configuration = new FluentConfiguration().dataSource(url, properties.getProperty(USERNAME_CONFIG), properties.getProperty(PASSWORD_CONFIG));
     // set location to search migrations in resources folder
     configuration.locations("classpath:db/migration");
