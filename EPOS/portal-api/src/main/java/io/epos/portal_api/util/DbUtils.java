@@ -50,7 +50,14 @@ public class DbUtils {
   public static Configuration buildMigrationsConfiguration() {
     final Properties properties = ConfigUtils.getInstance().getProperties();
 
-    final String url = "jdbc:postgresql://" + properties.getProperty(HOST_CONFIG) + ":" + properties.getProperty(PORT_CONFIG) + "/" + properties.getProperty(DATABASE_CONFIG);
+    private boolean useDocker = System.getenv("DOCKER")
+    String url;
+    if (useDocker = true) {
+      url = "jdbc:postgresql://" + properties.getProperty(HOST_CONFIG) + ":" + properties.getProperty(PORT_CONFIG) + "/" + properties.getProperty(DATABASE_CONFIG);
+    } else  {
+      url = "jdbc:postgresql://localhost" + ":" + properties.getProperty(PORT_CONFIG) + "/" + properties.getProperty(DATABASE_CONFIG);
+    }
+
     FluentConfiguration configuration = new FluentConfiguration().dataSource(url, properties.getProperty(USERNAME_CONFIG), properties.getProperty(PASSWORD_CONFIG));
     // set location to search migrations in resources folder
     configuration.locations("classpath:db/migration");
