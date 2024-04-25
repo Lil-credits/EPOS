@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+        context: ./portal-api/
+        dockerfile: Dockerfile
+    container_name: API
+    ports:
+      - "8080:8080"  # Mapping container port 8080 to host port 8080
+    depends_on:
+      epos-postgresql:
+        condition: service_healthy
+    environment:
+      - DOCKER=TRUE
+
+  dashboard:
+    build:
+      context: ./Dashboard/
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    restart: "no"
+    container_name: Frontend
+    depends_on:
+      - api
+        
+  epos-postgresql:
+    container_name: EPOS-DB
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_HOST: epos-postgresql
+      POSTGRES_DB: epos
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: AXEe263eqPFqwy4z
+    ports:
+      - "5432:5432"  # Mapping container port 5432 to host port 5432
+    volumes:
+      - epos-postgresql-local:/var/lib/postgresql/data  # Mounting a volume for persistent data storage
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -q -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+volumes:
+  epos-postgresql-local:  # Defining a named volume for PostgreSQL data
