@@ -1,4 +1,4 @@
-FROM gradle:7.3.3-jdk17-alpine AS build
+FROM gradle:jdk17 AS build
 
 # Copy project files
 COPY --chown=gradle:gradle . /home/gradle/src

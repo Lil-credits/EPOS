@@ -1,19 +1,32 @@
 version: '3.8'
 
 services:
-  portal-api:
+  api:
     build:
         context: ./portal-api/
         dockerfile: Dockerfile
-    container_name: portal-api-container
+    container_name: API
     ports:
       - "8080:8080"  # Mapping container port 8080 to host port 8080
     depends_on:
       epos-postgresql:
         condition: service_healthy
+    environment:
+      - DOCKER=TRUE
+
+  dashboard:
+    build:
+      context: ./Dashboard/
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    restart: "no"
+    container_name: Frontend
+    depends_on:
+      - api
         
   epos-postgresql:
-    container_name: epos-postgresql
+    container_name: EPOS-DB
     image: postgres:12-alpine
     environment:
       POSTGRES_HOST: epos-postgresql
