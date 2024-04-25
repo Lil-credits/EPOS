@@ -4,7 +4,10 @@
       <div class="image-upload">
         <input type="file" id="course-badge" @change="handleImageUpload" accept="image/*" hidden>
         <label for="course-badge" class="upload-label">
-          <div>Add Image</div>
+          <div v-if="courseDetails.badgeImage" class="image-preview">
+            <img :src="courseDetails.badgeImage" alt="Uploaded image preview" class="preview-image"/>
+          </div>
+          <div v-else>Add Image</div>
         </label>
       </div>
       <div class="form-group">
@@ -77,6 +80,7 @@ const submitStepOne = () => {
   overflow: hidden;
 }
 
+
 .add-image-icon {
   color: white;
   font-size: 24px;
@@ -107,5 +111,21 @@ const submitStepOne = () => {
   font-size: 16px;
   width: calc(100% - 60px); /* Account for padding */
   cursor: pointer;
+}
+
+.image-preview {
+  background-color: white;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 100%;
 }
 </style>

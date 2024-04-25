@@ -73,8 +73,8 @@ function submitStep() {
   }, {});
 
   emit('update-step-data', { step: 2, data: formData });
-  console.log(formData)
 }
+
 </script>
 
 <style scoped>

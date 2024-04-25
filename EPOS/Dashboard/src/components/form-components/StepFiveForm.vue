@@ -2,11 +2,9 @@
   <div class="step-five">
     <div class="header">
       <div class="image-container">
-        <!-- Received from step one -->
-        <img src="/micro.png" class="badge-image"/>
-        <!-- <img :src="stepData.badgeImage" alt="Course Badge" class="badge-image" /> -->
+        <img :src="stepData[1]['badgeImage']" alt="Course Badge" class="badge-image"/>
       </div>
-      <div class="course-title">Test <!-- {{ stepData.courseTitle }} --></div>
+      <div class="course-title">{{ stepData[1]['courseTitle'] }}</div>
     </div>
       <div class="requirements-container">
       <h2>Admission Requirements</h2>
@@ -21,7 +19,11 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref, defineProps, defineEmits } from 'vue';
+
+defineProps({
+  stepData: Object
+});
 
 const requirements = ref([]); // Start with an empty array for requirements
 const newRequirement = ref('');
