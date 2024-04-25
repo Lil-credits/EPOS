@@ -19,8 +19,8 @@
         </div>
       </div>
       <div class="dropdown" v-if="showNewDropdownFields">
-      <input v-model="newDropdownLabel" placeholder="New Dropdown Label">
-      <input v-model="newDropdownOptions" placeholder="Comma-separated Options">
+      <input v-model="newDropdownLabel" placeholder="Attribute" class="input-title">
+      <input v-model="newDropdownOptions" placeholder="Value">
       <button @click="confirmAddDropdown">Confirm</button>
     </div>
     <button v-else @click="showDropdownFields" class="add-dropdown-button">
@@ -44,7 +44,7 @@ const emit = defineEmits(['update-step-data', 'go-back']);
 
 const dropdowns = ref([
   {
-    label: 'Language',
+    label: 'language',
     placeholder: '- Select -',
     options: ['English', 'Dutch', 'German'],
     selectedValue: ''
@@ -140,7 +140,16 @@ function submitStep() {
   margin-bottom: 20px;
 }
 
-.dropdown label {
+.dropdown label{
+  display: block;
+  background-color: #007bff; /* Blue background */
+  color: white;
+  padding: 8px;
+  border-radius: 10px 10px 0 0; /* Rounded top corners */
+  font-size: 18px;
+}
+
+.input-title {
   display: block;
   background-color: #007bff; /* Blue background */
   color: white;
