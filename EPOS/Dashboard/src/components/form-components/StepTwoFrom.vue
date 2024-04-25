@@ -18,8 +18,15 @@
           </select>
         </div>
       </div>
-      <button class="add-button" @click="addDropdown">ADD +</button>
+      <div class="dropdown" v-if="showNewDropdownFields">
+      <input v-model="newDropdownLabel" placeholder="New Dropdown Label">
+      <input v-model="newDropdownOptions" placeholder="Comma-separated Options">
+      <button @click="confirmAddDropdown">Confirm</button>
     </div>
+    <button v-else @click="showDropdownFields" class="add-dropdown-button">
+      ADD +
+    </button>
+  </div>
 
     <button class="next-button" @click="submitStep">Next</button>
   </div>
@@ -51,20 +58,33 @@ const dropdowns = ref([
   {
     label: 'Indicative EQF',
     placeholder: '- Select -',
-    options: ['Level 5', 'Level 6', 'Level 7'],
+    options: [5, 6, 7],
     selectedValue: ''
   }
 ]);
 
-function addDropdown() {
-  dropdowns.value.push({
-    label: `New Dropdown ${dropdowns.value.length + 1}`,
-    placeholder: 'Select Option',
-    options: ['Option 1', 'Option 2', 'Option 3'], // Replace with actual options
-    selectedValue: ''
-  });
-}
+const showNewDropdownFields = ref(false);
+const newDropdownLabel = ref('');
+const newDropdownOptions = ref('');
 
+const showDropdownFields = () => {
+  showNewDropdownFields.value = true;
+};
+
+const confirmAddDropdown = () => {
+  if (newDropdownLabel.value && newDropdownOptions.value) {
+    dropdowns.value.push({
+      label: newDropdownLabel.value,
+      placeholder: 'Enter Value',
+      selectedValue: '',
+      isTextInput: true
+    });
+    showNewDropdownFields.value = false;
+    newDropdownLabel.value = '';
+  } else {
+    alert('Please fill in the dropdown label and options.');
+  }
+};
 
 function submitStep() {
   const formData = dropdowns.value.reduce((acc, dropdown) => {
@@ -157,7 +177,7 @@ function submitStep() {
   font-size: 12px;
 }
 
-.add-button {
+.add-dropdown-button {
   background-color: #007bff; /* Blue background */
   color: white;
   padding: 10px 20px;

@@ -38,7 +38,7 @@ const addRequirement = () => {
 
 function submitStep() {
   if (requirements.value.length > 0) {
-    emit('update-step-data', { step: 5, data: { requirements: requirements.value } });
+    emit('update-step-data', { step: 5, data: requirements});
   } else {
     alert('Please enter at least one admission requirement.');
   }
