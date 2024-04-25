@@ -39,7 +39,7 @@ const dropdowns = ref([
   {
     label: 'Language',
     placeholder: '- Select -',
-    options: ['English', 'Spanish', 'Mandarin'],
+    options: ['English', 'Dutch', 'German'],
     selectedValue: ''
   },
   {
@@ -67,8 +67,13 @@ function addDropdown() {
 
 
 function submitStep() {
-  // Emit the selected values from the dropdowns
-  emit('update-step-data', { step: 2, data: dropdowns.value.map(d => d.selectedValue) });
+  const formData = dropdowns.value.reduce((acc, dropdown) => {
+    acc[dropdown.label] = dropdown.selectedValue; // Assign the selectedValue to the label as the key
+    return acc;
+  }, {});
+
+  emit('update-step-data', { step: 2, data: formData });
+  console.log(formData)
 }
 </script>
 
