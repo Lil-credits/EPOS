@@ -61,21 +61,10 @@
 import { ref, defineProps, defineEmits } from "vue";
 import axios from "axios";
 
-defineProps({
+const props = defineProps({
   stepData: Object,
 });
 
-// Mock data, replace with actual data collection logic from previous steps
-const formData = ref({
-  courseTitle: "Fullstack Webdevelopment",
-  studyLoad: "11", // Example data
-  language: "Dutch",
-  eqfLevel: "5",
-  description: "In-depth course to become a Fullstack Developer.",
-  skills: ["Responsive Design", "RESTful Services", "Backend Integration"],
-  requirements: ["Completed Application", "Passed Interview"],
-  badgeImage: "https://via.placeholder.com/150", // Placeholder image
-});
 
 const emit = defineEmits(["send-for-review"]);
 
@@ -87,23 +76,15 @@ const emit = defineEmits(["send-for-review"]);
   } */
 const loading = ref(false);
 const submitForm = async () => {
-  if (!formData.value.courseTitle || !formData.value.skills.length) {
-    alert("Error missing fields");
-    return;
-  }
 
   const payload = {
-    courseName: formData.value.courseTitle,
+    courseName: props.stepData[1]["courseTitle"],
     studyYear: new Date().getFullYear(),
-    description: formData.value.description,
-    imageUrl: formData.value.badgeImage,
-    requiredAchievements: formData.value.requirements,
-    skills: formData.value.skills,
-    attributes: {
-      EC: parseInt(formData.value.studyLoad),
-      language: formData.value.language,
-      EQF: parseInt(formData.value.eqfLevel),
-    },
+    description: props.stepData[3]["description"],
+    imageUrl: props.stepData[1]["imageUrl"],
+    requiredAchievements: props.stepData[5],
+    skills: props.stepData[4],
+    attributes: props.stepData[2]
   };
 
   try {
