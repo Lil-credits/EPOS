@@ -17,7 +17,17 @@ public class EducationModuleValidationHandler {
     schemaRepository.dereference("education_module.json", readJsonSchema("education_module.json", vertx));
   }
   public void readOne(RoutingContext routingContext){
+    // check if the id is a number
+    String id = routingContext.request().getParam("id");
+    if (id == null || !id.matches("\\d+")) {
+      routingContext.fail(400, new Exception());
+    }
+    else {
+      routingContext.next();
+    }
   }
+
+
   public void create(RoutingContext routingContext){
     JsonObject requestBody = routingContext.body().asJsonObject();
     OutputUnit result = schemaRepository.validator("education_module.json").validate(requestBody);
@@ -28,5 +38,19 @@ public class EducationModuleValidationHandler {
     else {
       routingContext.next();
     }
+  }
+
+  public void readAll(RoutingContext routingContext) {
+    // check for optional query parameters limit and page
+    String limit = routingContext.request().getParam("limit");
+    String page = routingContext.request().getParam("page");
+    if (limit != null && !limit.matches("\\d+")) {
+      routingContext.fail(400, new Exception());
+    }
+    if (page != null && !page.matches("\\d+")) {
+      routingContext.fail(400, new Exception());
+    }
+    routingContext.next();
+
   }
 }

@@ -39,6 +39,7 @@ public class EducationModuleRouter {
     educationModudleRouter.route("/education-modules*").handler(BodyHandler.create());
     educationModudleRouter.get("/education-modules/:id").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(educationModuleValidationHandler::readOne).handler(educationModuleHandler::readOne);
     educationModudleRouter.post("/education-modules").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(educationModuleValidationHandler::create).handler(educationModuleHandler::create);
+    educationModudleRouter.get("/education-modules").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(educationModuleValidationHandler::readAll).handler(educationModuleHandler::readAll);
 
     return educationModudleRouter;
   }

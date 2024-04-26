@@ -1,11 +1,14 @@
 package io.epos.portal_api.api.educationModule;
 
 import io.epos.portal_api.api.educationModule.model.CreateEducationModuleRequest;
+import io.epos.portal_api.api.educationModule.model.GetEducationModuleResponse;
 import io.epos.portal_api.domain.EducationModule;
 import io.epos.portal_api.domain.EducationModuleVersion;
 import io.vertx.core.Future;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
+
+import java.util.List;
 
 import static io.epos.portal_api.util.ResponseUtils.buildErrorResponse;
 import static io.epos.portal_api.util.ResponseUtils.buildOkResponse;
@@ -16,7 +19,8 @@ public class EducationModuleHandler {
   public EducationModuleHandler(EducationModuleService educationModuleService) {
     this.educationModuleService = educationModuleService;
   }
-  public void readOne(RoutingContext routingContext) {
+  public Future<GetEducationModuleResponse> readOne(RoutingContext routingContext) {
+    return null;
   }
 
   public Future<EducationModuleVersion> create(RoutingContext routingContext) {
@@ -38,5 +42,9 @@ public class EducationModuleHandler {
       .onSuccess(success -> buildOkResponse(routingContext, success))
       .onFailure(throwable -> buildErrorResponse(routingContext, throwable));
   }
+
+    public Future<GetEducationModuleResponse> readAll(RoutingContext routingContext) {
+      return null;
+    }
 }
 
