@@ -22,7 +22,7 @@ public class EducationModuleRepository {
       "VALUES (#{version}, #{description}, #{attributes}, #{requiredAchievements}, #{skills}, #{educationModuleID}, #{status}) RETURNING id";
 
   private static final String SQL_SELECT_EDUCATION_MODULE_BY_ID = "SELECT * FROM EducationModule WHERE id = #{id};";
-  private static final String SQL_SELECT_ALL_EDUCATION_MODULES = "SELECT * FROM EducationModule LIMIT #{limit} OFFSET #{offset};";
+  private static final String SQL_SELECT_ALL_EDUCATION_MODULES = "SELECT * FROM EducationModule ORDER BY id DESC LIMIT #{limit} OFFSET #{offset} ;";
   private static final String SQL_COUNT_EDUCATION_MODULES = "SELECT COUNT(*) AS total FROM EducationModule;";
 
   public Future<List<EducationModule>> getAllEducationModules(SqlConnection connection, int limit, int offset) {
