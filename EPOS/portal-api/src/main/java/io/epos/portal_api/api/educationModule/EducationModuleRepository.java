@@ -16,7 +16,7 @@ import java.util.*;
 public class EducationModuleRepository {
   private static final Logger LOGGER = LoggerFactory.getLogger(EducationModuleRepository.class);
   private static final String SQL_INSERT_EDUCATION_MODULE = "INSERT INTO EducationModule (Name, ImageUrl, TeamID)" +
-    "VALUES (#{Name}, #{ImageUrl}, #{TeamID}) RETURNING id";
+    "VALUES (#{name}, #{imageurl}, #{teamid}) RETURNING id";
   private static final String SQL_INSERT_EDUCATION_MODULE_VERSION =
     "INSERT INTO EducationModuleVersion (version, description, attributes, requiredachievements, skills, educationmoduleid, status)" +
       "VALUES (#{version}, #{description}, #{attributes}, #{requiredAchievements}, #{skills}, #{educationModuleID}, #{status}) RETURNING id";
