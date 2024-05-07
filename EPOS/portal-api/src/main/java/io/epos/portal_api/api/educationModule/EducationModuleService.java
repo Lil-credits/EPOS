@@ -26,6 +26,14 @@ public class EducationModuleService {
     this.dbClient = dbClient;
     this.educationModuleRepository = educationModuleRepository;
   }
+  public Future<GetEducationModuleResponse> readOne(int id) {
+    return dbClient.withTransaction(
+        connection -> educationModuleRepository.getEducationModule(connection, id)
+          .map(GetEducationModuleResponse::new)
+      )
+      .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read one education module", success)))
+      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read one education module", throwable.getMessage())));
+  }
 
   public Future<GetAllEducationModuleResponse> readAll(String p, String l){
     return dbClient.withTransaction(
@@ -92,12 +100,5 @@ public class EducationModuleService {
       .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Create one education module", throwable.getMessage())));
   }
 
-  public Future<GetEducationModuleResponse> readOne(int id) {
-    return dbClient.withTransaction(
-        connection -> educationModuleRepository.getEducationModule(connection, id)
-          .map(GetEducationModuleResponse::new)
-      )
-      .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read one education module", success)))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read one education module", throwable.getMessage())));
-  }
+
 }
