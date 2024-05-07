@@ -15,7 +15,7 @@ public class GetAllEducationModuleResponse {
   @JsonProperty(value = "page")
   private int page;
 
-  @JsonProperty(value = "books")
+  @JsonProperty(value = "educationModules")
   private List<GetEducationModuleResponse> educationModules;
 
   public GetAllEducationModuleResponse() {

@@ -3,6 +3,7 @@ package io.epos.portal_api.domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.sqlclient.templates.annotations.Column;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EducationModule {
@@ -20,7 +21,7 @@ public class EducationModule {
   private Integer teamId;
 
   @JsonProperty("education_module_versions")
-  private List<EducationModuleVersion> educationModuleVersions;
+  private List<EducationModuleVersion> educationModuleVersions = new ArrayList<>();
 
 
   public Integer getId() {

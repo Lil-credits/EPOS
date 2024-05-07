@@ -31,7 +31,13 @@ public class EducationModuleRepository {
       "FROM EducationModule em " +
       "LEFT JOIN EducationModuleVersion ev ON em.id = ev.EducationModuleID " +
       "WHERE em.id = #{id}";
-  private static final String SQL_SELECT_ALL_EDUCATION_MODULES = "SELECT * FROM EducationModule ORDER BY id DESC LIMIT #{limit} OFFSET #{offset} ;";
+  private static final String SQL_SELECT_ALL_EDUCATION_MODULES =     "SELECT em.id as edu_id, em.name, em.teamid, em.imageurl, " +
+    "ev.id AS version_id, ev.version AS version, ev.description AS version_description, " +
+    "ev.attributes AS version_attributes, ev.requiredachievements AS version_required_achievements, " +
+    "ev.skills AS version_skills, ev.status AS version_status " +
+    "FROM EducationModule em " +
+    "LEFT JOIN EducationModuleVersion ev ON em.id = ev.EducationModuleID " +
+    "ORDER BY em.id DESC LIMIT #{limit} OFFSET #{offset} ;";
   private static final String SQL_COUNT_EDUCATION_MODULES = "SELECT COUNT(*) AS total FROM EducationModule;";
 
   private static final RowMapper<EducationModule> EDUCATION_MODULE_ROW_MAPPER = row -> {
@@ -56,8 +62,7 @@ public class EducationModuleRepository {
           educationModule.getEducationModuleVersions().add(mapRowToEducationModuleVersion(row));
 
           while (iterator.hasNext()) {
-            row = iterator.next();
-//            educationModule.getEducationModuleVersions().add(mapRowToEducationModuleVersion(row));
+            educationModule.getEducationModuleVersions().add(mapRowToEducationModuleVersion(iterator.next()));
           }
           return educationModule;
         } else {
@@ -70,13 +75,24 @@ public class EducationModuleRepository {
   public Future<List<EducationModule>> getAllEducationModules(SqlConnection connection, int limit, int offset) {
     return SqlTemplate
       .forQuery(connection, SQL_SELECT_ALL_EDUCATION_MODULES)
-      .mapTo(EducationModule.class)
       .execute(Map.of("limit", limit, "offset", offset))
       .map(rowSet -> {
-        final List<EducationModule> educationModules = new ArrayList<>();
-        rowSet.forEach(educationModules::add);
-
-        return educationModules;
+        final Map<Integer, EducationModule> moduleMap = new HashMap<>();
+        rowSet.forEach(row -> {
+          int moduleId = row.getInteger("edu_id");
+          EducationModule educationModule;
+          if (moduleMap.containsKey(moduleId)) {
+            educationModule = moduleMap.get(moduleId);
+          } else {
+            educationModule = mapRowToEducationModule(row);
+            moduleMap.put(moduleId, educationModule);
+          }
+          if (row.getInteger("version_id") != null) {
+            EducationModuleVersion version = mapRowToEducationModuleVersion(row);
+            educationModule.getEducationModuleVersions().add(version);
+          }
+        });
+        return (List<EducationModule>) new ArrayList<>(moduleMap.values());
       })
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read all education modules")))
       .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read all education modules", throwable.getMessage())));
