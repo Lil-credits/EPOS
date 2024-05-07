@@ -66,7 +66,7 @@ public class EducationModuleRepository {
           }
           return educationModule;
         } else {
-          throw new NoSuchElementException(LogUtils.NO_BOOK_WITH_ID_MESSAGE.buildMessage(id));
+          throw new NoSuchElementException(LogUtils.NO_EDUCATION_MODULE_WITH_ID_MESSAGE.buildMessage(id));
         }
       })
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read book by id", SQL_SELECT_EDUCATION_MODULE_BY_ID)))
