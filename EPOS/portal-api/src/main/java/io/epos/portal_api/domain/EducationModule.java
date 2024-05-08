@@ -8,19 +8,14 @@ import java.util.List;
 
 public class EducationModule {
 
-  @JsonProperty("id")
   private Integer id;
 
-  @JsonProperty("name")
   private String name;
 
-  @JsonProperty("imageurl")
   private String imageUrl;
 
-  @JsonProperty("teamid")
   private Integer teamId;
 
-  @JsonProperty("education_module_versions")
   private List<EducationModuleVersion> educationModuleVersions = new ArrayList<>();
 
 

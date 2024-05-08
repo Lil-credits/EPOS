@@ -4,6 +4,7 @@ import io.epos.portal_api.api.image.*;
 import io.epos.portal_api.api.common.handler.ErrorHandler;
 import io.epos.portal_api.api.common.router.HealthCheckRouter;
 import io.epos.portal_api.api.educationModule.*;
+import io.epos.portal_api.api.microCredential.*;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.Router;
@@ -41,12 +42,21 @@ public class ApiInitializer {
     EducationModuleRouter educationModuleRouter = new EducationModuleRouter(vertx, educationModuleHandler, educationModuleValidationHandler);
     educationModuleRouter.setRouter(router);
 
-// Image API
+    // Image API
     ImageRepository imageRepository = new ImageRepository();
     ImageService imageService = new ImageService(dbClient, imageRepository);
     ImageHandler imageHandler = new ImageHandler(imageService);
     ImageValidationHandler imageValidationHandler = new ImageValidationHandler(vertx);
     ImageRouter imageRouter = new ImageRouter(vertx, imageHandler, imageValidationHandler);
     imageRouter.setRouter(router);
+
+
+    // MicroCredential API
+    MicroCredentialRepository microCredentialRepository = new MicroCredentialRepository();
+    MicroCredentialService microCredentialService = new MicroCredentialService(dbClient, microCredentialRepository);
+    MicroCredentialHandler microCredentialHandler = new MicroCredentialHandler(microCredentialService);
+    MicroCredentialValidationHandler microCredentialValidationHandler = new MicroCredentialValidationHandler(vertx);
+    MicroCredentialRouter microCredentialRouter = new MicroCredentialRouter(vertx, microCredentialHandler, microCredentialValidationHandler);
+    microCredentialRouter.setRouter(router);
   }
 }
