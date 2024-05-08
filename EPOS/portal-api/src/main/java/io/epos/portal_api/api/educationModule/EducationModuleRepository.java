@@ -77,7 +77,7 @@ public class EducationModuleRepository {
       .forQuery(connection, SQL_SELECT_ALL_EDUCATION_MODULES)
       .execute(Map.of("limit", limit, "offset", offset))
       .map(rowSet -> {
-        final Map<Integer, EducationModule> moduleMap = new HashMap<>();
+        final Map<Integer, EducationModule> moduleMap = new LinkedHashMap<>();
         rowSet.forEach(row -> {
           int moduleId = row.getInteger("edu_id");
           EducationModule educationModule;
