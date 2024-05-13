@@ -20,7 +20,9 @@ public class MicroCredentialHandler {
     JsonObject microCredential = routingContext.body().asJsonObject();
 
     microCredentialService.issue(microCredential.getInteger("educationModuleId"), microCredential.getInteger("userId"))
-      .onSuccess(success -> ResponseUtils.buildOkResponse(routingContext, success))
+      .onSuccess(invitationLink -> {
+        JsonObject invitationLinkJson = new JsonObject().put("invitationLink", invitationLink);
+        ResponseUtils.buildOkResponse(routingContext, invitationLinkJson);})
       .onFailure(throwable -> {
         LOGGER.error("Failed to issue micro credential ", throwable);
         ResponseUtils.buildErrorResponse(routingContext, throwable);
