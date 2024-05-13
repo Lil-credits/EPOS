@@ -24,11 +24,10 @@ public class MicroCredentialRouter {
    */
   private Router buildMicroCredentialRouter() {
     final Router microCredentialRouter = Router.router(vertx);
-
-    //test book router
     microCredentialRouter.route("/micro-credential").handler(ctx -> ctx.response().end("Hello Micro Credential!"));
     microCredentialRouter.route("/micro-credentials*").handler(BodyHandler.create());
     microCredentialRouter.post("/micro-credentials/issue").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(microCredentialValidationHandler::issue).handler(microCredentialHandler::issue);
+    microCredentialRouter.post("/micro-credentials/issue-batch").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(microCredentialValidationHandler::issueBatch).handler(microCredentialHandler::issueBatch);
     microCredentialRouter.get("/micro-credentials").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(microCredentialValidationHandler::readAll).handler(microCredentialHandler::readAll);
     return microCredentialRouter;
   }

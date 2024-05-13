@@ -21,10 +21,18 @@ public class FileUtils {
       e.printStackTrace();
       return null;
     }
-//    FileSystem fileSystem = vertx.fileSystem();
-//    String filePath = JSON_SCHEMA_PATH + filename;
-//    Buffer buffer = fileSystem.readFileBlocking(filePath);
-//    String fileContent = buffer.toString();
-//    return JsonSchema.of(new JsonObject(fileContent));
+  }
+  public static JsonObject readJsonObject(String filename){
+    try {
+      InputStream inputStream = FileUtils.class.getResourceAsStream("/json_schema/" + filename);
+      String fileContent = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+      return new JsonObject(fileContent);
+    } catch (IOException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 }
+
+
+

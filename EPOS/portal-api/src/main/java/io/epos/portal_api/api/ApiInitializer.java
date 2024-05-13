@@ -5,6 +5,7 @@ import io.epos.portal_api.api.common.handler.ErrorHandler;
 import io.epos.portal_api.api.common.router.HealthCheckRouter;
 import io.epos.portal_api.api.educationModule.*;
 import io.epos.portal_api.api.microCredential.*;
+import io.epos.portal_api.integration.waltid.WaltidClient;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.Router;
@@ -12,7 +13,7 @@ import io.vertx.ext.web.handler.CorsHandler;
 import io.vertx.sqlclient.Pool;
 
 public class ApiInitializer {
-  public static void initializeApis(Vertx vertx, Router router, Pool dbClient) {
+  public static void initializeApis(Vertx vertx, Router router, Pool dbClient, WaltidClient waltidClient){
 
     // add CORS support
     // Create a CORS handler allowing all origins, methods, and headers
@@ -53,7 +54,7 @@ public class ApiInitializer {
 
     // MicroCredential API
     MicroCredentialRepository microCredentialRepository = new MicroCredentialRepository();
-    MicroCredentialService microCredentialService = new MicroCredentialService(dbClient, microCredentialRepository);
+    MicroCredentialService microCredentialService = new MicroCredentialService(dbClient, microCredentialRepository, waltidClient);
     MicroCredentialHandler microCredentialHandler = new MicroCredentialHandler(microCredentialService);
     MicroCredentialValidationHandler microCredentialValidationHandler = new MicroCredentialValidationHandler(vertx);
     MicroCredentialRouter microCredentialRouter = new MicroCredentialRouter(vertx, microCredentialHandler, microCredentialValidationHandler);
