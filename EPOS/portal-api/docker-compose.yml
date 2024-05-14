@@ -8,6 +8,8 @@ services:
     container_name: portal-api-container
     ports:
       - "8080:8080"  # Mapping container port 8080 to host port 8080
+    environment:
+      DOCKER: "true"
     depends_on:
       epos-postgresql:
         condition: service_healthy
