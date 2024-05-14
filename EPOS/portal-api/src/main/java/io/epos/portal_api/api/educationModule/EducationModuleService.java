@@ -1,13 +1,19 @@
 package io.epos.portal_api.api.educationModule;
 
 import io.epos.portal_api.api.educationModule.model.CreateEducationModuleRequest;
+import io.epos.portal_api.api.educationModule.model.GetAllEducationModuleResponse;
+import io.epos.portal_api.api.educationModule.model.GetEducationModuleResponse;
 import io.epos.portal_api.domain.EducationModule;
 import io.epos.portal_api.domain.EducationModuleVersion;
 import io.epos.portal_api.util.LogUtils;
+import io.epos.portal_api.util.QueryUtils;
 import io.vertx.core.Future;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.sqlclient.Pool;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class EducationModuleService {
   private static final Logger LOGGER = LoggerFactory.getLogger(EducationModuleService.class);
@@ -20,6 +26,38 @@ public class EducationModuleService {
     this.dbClient = dbClient;
     this.educationModuleRepository = educationModuleRepository;
   }
+  public Future<GetEducationModuleResponse> readOne(int id) {
+    return dbClient.withTransaction(
+        connection -> educationModuleRepository.getEducationModule(connection, id)
+          .map(GetEducationModuleResponse::new)
+      )
+      .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read one education module", success)))
+      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read one education module", throwable.getMessage())));
+  }
+
+  public Future<GetAllEducationModuleResponse> readAll(String p, String l){
+    return dbClient.withTransaction(
+        connection -> {
+          final int page = QueryUtils.getPage(p);
+          final int limit = QueryUtils.getLimit(l);
+          final int offset = QueryUtils.getOffset(page, limit);
+
+          return educationModuleRepository.count(connection)
+            .flatMap(total ->
+              educationModuleRepository.getAllEducationModules(connection, limit, offset)
+                .map(result -> {
+                  final List<GetEducationModuleResponse> educationModules = result.stream()
+                    .map(GetEducationModuleResponse::new)
+                    .collect(Collectors.toList());
+
+                  return new GetAllEducationModuleResponse(total, page, limit, educationModules);
+                })
+            );
+        })
+      .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read all books", success.getEducationModules())))
+      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read all books", throwable.getMessage())));
+  }
+
   public Future<EducationModuleVersion> create(CreateEducationModuleRequest createEducationModuleRequest) {
     // create a EducationModule object from the request body
     EducationModule educationModule = new EducationModule();
@@ -61,4 +99,6 @@ public class EducationModuleService {
       .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Create one education module", success)))
       .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Create one education module", throwable.getMessage())));
   }
+
+
 }
