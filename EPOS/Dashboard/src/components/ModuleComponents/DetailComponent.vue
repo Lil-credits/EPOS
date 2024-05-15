@@ -1,12 +1,10 @@
 <template>
     <div class="summary-page">
+        <div v-if="loading" class="loading-spinner"></div>
+        <div v-else>
       <div class="header">
         <div class="image-container">
-          <img
-            :src="stepData[1]['badgeImage']"
-            alt="Course Badge"
-            class="badge-image"
-          />
+          <img :src="stepData[1]['badgeImage']" alt="Course Badge" class="badge-image" />
         </div>
         <div class="course-title">{{ stepData[1]["courseTitle"] }}</div>
       </div>
@@ -14,12 +12,7 @@
       <div class="info-sections">
         <v-container>
           <v-row align="start" class="scrollable-row">
-            <v-col
-              cols="12"
-              md="4"
-              v-for="(value, key) in stepData[2]"
-              :key="key"
-            >
+            <v-col cols="12" md="4" v-for="(value, key) in stepData[2]" :key="key">
               <div class="info-section">
                 <h2>{{ key }}</h2>
                 <p>{{ value }}</p>
@@ -53,65 +46,71 @@
       </div>
   
       <button class="send-button" @click="submitForm">Send for review</button>
-    </div>
+      </div>
+      </div>
   </template>
   
-    
-    <script setup>
-  import { ref, defineProps, defineEmits } from "vue";
-  import axios from "axios";
+  <script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+const stepData = ref({});
+const id = route.params.id;
   
-  const props = defineProps({
-    stepData: Object,
-  });
-  
-  
-  const emit = defineEmits(["send-for-review"]);
-  const loading = ref(false);
-  const submitForm = async () => {
-  
-    const payload = {
-      courseName: props.stepData[1]["courseTitle"],
-      studyYear: new Date().getFullYear(),
-      description: props.stepData[3]["description"],
-      imageUrl: props.stepData[1]["imageUrl"],
-      requiredAchievements: props.stepData[5],
-      skills: props.stepData[4],
-      attributes: props.stepData[2]
-    };
-  
+  const fetchData = async () => {
     try {
-      loading.value = true;
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/education-modules",
-        payload
-      );
-      const invitationUrl = response.data.invitationUrl;
-      emit("review-sent", invitationUrl); // Notify parent component
-      loading.value = false;
+      const response = await axios.get("http://localhost:8080/api/v1/education-modules/" + id);
+      stepData.value = response.data;
     } catch (error) {
-      console.error("Submission failed: ", error);
-      loading.value = false;
+      console.error("Failed to fetch data:", error);
+      // Mock static data in case of error
+      stepData.value = {
+        1: {
+          badgeImage: "path/to/badge/image.png",
+          courseTitle: "Sample Course",
+          imageUrl: "path/to/image.png"
+        },
+        2: {
+          EC: 1,
+          language: "English",
+          EQF: 1
+        },
+        3: {
+          description: "This is a sample course description."
+        },
+        4: ["Listening", "Speaking", "Reading", "Writing"],
+        5: ["Requirement 1", "Requirement 2"]
+      };
     }
   };
+  
+  onMounted(fetchData);
+  
+  const submitForm = () => {
+    console.log("Sending for review:", stepData.value);
+    // emit('send-for-review', stepData.value);
+  };
   </script>
-    
-    
-   <style scoped>
+  
+  <style scoped>
   .scrollable-row {
     display: flex;
-    flex-wrap: nowrap; /* Prevents the columns from wrapping */
-    overflow-x: auto; /* Enables horizontal scrolling */
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on touch devices */
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
   
   .header {
     margin-bottom: 20px;
   }
+  
   .badge-container {
     display: flex;
     justify-content: center;
   }
+  
   .image-container {
     display: flex;
     justify-content: center;
@@ -124,13 +123,14 @@
   }
   
   .course-title {
-    background-color: red; /* Adjust to match your brand color */
+    background-color: red;
     color: white;
     padding: 5px 15px;
     border-radius: 20px;
     display: inline-block;
     margin-bottom: 20px;
   }
+  
   .summary-page {
     display: flex;
     flex-direction: column;
@@ -138,7 +138,7 @@
     max-width: 500px;
     margin: auto;
     padding: 20px;
-    height: 100vh; /* Use the full height to allow for fixed button at the bottom */
+    height: 100vh;
   }
   
   .header {
@@ -159,46 +159,46 @@
   .badge-container {
     display: flex;
     justify-content: center;
-    margin-top: 20px; /* Spacing from the top */
+    margin-top: 20px;
   }
   
   .badge-image {
-    width: 100px; /* Adjust size to match design */
-    height: 100px; /* Adjust size to match design */
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
   }
   
   .course-title {
     margin: 10px 0;
     font-size: 1.5rem;
-    color: #333; /* Dark text color for title */
+    color: #333;
   }
   
   .info-section {
-    background-color: #f0f0f0; /* Light grey background */
+    background-color: #f0f0f0;
     border-radius: 10px;
     margin-bottom: 15px;
     padding: 15px;
   }
   
   .info-section h2 {
-    color: #007bff; /* Blue color for section headers */
+    color: #007bff;
     margin-bottom: 10px;
   }
   
   .info-section p,
   .info-section ul {
-    color: #333; /* Dark text for content */
+    color: #333;
     text-align: left;
   }
   
   .info-section ul {
-    list-style: inside circle; /* Styled bullets */
+    list-style: inside circle;
     padding-left: 0;
   }
   
   .send-button {
-    background-color: #007bff; /* Blue background */
+    background-color: #007bff;
     color: white;
     border: none;
     padding: 15px;
@@ -206,11 +206,28 @@
     font-size: 1rem;
     cursor: pointer;
     width: 100%;
-    position: fixed; /* Fixed positioning relative to the viewport */
-    bottom: 0; /* Anchored to the bottom of the viewport */
+    position: fixed;
+    bottom: 0;
     left: 0;
-    right: 0; /* Ensure full width */
+    right: 0;
   }
+
+  .loading-spinner {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #007bff;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
   </style>
   
-    
