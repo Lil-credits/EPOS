@@ -58,4 +58,15 @@ public class EducationModule {
   public void setEducationModuleVersions(List<EducationModuleVersion> educationModuleVersions) {
     this.educationModuleVersions = educationModuleVersions;
   }
+
+  @Override
+  public String toString() {
+    return "EducationModule{" +
+      "id=" + id +
+      ", name='" + name + '\'' +
+      ", imageUrl='" + imageUrl + '\'' +
+      ", teamId=" + teamId +
+      ", educationModuleVersions=" + educationModuleVersions +
+      '}';
+  }
 }

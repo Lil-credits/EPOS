@@ -18,11 +18,11 @@ import java.util.Collections;
 import java.util.NoSuchElementException;
 
 public class UserRepository {
-  private static final Logger LOGGER = LoggerFactory.getLogger(EducationModuleRepository.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(UserRepository.class);
   private static final String SQL_SELECT_USER_BY_ID =
-    "SELECT id, name, did, issuance_key FROM User WHERE id = #{id}";
+    "SELECT id, name, did, issuancekey FROM Users WHERE id = #{id}";
 
-  private static final RowMapper<User> USER_ROW_MAPPER = row -> new User(row.getInteger("id"), row.getString("name"), row.getString("did"), row.getJsonObject("issuance_key"));
+  private static final RowMapper<User> USER_ROW_MAPPER = row -> new User(row.getInteger("id"), row.getString("name"), row.getString("did"), row.getJsonObject("issuancekey"));
   public Future<User> getUser(SqlConnection connection, int id) {
     return SqlTemplate
       .forQuery(connection, SQL_SELECT_USER_BY_ID)

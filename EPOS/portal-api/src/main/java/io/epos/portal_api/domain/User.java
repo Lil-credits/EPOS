@@ -30,4 +30,14 @@ public class User {
   public JsonObject getIssuanceKey() {
     return issuanceKey;
   }
+
+  @Override
+  public String toString() {
+    return "User{" +
+      "id=" + id +
+      ", name='" + name + '\'' +
+      ", did='" + did + '\'' +
+      ", issuanceKey=" + issuanceKey +
+      '}';
+  }
 }

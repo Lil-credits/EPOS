@@ -9,7 +9,7 @@ import io.vertx.ext.web.RoutingContext;
 
 public class MicroCredentialHandler {
   private final  MicroCredentialService microCredentialService;
-  private static final Logger LOGGER = LoggerFactory.getLogger(EducationModuleService.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(MicroCredentialHandler.class);
 
   public MicroCredentialHandler(MicroCredentialService microCredentialService) {
     this.microCredentialService = microCredentialService;

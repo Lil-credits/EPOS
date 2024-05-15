@@ -41,86 +41,7 @@ public class MicroCredentialService {
     this.userRepository = userRepository;
 
   }
-  public Future<String> issue(int educationModuleId, int userId) {
-    JsonObject microCredential = readJsonObject("micro_credential.json");
-
-    return dbClient.withTransaction(
-      connection -> {
-        Future<User> userFuture = userRepository.getUser(connection, userId);
-        userFuture.compose(user -> {
-          microCredential.put("user", new JsonObject()
-            .put("id", user.getId())
-            .put("name", user.getName())
-            .put("did", user.getDid())
-            .put("issuanceKey", user.getIssuanceKey())
-          );
-          return educationModuleRepository.getEducationModule(connection, educationModuleId);
-        }).onSuccess(educationModule -> {
-          microCredential.put("educationModule", new JsonObject()
-            .put("id", educationModule.getId())
-            .put("name", educationModule.getName())
-            .put("teamId", educationModule.getTeamId())
-            .put("imageUrl", educationModule.getImageUrl())
-          );
-        }).onFailure(throwable -> {
-          LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Enrich micro credential", throwable.getMessage()));
-        });
-
-        Future.all(educationModuleFuture, userFuture).onComplete(ar -> {
-          if (ar.succeeded()) {
-            EducationModule educationModule = ar.;
-            User user = ar.resultAt(1);
-
-            microCredential.put("educationModule", new JsonObject()
-              .put("id", educationModule.getId())
-              .put("name", educationModule.getName())
-              .put("teamId", educationModule.getTeamId())
-              .put("imageUrl", educationModule.getImageUrl())
-            );
-
-            microCredential.put("user", new JsonObject()
-              .put("id", user.getId())
-              .put("name", user.getName())
-              .put("did", user.getDid())
-              .put("issuanceKey", user.getIssuanceKey())
-            );
-
-            LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Enrich micro credential", microCredential));
-          } else {
-            Throwable cause = ar.cause();
-            LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Enrich micro credential", cause.getMessage()));
-          }
-        }
-
-      }
-    )
-
-
-    //futures chainen:
-    // concurrently read education module  & user information
-    // if both are successful, enrich the micro credential with education module information and version
-    // issue credential on waltid
-    // store issued micro credential information in the database
-    // if one of them fails, return an error message
-
-    // enrich the micro credential with education module information and version
-
-
-
-    // hardcoding issuer since we don't have a way to get it from the request
-    int issuerId = 1;
-    IssuedMicroCredential issuedMicroCredential = new IssuedMicroCredential(issuerId, userId, educationModuleId, microCredential);
-
-
-//    // store issued micro credential information in the database
-//    microCredentialRepository.insertIssuedMicroCredential(
-//      issuedMicroCredential).onComplete(ar -> {
-//      if (ar.succeeded()) {
-//        LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Issue micro credential", ar.result()));
-//      } else {
-//        LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Issue micro credential", ar.cause().getMessage()));
-//      }
-//    });
+  public Future<String> issueMicroCredential(WaltidClient waltidClient, JsonObject microCredential) {
     Promise<String> promise = Promise.promise();
     waltidClient.issue(microCredential).onComplete(ar -> {
       if (ar.succeeded()) {
@@ -132,5 +53,27 @@ public class MicroCredentialService {
       }
     });
     return promise.future();
+  }
+  public Future<String> issue(int educationModuleId, int userId) {
+    JsonObject microCredential = readJsonObject("micro_credential.json");
+    Future<User> userFuture = dbClient.getConnection().compose(connection -> userRepository.getUser(connection, userId).eventually(v -> connection.close()));
+    Future<EducationModule> educationModuleFuture = dbClient.getConnection().compose(connection -> educationModuleRepository.getEducationModule(connection, educationModuleId));
+
+    userFuture.onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read user", success)))
+      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read user", throwable.getMessage())));
+
+    educationModuleFuture.onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read education module", success)))
+      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read education module", throwable.getMessage())));
+
+    // Issue microcredential once user is fetched successfully or else fail
+
+    return Future.all(userFuture, educationModuleFuture).compose(ar -> {
+      User user = ar.resultAt(0);
+      EducationModule educationModule = ar.resultAt(1);
+      return issueMicroCredential(waltidClient, microCredential);
+    });
+
+
+
   }
 }
