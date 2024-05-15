@@ -1,6 +1,7 @@
 <template>
     <div>
-        <!-- Your HTML template code here -->
+        <h1>Welcome to your Vue page!</h1>
+        <p>This is a basic Vue component.</p>
     </div>
 </template>
 
@@ -9,18 +10,18 @@ export default {
     name: 'ModuleOverview',
     data() {
         return {
-            // Your data properties here
+            // Add your data properties here
         };
     },
     methods: {
-        // Your methods here
+        // Add your methods here
     },
     mounted() {
-        // Code to run when the component is mounted
-    },
+        // Add any initialization logic here
+    }
 };
 </script>
 
 <style scoped>
-/* Your CSS styles here */
+/* Add your component-specific styles here */
 </style>
