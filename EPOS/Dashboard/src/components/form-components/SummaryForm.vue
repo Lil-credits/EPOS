@@ -12,10 +12,10 @@
     </div>
 
     <div class="info-sections">
-      <v-container>
+      <v-container style="padding: 0;">
         <v-row align="start" class="scrollable-row">
           <v-col
-            cols="12"
+            cols="6"
             md="4"
             v-for="(value, key) in stepData[2]"
             :key="key"
@@ -68,12 +68,7 @@ const props = defineProps({
 
 const emit = defineEmits(["send-for-review"]);
 
-/*function sendForReview() {
-    // Here you would handle the submission of the summary for review
-    // For example, send formData to a server or transition to a "review sent" state
-    console.log('Sending for review:', formData.value);
-    emit('send-for-review', formData.value);
-  } */
+
 const loading = ref(false);
 const submitForm = async () => {
 
@@ -124,7 +119,7 @@ const submitForm = async () => {
 .scrollable-row {
   display: flex;
   flex-wrap: nowrap; /* Prevents the columns from wrapping */
-  overflow-x: auto; /* Enables horizontal scrolling */
+  overflow-x:scroll; /* Enables horizontal scrolling */
   -webkit-overflow-scrolling: touch; /* Smooth scrolling on touch devices */
 }
 
@@ -161,7 +156,7 @@ const submitForm = async () => {
   max-width: 500px;
   margin: auto;
   padding: 20px;
-  height: 100vh; /* Use the full height to allow for fixed button at the bottom */
+
 }
 
 .header {
