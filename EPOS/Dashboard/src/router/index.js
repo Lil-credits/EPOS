@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Form from '../views/FormPage.vue';
+import Form from '../views/CreateModule.vue'; // Corrected and changed to kebab-case
+import ModuleOveriew from '../views/ModuleOverview.vue';
+import ModuleDetails from '../views/ModuleDetails.vue';
 
 const routes = [
   {
