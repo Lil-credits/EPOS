@@ -1,21 +1,29 @@
 package io.epos.portal_api.domain;
 
+import io.vertx.core.json.JsonObject;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 public class IssuedMicroCredential {
   private int id;
   private int issuer;
   private int receiver;
   private String status;
+
+  private JsonObject credential;
+  private Timestamp issuedTimestamp;
   private int educationModuleVersionId;
 
   public IssuedMicroCredential() {
   }
 
-  public IssuedMicroCredential(int id, int issuer, int receiver, String status, int educationModuleVersionId) {
-    this.id = id;
+  public IssuedMicroCredential(int issuer, int receiver, int educationModuleVersionId, JsonObject credential) {
     this.issuer = issuer;
     this.receiver = receiver;
-    this.status = status;
     this.educationModuleVersionId = educationModuleVersionId;
+    this.issuedTimestamp = Timestamp.valueOf(LocalDateTime.now());
+    this.credential = credential;
   }
 
   // Getters and Setters
@@ -71,6 +79,22 @@ public class IssuedMicroCredential {
       ", status='" + status + '\'' +
       ", educationModuleVersionId=" + educationModuleVersionId +
       '}';
+  }
+
+  public JsonObject getCredential() {
+    return credential;
+  }
+
+  public void setCredential(JsonObject credential) {
+    this.credential = credential;
+  }
+
+  public Timestamp getIssuedTimestamp() {
+    return issuedTimestamp;
+  }
+
+  public void setIssuedTimestamp(Timestamp issuedTimestamp) {
+    this.issuedTimestamp = issuedTimestamp;
   }
 }
 
