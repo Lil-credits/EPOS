@@ -17,12 +17,9 @@ COURSE = "Open Innovation Semester 2 2023-2024 Backend"
 MODULE_VERSION_DATA = {
     "Version": 1,
     "Description": "First version",
-    "Attributes": {"attribute1": "value1", "attribute2": "value2"},
-    "RequiredAchievements": {
-        "achievement1": "value1",
-        "achievement2": "value2",
-    },
-    "Skills": {"skill1": "value1", "skill2": "value2"},
+    "Attributes": {"EC": 6, "language": "English", "EQF": 6},
+    "RequiredAchievements": ["value1", "value2"],
+    "Skills": ["value1", "value2"],
     "Status": "Active",
 }
 DOCENTEN = ["Jeroen", "Robert"]
