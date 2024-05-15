@@ -14,8 +14,6 @@ public class MicroCredentialValidationHandler {
 
   public MicroCredentialValidationHandler(Vertx vertx) {
     schemaRepository.dereference("create_micro_credential.json", readJsonSchema("create_micro_credential.json", vertx));
-
-
   }
   public void issue(RoutingContext routingContext) {
     JsonObject requestBody = routingContext.body().asJsonObject();

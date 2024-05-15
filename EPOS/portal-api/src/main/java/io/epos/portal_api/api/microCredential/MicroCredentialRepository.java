@@ -8,4 +8,5 @@ public class MicroCredentialRepository {
     public Future<IssuedMicroCredential> insertIssuedMicroCredential(IssuedMicroCredential issuedMicroCredential) {
         return Future.succeededFuture(issuedMicroCredential);
     }
+
 }

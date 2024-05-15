@@ -73,6 +73,9 @@ public class MicroCredentialService {
     credentialSubject.put("attributes", educationModuleVersion.getAttributes());
     credentialSubject.put("requiredAchievements", educationModuleVersion.getRequiredAchievements());
     credentialSubject.put("skills", educationModuleVersion.getSkills());
+    credentialSubject.put("issuerOrganization", educationModule.getTeamOrganization());
+    credentialSubject.put("issuerTeamFaculty", educationModule.getTeamFaculty());
+    credentialSubject.put("issuerTeam", educationModule.getTeam());
     vc.put("credentialSubject", credentialSubject);
     microCredential.put("vc", vc);
     return microCredential;
@@ -84,7 +87,7 @@ public class MicroCredentialService {
     return Future.all(userFuture, educationModuleFuture).compose(ar -> {
       User user = ar.resultAt(0);
       EducationModule educationModule = ar.resultAt(1);
-      // get the first version of the education module since we dont have a versioning system yet
+      // get the first version of the education module since we don't have a versioning system yet
       EducationModuleVersion educationModuleVersion = educationModule.getEducationModuleVersions().get(0);
 
       JsonObject microCredentialJson = createMicroCredentialJson(user, educationModule, educationModuleVersion);
