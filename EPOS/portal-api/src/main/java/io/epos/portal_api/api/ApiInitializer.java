@@ -5,6 +5,7 @@ import io.epos.portal_api.api.common.handler.ErrorHandler;
 import io.epos.portal_api.api.common.router.HealthCheckRouter;
 import io.epos.portal_api.api.educationModule.*;
 import io.epos.portal_api.api.microCredential.*;
+import io.epos.portal_api.api.user.UserRepository;
 import io.epos.portal_api.integration.waltid.WaltidClient;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
@@ -35,6 +36,9 @@ public class ApiInitializer {
     // Health check API
     HealthCheckRouter.buildRouter(vertx, router, dbClient);
 
+
+    // User API
+    UserRepository userRepository = new UserRepository();
     // Education Module API
     EducationModuleRepository educationModuleRepository = new EducationModuleRepository();
     EducationModuleService educationModuleService = new EducationModuleService(dbClient, educationModuleRepository);
@@ -54,7 +58,7 @@ public class ApiInitializer {
 
     // MicroCredential API
     MicroCredentialRepository microCredentialRepository = new MicroCredentialRepository();
-    MicroCredentialService microCredentialService = new MicroCredentialService(dbClient, microCredentialRepository, waltidClient);
+    MicroCredentialService microCredentialService = new MicroCredentialService(dbClient, microCredentialRepository, waltidClient, educationModuleRepository, userRepository);
     MicroCredentialHandler microCredentialHandler = new MicroCredentialHandler(microCredentialService);
     MicroCredentialValidationHandler microCredentialValidationHandler = new MicroCredentialValidationHandler(vertx);
     MicroCredentialRouter microCredentialRouter = new MicroCredentialRouter(vertx, microCredentialHandler, microCredentialValidationHandler);
