@@ -1,9 +1,23 @@
 <template>
+    <header>Modules Overview</header>
     <div>
-        <h1>Welcome to your Vue page!</h1>
-        <p>This is a basic Vue component.</p>
-    </div>
+        <div class="overview">
+            <v-btn class="circle-button" fab small color="primary">
+            <v-icon>mdi-circle</v-icon>
+            <img src="../assets/Picture 1.png" alt="Image" class="circle-image">
+            </v-btn>
+            <v-btn class="circle-button" fab small color="primary">
+            <v-icon>mdi-circle</v-icon>
+            <img src="your-image-url" alt="Image" class="circle-image">
+            </v-btn>
+            <v-btn class="circle-button" fab small color="primary">
+            <v-icon>mdi-circle</v-icon>
+            <img src="your-image-url" alt="Image" class="circle-image">
+            </v-btn>
+        </div>
+        </div>
 </template>
+
 
 <script>
 export default {
@@ -23,5 +37,17 @@ export default {
 </script>
 
 <style scoped>
-/* Add your component-specific styles here */
+header {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.overview {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
 </style>
