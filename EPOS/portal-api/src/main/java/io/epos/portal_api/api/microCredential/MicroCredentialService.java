@@ -54,23 +54,41 @@ public class MicroCredentialService {
     });
     return promise.future();
   }
-  public Future<String> issue(int educationModuleId, int userId) {
+
+  public JsonObject createMicroCredentialJson(User user, EducationModule educationModule, EducationModuleVersion educationModuleVersion) {
     JsonObject microCredential = readJsonObject("micro_credential.json");
-    Future<User> userFuture = dbClient.getConnection().compose(connection -> userRepository.getUser(connection, userId).eventually(v -> connection.close()));
-    Future<EducationModule> educationModuleFuture = dbClient.getConnection().compose(connection -> educationModuleRepository.getEducationModule(connection, educationModuleId));
+    // weird workaround: type jwk does somehow not work only local with walt.id issuer api
+    user.getIssuanceKey().put("type", "local");
+    microCredential.put("issuanceKey", user.getIssuanceKey());
+    JsonObject vc = microCredential.getJsonObject("vc");
 
-    userFuture.onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read user", success)))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read user", throwable.getMessage())));
-
-    educationModuleFuture.onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read education module", success)))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read education module", throwable.getMessage())));
-
-    // Issue microcredential once user is fetched successfully or else fail
+    JsonObject issuer = vc.getJsonObject("issuer");
+    issuer.put("id", user.getDid());
+    vc.put("issuer", issuer);
+    JsonObject credentialSubject = vc.getJsonObject("credentialSubject");
+    credentialSubject.put("issuer", user.getName());
+    credentialSubject.put("educationModule", educationModule.getName());
+    credentialSubject.put("educationModuleVersion", educationModuleVersion.getVersion());
+    credentialSubject.put("description", educationModuleVersion.getDescription());
+    credentialSubject.put("attributes", educationModuleVersion.getAttributes());
+    credentialSubject.put("requiredAchievements", educationModuleVersion.getRequiredAchievements());
+    credentialSubject.put("skills", educationModuleVersion.getSkills());
+    vc.put("credentialSubject", credentialSubject);
+    microCredential.put("vc", vc);
+    return microCredential;
+  }
+  public Future<String> issue(int educationModuleId, int userId) {
+    Future<User> userFuture = dbClient.withConnection(connection -> userRepository.getUser(connection, userId));
+    Future<EducationModule> educationModuleFuture = dbClient.withConnection(connection -> educationModuleRepository.getEducationModule(connection, educationModuleId));
 
     return Future.all(userFuture, educationModuleFuture).compose(ar -> {
       User user = ar.resultAt(0);
       EducationModule educationModule = ar.resultAt(1);
-      return issueMicroCredential(waltidClient, microCredential);
+      // get the first version of the education module since we dont have a versioning system yet
+      EducationModuleVersion educationModuleVersion = educationModule.getEducationModuleVersions().get(0);
+
+      JsonObject microCredentialJson = createMicroCredentialJson(user, educationModule, educationModuleVersion);
+      return issueMicroCredential(waltidClient, microCredentialJson);
     });
 
 

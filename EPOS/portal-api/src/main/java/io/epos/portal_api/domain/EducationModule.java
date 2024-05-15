@@ -1,20 +1,18 @@
 package io.epos.portal_api.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.vertx.sqlclient.templates.annotations.Column;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class EducationModule {
 
   private Integer id;
-
   private String name;
-
   private String imageUrl;
-
   private Integer teamId;
+
+  private String team;
+  private String teamFaculty;
+  private String teamOrganization;
 
   private List<EducationModuleVersion> educationModuleVersions = new ArrayList<>();
 
@@ -68,5 +66,29 @@ public class EducationModule {
       ", teamId=" + teamId +
       ", educationModuleVersions=" + educationModuleVersions +
       '}';
+  }
+
+  public String getTeam() {
+    return team;
+  }
+
+  public void setTeam(String team) {
+    this.team = team;
+  }
+
+  public String getTeamFaculty() {
+    return teamFaculty;
+  }
+
+  public void setTeamFaculty(String teamFaculty) {
+    this.teamFaculty = teamFaculty;
+  }
+
+  public String getTeamOrganization() {
+    return teamOrganization;
+  }
+
+  public void setTeamOrganization(String teamOrganization) {
+    this.teamOrganization = teamOrganization;
   }
 }
