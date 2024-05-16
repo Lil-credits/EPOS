@@ -40,7 +40,7 @@
           </ul>
         </div>
       </div>
-      <button class="send-button" @click="submitForm">Send for review</button>
+      <button class="send-button" @click="$router.push('/modules/' + id + '/issue/')">Issue module</button>
     </div>
   </div>
 </template>
@@ -52,7 +52,6 @@ import { useRoute } from "vue-router";
 
 
 const route = useRoute();
-const stepData = ref({});
 const id = route.params.id;
 
 let responseData = ref({});
@@ -87,11 +86,7 @@ let responseData = ref({});
   };
   
   onMounted(fetchData);
-  
-  const submitForm = () => {
-    console.log("Sending for review:", stepData.value);
-    // emit('send-for-review', stepData.value);
-  };
+
   </script>
   
   <style scoped>
