@@ -81,8 +81,8 @@ public class EducationModuleRepository {
           throw new NoSuchElementException(LogUtils.NO_EDUCATION_MODULE_WITH_ID_MESSAGE.buildMessage(id));
         }
       })
-      .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read book by id", SQL_SELECT_EDUCATION_MODULE_BY_ID)))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read book by id", throwable.getMessage())));
+      .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read education module by id", SQL_SELECT_EDUCATION_MODULE_BY_ID)))
+      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read education module by id", throwable.getMessage())));
   }
   public Future<List<EducationModule>> getAllEducationModules(SqlConnection connection, int limit, int offset) {
     return SqlTemplate

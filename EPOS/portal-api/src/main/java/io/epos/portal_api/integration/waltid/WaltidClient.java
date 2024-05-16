@@ -23,12 +23,11 @@ public class WaltidClient {
     client.post(PORT, HOST, REQUESTURI)
       .sendJson(microCredential, ar -> {
         if (ar.succeeded()) {
-          // check if status code is 500
           if (ar.result().statusCode() == 500) {
             promise.fail(new RuntimeException("Failed to issue micro credential," + ar.result().bodyAsString()));
-          }
-          else {
-            // Assume the response contains a link to generate QR code
+          } else if (ar.result().statusCode() == 502) {
+            promise.fail(new RuntimeException("Failed to issue micro credential, Server is down."));
+          } else {
             String qrCodeLink = ar.result().bodyAsString();
             promise.complete(qrCodeLink);
           }

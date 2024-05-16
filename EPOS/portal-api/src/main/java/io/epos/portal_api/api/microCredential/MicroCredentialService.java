@@ -81,6 +81,8 @@ public class MicroCredentialService {
     return microCredential;
   }
   public Future<String> issue(int educationModuleId, int userId) {
+
+    Promise<String> promise = Promise.promise();
     // we dont have a proper auth yet, so we use a temporary issuer id
     final int TEMP_ISSUER_ID = 2;
     Future<User> issuerFuture = dbClient.withConnection(connection -> userRepository.getUser(connection, TEMP_ISSUER_ID));
@@ -92,7 +94,6 @@ public class MicroCredentialService {
       EducationModule educationModule = ar.resultAt(2);
       // get the first version of the education module since we don't have a versioning system yet
       EducationModuleVersion educationModuleVersion = educationModule.getEducationModuleVersions().get(0);
-
       JsonObject microCredentialJson = createMicroCredentialJson(user, educationModule, educationModuleVersion);
       return issueMicroCredential(waltidClient, microCredentialJson);
     });
@@ -104,7 +105,13 @@ public class MicroCredentialService {
 //
 //    // now i want return the qrcodelink after it is succesfully retrieved and stored in the database
 //    return Future.all(qrCodeLinkFuture, issuedMicroCredentialFuture).map(ar -> ar.resultAt(0));
-
-    return qrCodeLinkFuture;
+    qrCodeLinkFuture.onSuccess(qrCodeLink -> {
+      LOGGER.info("Micro credential issued successfully");
+      promise.complete(qrCodeLink);
+    }).onFailure(throwable -> {
+      LOGGER.error("Failed to issue micro credential", throwable);
+      promise.fail(new RuntimeException(throwable.getMessage()));
+    });
+    return promise.future();
   }
 }
