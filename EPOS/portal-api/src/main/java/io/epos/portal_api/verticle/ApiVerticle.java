@@ -1,6 +1,7 @@
 package io.epos.portal_api.verticle;
 
 import io.epos.portal_api.api.ApiInitializer;
+import io.epos.portal_api.integration.waltid.WaltidClient;
 import io.epos.portal_api.util.DbUtils;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
@@ -15,7 +16,8 @@ public class ApiVerticle extends AbstractVerticle {
   public void start(Promise<Void> promise) {
     final Pool dbClient = DbUtils.buildDbClient(vertx);
     final Router router = Router.router(vertx);
-    ApiInitializer.initializeApis(vertx, router, dbClient);
+    final WaltidClient waltidClient = new WaltidClient(vertx);
+    ApiInitializer.initializeApis(vertx, router, dbClient, waltidClient);
     buildHttpServer(vertx, promise, router);
   }
 

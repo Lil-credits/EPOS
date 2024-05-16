@@ -3,30 +3,17 @@ package io.epos.portal_api.domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.sqlclient.templates.annotations.Column;
 
 public class EducationModuleVersion {
-  @JsonProperty("id")
+
   private int id;
-
-  @JsonProperty("version")
   private int version;
-
-  @JsonProperty("description")
   private String description;
-
-  @JsonProperty("attributes")
   private JsonObject attributes;
-
-  @JsonProperty("requiredAchievements")
   private JsonArray requiredAchievements;
-
-  @JsonProperty("skills")
   private JsonArray skills;
-
-  @JsonProperty("educationModuleID")
   private int educationModuleID;
-
-  @JsonProperty("status")
   private String status;
 
   public EducationModuleVersion() {

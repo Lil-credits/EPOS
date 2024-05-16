@@ -18,7 +18,7 @@ import java.util.*;
 public class EducationModuleRepository {
   private static final Logger LOGGER = LoggerFactory.getLogger(EducationModuleRepository.class);
   private static final String SQL_INSERT_EDUCATION_MODULE = "INSERT INTO EducationModule (Name, ImageUrl, TeamID)" +
-    "VALUES (#{name}, #{imageurl}, #{teamid}) RETURNING id";
+    "VALUES (#{name}, #{imageUrl}, #{teamId}) RETURNING id";
   private static final String SQL_INSERT_EDUCATION_MODULE_VERSION =
     "INSERT INTO EducationModuleVersion (version, description, attributes, requiredachievements, skills, educationmoduleid, status)" +
       "VALUES (#{version}, #{description}, #{attributes}, #{requiredAchievements}, #{skills}, #{educationModuleID}, #{status}) RETURNING id";
@@ -30,6 +30,18 @@ public class EducationModuleRepository {
       "ev.skills AS version_skills, ev.status AS version_status " +
       "FROM EducationModule em " +
       "LEFT JOIN EducationModuleVersion ev ON em.id = ev.EducationModuleID " +
+      "WHERE em.id = #{id}";
+  private static final String SQL_SELECT_EDUCATION_MODULE_BY_ID_JOIN_ALL =
+    "SELECT em.id as edu_id, em.name, em.teamid, em.imageurl, " +
+      "ev.id AS version_id, ev.version AS version, ev.description AS version_description, " +
+      "ev.attributes AS version_attributes, ev.requiredachievements AS version_required_achievements, " +
+      "ev.skills AS version_skills, ev.status AS version_status, " +
+      "t.name AS team, tf.name AS team_faculty, o.name as organisation " +
+      "FROM EducationModule em " +
+      "LEFT JOIN EducationModuleVersion ev ON em.id = ev.EducationModuleID " +
+      "LEFT JOIN Teams t ON em.teamid = t.id " +
+      "LEFT JOIN teamfaculty tf ON t.facultyid = tf.id " +
+      "LEFT JOIN organisation o ON tf.organsationid = o.id " +
       "WHERE em.id = #{id}";
   private static final String SQL_SELECT_ALL_EDUCATION_MODULES =     "SELECT em.id as edu_id, em.name, em.teamid, em.imageurl, " +
     "ev.id AS version_id, ev.version AS version, ev.description AS version_description, " +
@@ -52,13 +64,13 @@ public class EducationModuleRepository {
   };
   public Future<EducationModule> getEducationModule(SqlConnection connection, int id) {
     return SqlTemplate
-      .forQuery(connection, SQL_SELECT_EDUCATION_MODULE_BY_ID)
+      .forQuery(connection, SQL_SELECT_EDUCATION_MODULE_BY_ID_JOIN_ALL)
       .execute(Collections.singletonMap("id", id))
       .map(rowSet -> {
         final RowIterator<Row> iterator = rowSet.iterator();
         if (iterator.hasNext()) {
           Row row = iterator.next();
-          EducationModule educationModule = mapRowToEducationModule(row);
+          EducationModule educationModule = mapRowToEducationModuleJoined(row);
           educationModule.getEducationModuleVersions().add(mapRowToEducationModuleVersion(row));
 
           while (iterator.hasNext()) {
@@ -156,6 +168,19 @@ public class EducationModuleRepository {
     educationModule.setName(row.getString("name"));
     educationModule.setImageUrl(row.getString("imageurl"));
     educationModule.setTeamId(row.getInteger("teamid"));
+    educationModule.setEducationModuleVersions(new ArrayList<>());
+    return educationModule;
+  }
+
+  private static EducationModule mapRowToEducationModuleJoined(Row row) {
+    EducationModule educationModule = new EducationModule();
+    educationModule.setId(row.getInteger("edu_id"));
+    educationModule.setName(row.getString("name"));
+    educationModule.setImageUrl(row.getString("imageurl"));
+    educationModule.setTeamId(row.getInteger("teamid"));
+    educationModule.setTeam(row.getString("team"));
+    educationModule.setTeamFaculty(row.getString("team_faculty"));
+    educationModule.setTeamOrganization(row.getString("organisation"));
     educationModule.setEducationModuleVersions(new ArrayList<>());
     return educationModule;
   }

@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS Organisation (
 CREATE TABLE IF NOT EXISTS TeamFaculty (
   Id SERIAL PRIMARY KEY,
   Name VARCHAR(255) NOT NULL,
+  OrgansationId INT NOT NULL ,
   FOREIGN KEY (OrgansationId) REFERENCES Organisation(Id)
 );
 
@@ -13,6 +14,7 @@ CREATE TABLE IF NOT EXISTS TeamFaculty (
 CREATE TABLE IF NOT EXISTS Teams (
   Id SERIAL PRIMARY KEY,
   Name VARCHAR(255) NOT NULL,
+  FacultyId INT NOT NULL,
   FOREIGN KEY (FacultyId) REFERENCES TeamFaculty(Id)
 );
 
@@ -29,9 +31,9 @@ CREATE TABLE IF NOT EXISTS EducationModule (
 -- User Table
 CREATE TABLE IF NOT EXISTS Users (
   Id SERIAL PRIMARY KEY,
-  Name VARCHAR(255) NOT NULL
-  DiD VARCHAR(1024) NOT NULL
-  Jwk VARCHAR(2048) NOT NULL
+  Name VARCHAR(255) NOT NULL,
+  DiD VARCHAR(1024),
+  issuanceKey JSONB
 );
 
 -- TeamUser Table
@@ -64,7 +66,7 @@ CREATE TABLE IF NOT EXISTS IssuedMicroCredential (
   Status VARCHAR(50),
   EducationModuleVersionID INT,
   Credential JSONB,
-  IssuedTime TIMESTAMP;
+  IssuedTime TIMESTAMP,
   FOREIGN KEY (Issuer) REFERENCES Users(Id),
   FOREIGN KEY (Receiver) REFERENCES Users(Id),
   FOREIGN KEY (EducationModuleVersionID) REFERENCES EducationModuleVersion(Id)

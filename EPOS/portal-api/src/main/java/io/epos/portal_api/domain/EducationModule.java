@@ -1,26 +1,19 @@
 package io.epos.portal_api.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.vertx.sqlclient.templates.annotations.Column;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class EducationModule {
 
-  @JsonProperty("id")
   private Integer id;
-
-  @JsonProperty("name")
   private String name;
-
-  @JsonProperty("imageurl")
   private String imageUrl;
-
-  @JsonProperty("teamid")
   private Integer teamId;
 
-  @JsonProperty("education_module_versions")
+  private String team;
+  private String teamFaculty;
+  private String teamOrganization;
+
   private List<EducationModuleVersion> educationModuleVersions = new ArrayList<>();
 
 
@@ -62,5 +55,40 @@ public class EducationModule {
 
   public void setEducationModuleVersions(List<EducationModuleVersion> educationModuleVersions) {
     this.educationModuleVersions = educationModuleVersions;
+  }
+
+  @Override
+  public String toString() {
+    return "EducationModule{" +
+      "id=" + id +
+      ", name='" + name + '\'' +
+      ", imageUrl='" + imageUrl + '\'' +
+      ", teamId=" + teamId +
+      ", educationModuleVersions=" + educationModuleVersions +
+      '}';
+  }
+
+  public String getTeam() {
+    return team;
+  }
+
+  public void setTeam(String team) {
+    this.team = team;
+  }
+
+  public String getTeamFaculty() {
+    return teamFaculty;
+  }
+
+  public void setTeamFaculty(String teamFaculty) {
+    this.teamFaculty = teamFaculty;
+  }
+
+  public String getTeamOrganization() {
+    return teamOrganization;
+  }
+
+  public void setTeamOrganization(String teamOrganization) {
+    this.teamOrganization = teamOrganization;
   }
 }

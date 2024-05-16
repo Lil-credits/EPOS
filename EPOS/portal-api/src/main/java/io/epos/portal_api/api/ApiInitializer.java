@@ -4,6 +4,9 @@ import io.epos.portal_api.api.image.*;
 import io.epos.portal_api.api.common.handler.ErrorHandler;
 import io.epos.portal_api.api.common.router.HealthCheckRouter;
 import io.epos.portal_api.api.educationModule.*;
+import io.epos.portal_api.api.microCredential.*;
+import io.epos.portal_api.api.user.UserRepository;
+import io.epos.portal_api.integration.waltid.WaltidClient;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.ext.web.Router;
@@ -11,7 +14,7 @@ import io.vertx.ext.web.handler.CorsHandler;
 import io.vertx.sqlclient.Pool;
 
 public class ApiInitializer {
-  public static void initializeApis(Vertx vertx, Router router, Pool dbClient) {
+  public static void initializeApis(Vertx vertx, Router router, Pool dbClient, WaltidClient waltidClient){
 
     // add CORS support
     // Create a CORS handler allowing all origins, methods, and headers
@@ -33,6 +36,9 @@ public class ApiInitializer {
     // Health check API
     HealthCheckRouter.buildRouter(vertx, router, dbClient);
 
+
+    // User API
+    UserRepository userRepository = new UserRepository();
     // Education Module API
     EducationModuleRepository educationModuleRepository = new EducationModuleRepository();
     EducationModuleService educationModuleService = new EducationModuleService(dbClient, educationModuleRepository);
@@ -41,12 +47,21 @@ public class ApiInitializer {
     EducationModuleRouter educationModuleRouter = new EducationModuleRouter(vertx, educationModuleHandler, educationModuleValidationHandler);
     educationModuleRouter.setRouter(router);
 
-// Image API
+    // Image API
     ImageRepository imageRepository = new ImageRepository();
     ImageService imageService = new ImageService(dbClient, imageRepository);
     ImageHandler imageHandler = new ImageHandler(imageService);
     ImageValidationHandler imageValidationHandler = new ImageValidationHandler(vertx);
     ImageRouter imageRouter = new ImageRouter(vertx, imageHandler, imageValidationHandler);
     imageRouter.setRouter(router);
+
+
+    // MicroCredential API
+    MicroCredentialRepository microCredentialRepository = new MicroCredentialRepository();
+    MicroCredentialService microCredentialService = new MicroCredentialService(dbClient, microCredentialRepository, waltidClient, educationModuleRepository, userRepository);
+    MicroCredentialHandler microCredentialHandler = new MicroCredentialHandler(microCredentialService);
+    MicroCredentialValidationHandler microCredentialValidationHandler = new MicroCredentialValidationHandler(vertx);
+    MicroCredentialRouter microCredentialRouter = new MicroCredentialRouter(vertx, microCredentialHandler, microCredentialValidationHandler);
+    microCredentialRouter.setRouter(router);
   }
 }
