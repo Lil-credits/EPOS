@@ -21,7 +21,7 @@ const routes = [
     component: CreateModule,
   },
   {
-    path: '/modules/issue/:id',
+    path: '/modules/:id/issue',
     name: 'IssueModule',
     component: IssueModule,
     props: true
