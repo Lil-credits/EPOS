@@ -26,7 +26,7 @@ services:
       - api
         
   epos-postgresql:
-    container_name: EPOS-DB
+    container_name: epos-postgresql
     image: postgres:12-alpine
     environment:
       POSTGRES_HOST: epos-postgresql
