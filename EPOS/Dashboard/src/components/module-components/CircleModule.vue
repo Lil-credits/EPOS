@@ -1,7 +1,7 @@
 @ -1,59 +0,0 @@
 <template>
   <div class="circle-container">
-    <v-btn class="circle-btton module" fab small @click="$router.push('modules/' + moduleId)">
+    <v-btn class="circle-btton module" fab small @click="$router.push('/modules/' + moduleId)">
       <img :src="image" alt="" class="circle-image">
     </v-btn>
     <div class="circle-text">{{ title }}</div>
@@ -48,9 +48,10 @@ export default {
   position: relative;
 }
 .circle-image {
-  width: 60%;
-  height: 60%;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
+  object-fit: cover; /* Ensure the image covers the button area */
 }
 .circle-text {
   margin-top: 10px;
