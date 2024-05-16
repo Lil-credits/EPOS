@@ -1,84 +1,87 @@
 <template>
-    <div>
-        <v-icon class="back-arrow" @click="goBack">mdi-arrow-left</v-icon>
-        <div class="overview">
-            <v-btn class="circle-button sales-engineer" fab small>
-                <img src="picture1.png" alt="Image" class="circle-image">
-                <div class="circle-text">Sales Engineer</div>
-            </v-btn>
-            <v-btn class="circle-button process-engineer" fab small>
-                <v-icon class="icon-placeholder">mdi-image</v-icon>
-                <div class="circle-text">Process Engineer</div>
-            </v-btn>
-            <v-btn class="circle-button create-own" fab small>
-                <v-icon>mdi-plus</v-icon>
-                <div class="circle-text">Create your own</div>
-            </v-btn>
-        </div>
-    </div>
+  <div>
+      <v-icon class="back-arrow" @click="goBack">mdi-arrow-left</v-icon>
+      <div class="overview">
+          <div class="circle-container">
+          <v-btn class="circle-button module" fab small @click="$router.push('modules/1')">
+          <img src="../assets/Picture1.png" class="circle-image" alt="Sales Engineer">
+          </v-btn>
+          <div class="circle-text">Sales Engineer</div>
+          </div>
+          <div class="circle-container">
+          <v-btn class="circle-button module" fab small @click="$router.push('modules/2')">
+          <img src="../assets/Picture15.png" class="circle-image" alt="Process Engineer">
+          </v-btn>
+          <div class="circle-text">Process Engineer</div>
+          </div>
+          <div class="circle-container">
+          <v-btn class="circle-button create-own" fab small @click="$router.push('modules/create')">
+          <v-icon>mdi-plus</v-icon>
+          </v-btn>
+          <div class="circle-text">Create your own</div>
+          </div>
+      </div>
+      </div>
 </template>
 
 <script>
 export default {
-    name: 'ModuleOverview',
-    data() {
-        return {
-            // Add your data properties here
-        };
-    },
-    methods: {
-        goBack() {
-            // Logic to go back to the previous page
-        }
-    },
-    mounted() {
-        // Add any initialization logic here
-    }
+  name: 'ModuleOverview',
+  methods: {
+      goBack() {
+          // Logic to go back to the previous page
+      }
+  },
 };
 </script>
 
 <style scoped>
 .back-arrow {
-    margin: 10px;
-    cursor: pointer;
-    font-size: 24px;
+  margin: 10px;
+  cursor: pointer;
+  font-size: 24px;
 }
 .overview {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+}
+.circle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .circle-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    font-size: 14px;
-    font-weight: bold;
-    text-align: center;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
 }
-.sales-engineer {
-    background-color: #f44336;
-    color: white;
+.module {
+  background-color: #FB0017;
+  color: Black;
 }
-.process-engineer {
-    background-color: #f44336;
-    color: white;
-}
+
 .create-own {
-    background-color: #90a4ae;
-    color: black;
+  background-color: #00A4E7;
+  color: white;
 }
-.icon-placeholder {
-    font-size: 40px;
-    margin-bottom: 10px;
+.circle-image {
+  width: 60%;
+  height: 60%;
+  border-radius: 50%;
 }
 .circle-text {
-    margin-top: 10px;
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: center;
 }
 </style>
