@@ -1,7 +1,7 @@
 @ -1,59 +0,0 @@
 <template>
   <div class="circle-container">
-    <v-btn class="circle-btton module" fab small @click="$router.push('modules/' + moduleId)">
+    <v-btn class="circle-button module" fab small @click="$router.push('modules/' + moduleId)">
       <img :src="image" alt="" class="circle-image">
     </v-btn>
     <div class="circle-text">{{ title }}</div>
