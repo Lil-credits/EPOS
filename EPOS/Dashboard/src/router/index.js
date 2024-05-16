@@ -1,12 +1,25 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Form from '../views/FormPage.vue';
+import ModuleDetails from '../views/ModuleDetails.vue';
+import ModuleOverview from '../views/ModuleOverview.vue';
+import CreateModule from '../views/CreateModule.vue';
 
 const routes = [
   {
-    path: '/', // Corrected and changed to kebab-case
-    name: 'FormPage',
-    component: Form,
-}
+    path: '/modules/',
+    name: 'ModuleOveriew',
+    component: ModuleOverview
+  },
+  {
+    path: '/modules/:id',
+    name: 'ModuleDetails',
+    component: ModuleDetails,
+    props: true // This allows route params to be passed as props to the component
+  },
+  {
+    path: '/modules/create', // Corrected and changed to kebab-case
+    name: 'CreateModule',
+    component: CreateModule,
+  }
 ];
 
 const router = createRouter({

@@ -18,14 +18,6 @@
           </select>
         </div>
       </div>
-      <div class="dropdown" v-if="showNewDropdownFields">
-      <input v-model="newDropdownLabel" placeholder="Attribute" class="input-title">
-      <input v-model="newDropdownOptions" placeholder="Value">
-      <button @click="confirmAddDropdown">Confirm</button>
-    </div>
-    <button v-else @click="showDropdownFields" class="add-dropdown-button">
-      ADD +
-    </button>
   </div>
 
     <button class="next-button" @click="submitStep">Next</button>
@@ -63,7 +55,17 @@ const dropdowns = ref([
   }
 ]);
 
-const showNewDropdownFields = ref(false);
+function submitStep() {
+  const formData = dropdowns.value.reduce((acc, dropdown) => {
+    acc[dropdown.label] = dropdown.selectedValue; // Assign the selectedValue to the label as the key
+    return acc;
+  }, {});
+
+  emit('update-step-data', { step: 2, data: formData });
+}
+
+// OUDE CODE
+/* const showNewDropdownFields = ref(false);
 const newDropdownLabel = ref('');
 const newDropdownOptions = ref('');
 
@@ -83,17 +85,7 @@ const confirmAddDropdown = () => {
     newDropdownLabel.value = '';
   } else {
     alert('Please fill in the dropdown label and options.');
-  }
-};
-
-function submitStep() {
-  const formData = dropdowns.value.reduce((acc, dropdown) => {
-    acc[dropdown.label] = dropdown.selectedValue; // Assign the selectedValue to the label as the key
-    return acc;
-  }, {});
-
-  emit('update-step-data', { step: 2, data: formData });
-}
+  }*/
 
 </script>
 

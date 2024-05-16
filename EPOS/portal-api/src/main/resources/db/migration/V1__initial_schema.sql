@@ -67,6 +67,7 @@ CREATE TABLE IF NOT EXISTS IssuedMicroCredential (
   EducationModuleVersionID INT,
   Credential JSONB,
   IssuedTime TIMESTAMP,
+  IssuedTime TIMESTAMP,
   FOREIGN KEY (Issuer) REFERENCES Users(Id),
   FOREIGN KEY (Receiver) REFERENCES Users(Id),
   FOREIGN KEY (EducationModuleVersionID) REFERENCES EducationModuleVersion(Id)
