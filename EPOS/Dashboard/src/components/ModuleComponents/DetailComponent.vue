@@ -1,17 +1,17 @@
 <template>
-    <div class="summary-page">
-        <div v-if="loading" class="loading-spinner"></div>
-        <div v-else>
+  <div class="summary-page">
+    <div v-if="loading" class="loading-spinner"></div>
+    <div v-else>
       <div class="header">
         <div class="image-container">
           <img :src="responseData['imageUrl']" alt="Course Badge" class="badge-image" />
         </div>
         <div class="course-title">{{ responseData['name'] }}</div>
       </div>
-  
       <div class="info-sections">
         <v-container>
           <v-row align="start" class="scrollable-row">
+            <v-col cols="5" md="4" v-for="(value, key) in stepData[2]" :key="key">
             <v-col cols="12" md="4" v-for="(value, key) in responseData['attributes']" :key="key">
               <div class="info-section">
                 <h2>{{ key }}</h2>
@@ -20,12 +20,10 @@
             </v-col>
           </v-row>
         </v-container>
-  
         <div class="info-section">
           <h2>Description</h2>
           <p>{{ responseData["description"] }}</p>
         </div>
-  
         <div class="info-section">
           <h2>Skills</h2>
           <ul>
@@ -34,7 +32,6 @@
             </li>
           </ul>
         </div>
-  
         <div class="info-section">
           <h2>Admission Requirements</h2>
           <ul>
@@ -44,16 +41,34 @@
           </ul>
         </div>
       </div>
-  
       <button class="send-button" @click="submitForm">Send for review</button>
-      </div>
-      </div>
-  </template>
-  
-  <script setup>
+    </div>
+  </div>
+</template>
+
+<script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRoute } from "vue-router";
+
+// Mock data
+const mockData = {
+  1: {
+    badgeImage: "../assets/Picture1.png",
+    courseTitle: "Logics enigneer",
+    imageUrl: "../assets/Picture1.png",
+  },
+  2: {
+    EC: 5,
+    language: "English",
+    EQF: 2,
+  },
+  3: {
+    description: "This is a sample course description.",
+  },
+  4: ["Listening", "Speaking", "Reading", "Writing"],
+  5: ["Requirement 1", "Requirement 2"],
+};
 
 const route = useRoute();
 const stepData = ref({});
@@ -214,7 +229,7 @@ let responseData = ref({});
     right: 0;
   }
 
-  .loading-spinner {
+.loading-spinner {
   border: 16px solid #f3f3f3;
   border-top: 16px solid #007bff;
   border-radius: 50%;
@@ -228,8 +243,11 @@ let responseData = ref({});
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
-  </style>
-  
+</style>
