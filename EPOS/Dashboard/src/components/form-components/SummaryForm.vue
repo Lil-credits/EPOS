@@ -71,12 +71,13 @@ const emit = defineEmits(["send-for-review"]);
 
 const loading = ref(false);
 const submitForm = async () => {
+  console.log('Submit button is pressed');
 
   const payload = {
     courseName: props.stepData[1]["courseTitle"],
     studyYear: new Date().getFullYear(),
     description: props.stepData[3]["description"],
-    imageUrl: props.stepData[1]["imageUrl"],
+    imageUrl: props.stepData[1]["badgeImage"],
     requiredAchievements: props.stepData[5],
     skills: props.stepData[4],
     attributes: props.stepData[2]

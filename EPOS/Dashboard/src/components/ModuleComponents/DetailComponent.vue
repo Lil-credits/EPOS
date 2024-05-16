@@ -4,15 +4,15 @@
         <div v-else>
       <div class="header">
         <div class="image-container">
-          <img :src="stepData[1]['badgeImage']" alt="Course Badge" class="badge-image" />
+          <img :src="responseData['imageUrl']" alt="Course Badge" class="badge-image" />
         </div>
-        <div class="course-title">{{ stepData[1]["courseTitle"] }}</div>
+        <div class="course-title">{{ responseData['name'] }}</div>
       </div>
   
       <div class="info-sections">
         <v-container>
           <v-row align="start" class="scrollable-row">
-            <v-col cols="12" md="4" v-for="(value, key) in stepData[2]" :key="key">
+            <v-col cols="12" md="4" v-for="(value, key) in responseData['attributes']" :key="key">
               <div class="info-section">
                 <h2>{{ key }}</h2>
                 <p>{{ value }}</p>
@@ -23,13 +23,13 @@
   
         <div class="info-section">
           <h2>Description</h2>
-          <p>{{ stepData[3]["description"] }}</p>
+          <p>{{ responseData["description"] }}</p>
         </div>
   
         <div class="info-section">
           <h2>Skills</h2>
           <ul>
-            <li v-for="skill in stepData[4]" :key="skill">
+            <li v-for="skill in responseData['skills']" :key="skill">
               {{ skill }}
             </li>
           </ul>
@@ -38,7 +38,7 @@
         <div class="info-section">
           <h2>Admission Requirements</h2>
           <ul>
-            <li v-for="requirement in stepData[5]" :key="requirement">
+            <li v-for="requirement in responseData['requiredAchievements']" :key="requirement">
               {{ requirement }}
             </li>
           </ul>
@@ -58,11 +58,13 @@ import { useRoute } from "vue-router";
 const route = useRoute();
 const stepData = ref({});
 const id = route.params.id;
+
+let responseData = ref({});
   
   const fetchData = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/v1/education-modules/" + id);
-      stepData.value = response.data;
+      responseData.value = response.data;
     } catch (error) {
       console.error("Failed to fetch data:", error);
       // Mock static data in case of error
