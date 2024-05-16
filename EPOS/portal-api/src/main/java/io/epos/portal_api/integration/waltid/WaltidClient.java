@@ -10,11 +10,19 @@ import io.vertx.ext.web.client.WebClient;
 public class WaltidClient {
 
   private final int PORT = 7002;
-  private final String HOST = "localhost";
+
+  private final String HOST;
+
   private final String REQUESTURI = "/openid4vc/jwt/issue";
   private final WebClient client;
   public WaltidClient(Vertx vertx) {
     this.client = WebClient.create(vertx);
+
+    if(Boolean.parseBoolean(System.getenv("DOCKER"))){
+      this.HOST = "docker-compose-issuer-api-1";
+    } else {
+      this.HOST = "localhost";
+    }
   }
 
   public Future<String> issue(JsonObject microCredential) {
@@ -23,17 +31,16 @@ public class WaltidClient {
     client.post(PORT, HOST, REQUESTURI)
       .sendJson(microCredential, ar -> {
         if (ar.succeeded()) {
-          // check if status code is 500
           if (ar.result().statusCode() == 500) {
             promise.fail(new RuntimeException("Failed to issue micro credential," + ar.result().bodyAsString()));
-          }
-          else {
-            // Assume the response contains a link to generate QR code
+          } else if (ar.result().statusCode() == 502) {
+            promise.fail(new RuntimeException("Failed to issue micro credential, Server is down."));
+          } else {
             String qrCodeLink = ar.result().bodyAsString();
             promise.complete(qrCodeLink);
           }
         } else {
-            promise.fail(new RuntimeException("Failed to issue micro credential, Server request failed."));
+            promise.fail(new RuntimeException(ar.cause().getMessage()));
           }
       });
 

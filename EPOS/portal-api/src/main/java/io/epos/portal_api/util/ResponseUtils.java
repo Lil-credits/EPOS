@@ -76,7 +76,7 @@ public class ResponseUtils {
     } else {
       // Internal Server Error
       status = 500;
-      message = "Internal Server Error";
+      message = throwable.getMessage();
     }
 
     rc.response()
