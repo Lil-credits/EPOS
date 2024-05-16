@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import ModuleDetails from '../views/ModuleDetails.vue';
 import ModuleOverview from '../views/ModuleOverview.vue';
 import CreateModule from '../views/CreateModule.vue';
-
+import IssueModule from '../views/IssueModule.vue';
 const routes = [
   {
     path: '/modules/',
@@ -19,6 +19,12 @@ const routes = [
     path: '/modules/create', // Corrected and changed to kebab-case
     name: 'CreateModule',
     component: CreateModule,
+  },
+  {
+    path: 'modules/issue/:id',
+    name: 'IssueModule',
+    component: IssueModule,
+    props: true
   }
 ];
 

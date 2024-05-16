@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Detailcomponent from '../components/ModuleComponents/DetailComponent.vue';
+import Detailcomponent from '../components/module-components/DetailComponent.vue';
 
 export default {
     name: 'ModuleDetails',

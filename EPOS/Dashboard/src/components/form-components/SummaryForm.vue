@@ -15,7 +15,7 @@
       <v-container style="padding: 0;">
         <v-row align="start" class="scrollable-row">
           <v-col
-            cols="6"
+            cols="5"
             md="4"
             v-for="(value, key) in stepData[2]"
             :key="key"

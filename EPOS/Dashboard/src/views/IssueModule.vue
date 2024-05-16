@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import IssueComponent from '../components/ModuleComponents/IssueComponent.vue';
+import IssueComponent from '../components/module-components/IssueComponent.vue';
 
 export default {
     // Your component's logic goes here

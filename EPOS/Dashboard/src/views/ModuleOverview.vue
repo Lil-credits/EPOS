@@ -22,16 +22,26 @@
           </div>
       </div>
       </div>
+
+      <CircleModule/>
 </template>
 
 <script>
+import CircleModule from "../components/module-components/CircleModule.vue";
+
 export default {
+  name: 'CircleModule',
+    components: {
+        CircleModule
+    },
+
   name: 'ModuleOverview',
   methods: {
       goBack() {
           // Logic to go back to the previous page
       }
   },
+  
 };
 </script>
 
