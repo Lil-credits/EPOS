@@ -45,13 +45,14 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRoute } from "vue-router";
+import Picture1 from "/Users/kyanvanzijp/Github/EPOS/EPOS/Dashboard/src/assets/Picture1.png"; // Import the image of your own path
 
 // Mock data
 const mockData = {
   1: {
-    badgeImage: "../assets/Picture1.png",
+    badgeImage: Picture1,
     courseTitle: "Logics enigneer",
-    imageUrl: "../assets/Picture1.png",
+    imageUrl: Picture1,
   },
   2: {
     EC: 5,
@@ -124,7 +125,7 @@ const submitForm = () => {
 }
 
 .course-title {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: bold;
   background-color: red;
   color: white;
