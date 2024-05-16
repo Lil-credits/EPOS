@@ -1,7 +1,6 @@
-@ -1,59 +0,0 @@
 <template>
   <div class="circle-container">
-    <v-btn class="circle-btton module" fab small @click="$router.push('/modules/' + moduleId)">
+    <v-btn class="circle-button module" fab small @click="$router.push('/modules/' + moduleId)">
       <img :src="image" alt="" class="circle-image">
     </v-btn>
     <div class="circle-text">{{ title }}</div>
@@ -10,7 +9,7 @@
 
 <script>
 export default {
-  name: 'CircleButton',
+  name: 'CircleModule',
   props: {
     title: {
       type: String,
@@ -33,6 +32,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 .circle-button {
   display: flex;
@@ -51,11 +51,15 @@ export default {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  object-fit: cover; /* Ensure the image covers the button area */
+  object-fit: cover;
 }
 .circle-text {
   margin-top: 10px;
   font-size: 14px;
   text-align: center;
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
