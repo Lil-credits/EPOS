@@ -1,15 +1,16 @@
 <template>
-    <div>
         <IssueComponent />
-    </div>
 </template>
 
 <script>
 import IssueComponent from '../components/module-components/IssueComponent.vue';
 
 export default {
-    // Your component's logic goes here
+name: 'IssueComponent',
+components: {
+    IssueComponent
 }
+};
 </script>
 
 <style scoped>
