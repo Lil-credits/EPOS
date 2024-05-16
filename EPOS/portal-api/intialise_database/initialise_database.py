@@ -85,8 +85,8 @@ def populate_database(connection):
 
         # Onboarding issuer
         onboard_issuer_input = {
-            "issuanceKeyConfig": {"type": "jwk", "algorithm": "secp256r1"},
-            "issuerDidConfig": {"method": "jwk"},
+            "key": {"backend": "jwk", "keyType": "secp256r1"},
+            "did": {"method": "jwk"},
         }
 
         # Create the users for the team
@@ -98,7 +98,7 @@ def populate_database(connection):
                 timeout=5,
             )
             did = response.json()["issuerDid"]
-            issuance_key = response.json()["issuanceKey"]
+            issuance_key = response.json()["issuerKey"]
             issuance_key["jwk"] = json.dumps(issuance_key["jwk"])
 
             cursor.execute(
