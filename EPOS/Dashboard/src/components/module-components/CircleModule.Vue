@@ -1,10 +1,9 @@
 <template>
   <div class="circle-container">
-    <v-btn :class="buttonClass" fab small>
-      <img v-if="imageSrc" :src="imageSrc" class="circle-image" :alt="altText">
-      <v-icon v-else>{{ icon }}</v-icon>
+    <v-btn class="circle-btton module" fab small @click="$router.push('modules/' + moduleId)">
+      <img :src="image" alt="" class="circle-image">
     </v-btn>
-    <div class="circle-text">{{ text }}</div>
+    <div class="circle-text">{{ title }}</div>
   </div>
 </template>
 
@@ -12,25 +11,17 @@
 export default {
   name: 'CircleButton',
   props: {
-    buttonClass: {
+    title: {
+      type: String,
+      required: true,
+    },
+    image: {
       type: String,
       required: true
     },
-    imageSrc: {
-      type: String,
-      default: ''
-    },
-    altText: {
-      type: String,
-      default: 'Circle Image'
-    },
-    text: {
+    moduleId: {
       type: String,
       required: true
-    },
-    icon: {
-      type: String,
-      default: 'mdi-plus'
     }
   }
 };
