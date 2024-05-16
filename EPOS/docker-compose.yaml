@@ -13,6 +13,8 @@ services:
         condition: service_healthy
     environment:
       - DOCKER=TRUE
+    networks:
+      - epos_network
 
   dashboard:
     build:
@@ -24,6 +26,8 @@ services:
     container_name: Frontend
     depends_on:
       - api
+    networks:
+      - epos_network
         
   epos-postgresql:
     container_name: EPOS-DB
@@ -42,5 +46,12 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - epos_network
 volumes:
   epos-postgresql-local:  # Defining a named volume for PostgreSQL data
+
+networks:
+  epos_network:
+      name: epos_network
+      external: true

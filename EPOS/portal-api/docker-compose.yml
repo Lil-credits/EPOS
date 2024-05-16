@@ -3,8 +3,8 @@ version: '3.8'
 services:
   portal-api:
     build:
-        context: .
-        dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile
     container_name: portal-api-container
     ports:
       - "8080:8080"  # Mapping container port 8080 to host port 8080
@@ -13,6 +13,9 @@ services:
     depends_on:
       epos-postgresql:
         condition: service_healthy
+    networks:   # Add this section to specify network
+      - epos_network
+
   epos-postgresql:
     container_name: epos-postgresql
     image: postgres:12-alpine
@@ -30,5 +33,14 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:   # Add this section to specify network
+      - epos_network
+
 volumes:
   epos-postgresql-local:  # Defining a named volume for PostgreSQL data
+
+networks:
+  epos_network:
+      name: epos_network
+      external: true
+
