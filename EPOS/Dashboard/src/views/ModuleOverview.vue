@@ -1,25 +1,22 @@
 <template>
-    <header>Modules Overview</header>
     <div>
+        <v-icon class="back-arrow" @click="goBack">mdi-arrow-left</v-icon>
         <div class="overview">
-            <v-btn class="circle-button" fab small color="primary">
-                <v-icon>mdi-circle</v-icon>
-                <img src="../assets/Picture1.png" alt="Image" class="circle-image">
-                <span>Button 1</span>
+            <v-btn class="circle-button sales-engineer" fab small>
+                <img src="picture1.png" alt="Image" class="circle-image">
+                <div class="circle-text">Sales Engineer</div>
             </v-btn>
-            <v-btn class="circle-button" fab small color="primary">
-                <v-icon>mdi-circle</v-icon>
-                <img src="../assets/Picture15.png" alt="Image" class="circle-image">
-                <span>Button 2</span>
+            <v-btn class="circle-button process-engineer" fab small>
+                <v-icon class="icon-placeholder">mdi-image</v-icon>
+                <div class="circle-text">Process Engineer</div>
             </v-btn>
-            <v-btn class="circle-button" fab small color="primary">
+            <v-btn class="circle-button create-own" fab small>
                 <v-icon>mdi-plus</v-icon>
-                <span>Button 3</span>
+                <div class="circle-text">Create your own</div>
             </v-btn>
         </div>
     </div>
 </template>
-
 
 <script>
 export default {
@@ -30,7 +27,9 @@ export default {
         };
     },
     methods: {
-        // Add your methods here
+        goBack() {
+            // Logic to go back to the previous page
+        }
     },
     mounted() {
         // Add any initialization logic here
@@ -39,17 +38,15 @@ export default {
 </script>
 
 <style scoped>
-header {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
+.back-arrow {
+    margin: 10px;
+    cursor: pointer;
     font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
 }
 .overview {
     display: flex;
     justify-content: space-around;
+    align-items: center;
     margin-top: 20px;
 }
 .circle-button {
@@ -60,16 +57,28 @@ header {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background-color: #2196f3;
-    color: white;
     font-size: 14px;
     font-weight: bold;
     text-align: center;
     cursor: pointer;
 }
-.circle-image {
-    width: 50px;
-    height: 50px;
+.sales-engineer {
+    background-color: #f44336;
+    color: white;
+}
+.process-engineer {
+    background-color: #f44336;
+    color: white;
+}
+.create-own {
+    background-color: #90a4ae;
+    color: black;
+}
+.icon-placeholder {
+    font-size: 40px;
     margin-bottom: 10px;
+}
+.circle-text {
+    margin-top: 10px;
 }
 </style>
