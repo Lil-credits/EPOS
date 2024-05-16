@@ -35,12 +35,6 @@ export default {
         CircleModule
     },
 
-  name: 'ModuleOverview',
-  methods: {
-      goBack() {
-          // Logic to go back to the previous page
-      }
-  },
   
 };
 </script>
