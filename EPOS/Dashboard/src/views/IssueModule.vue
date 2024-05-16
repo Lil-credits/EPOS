@@ -32,10 +32,20 @@ export default {
     const route = useRoute();
     const id = route.params.id;
     const responseData = ref({});
+    let invitationUrl = ref("");
 
     const userId = ref("");
     const issueCredential = async () => {
-        console.log("Entered id " + userId.value)
+        const payload = {
+            "userId": parseInt(userId.value),
+            "educationModuleId": parseInt(id)
+        };
+        try {
+            const response = await axios.post('http://localhost:8080/api/v1/micro-credentials/issue', payload);
+            invitationUrl = response.data.invitationLink
+        } catch (error) {
+            console.log("Submission failed: " + error)
+        }
     }
 
     const fetchData = async () => {
@@ -46,6 +56,7 @@ export default {
     onMounted(fetchData);
 
     return {
+        invitationUrl,
         userId,
         issueCredential,
         responseData
