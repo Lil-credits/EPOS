@@ -81,12 +81,15 @@ public class MicroCredentialService {
     return microCredential;
   }
   public Future<String> issue(int educationModuleId, int userId) {
-    Future<User> userFuture = dbClient.withConnection(connection -> userRepository.getUser(connection, userId));
+    // we dont have a proper auth yet, so we use a temporary issuer id
+    final int TEMP_ISSUER_ID = 2;
+    Future<User> issuerFuture = dbClient.withConnection(connection -> userRepository.getUser(connection, TEMP_ISSUER_ID));
+    Future<User> receiverFuture = dbClient.withConnection(connection -> userRepository.getUser(connection, userId));
     Future<EducationModule> educationModuleFuture = dbClient.withConnection(connection -> educationModuleRepository.getEducationModule(connection, educationModuleId));
 
-    return Future.all(userFuture, educationModuleFuture).compose(ar -> {
+    Future<String> qrCodeLinkFuture = Future.all(issuerFuture, receiverFuture, educationModuleFuture).compose(ar -> {
       User user = ar.resultAt(0);
-      EducationModule educationModule = ar.resultAt(1);
+      EducationModule educationModule = ar.resultAt(2);
       // get the first version of the education module since we don't have a versioning system yet
       EducationModuleVersion educationModuleVersion = educationModule.getEducationModuleVersions().get(0);
 
@@ -94,7 +97,14 @@ public class MicroCredentialService {
       return issueMicroCredential(waltidClient, microCredentialJson);
     });
 
+//    // this fuction stores the issued micro credential in the database andis called when qrcodelinkfuture is succes
+//    Future<IssuedMicroCredential> issuedMicroCredentialFuture = qrCodeLinkFuture.compose(qrCodeLink -> {
+//      IssuedMicroCredential issuedMicroCredential = new IssuedMicroCredential(TEMP_ISSUER_ID, userId, educationModuleId, new JsonObject());
+//    });
+//
+//    // now i want return the qrcodelink after it is succesfully retrieved and stored in the database
+//    return Future.all(qrCodeLinkFuture, issuedMicroCredentialFuture).map(ar -> ar.resultAt(0));
 
-
+    return qrCodeLinkFuture;
   }
 }
