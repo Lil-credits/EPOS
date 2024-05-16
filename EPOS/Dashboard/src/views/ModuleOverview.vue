@@ -22,14 +22,6 @@ import CircleModule from '../components/module-components/CircleModule.vue';
 import { onMounted } from 'vue';  // Corrected import
 
 export default {
-<<<<<<< Updated upstream
-  name: 'CircleModule',
-    components: {
-        CircleModule
-    },
-
-  
-=======
   name: 'ModuleOverview',  // Corrected component name
   components: {
     CircleModule
@@ -46,7 +38,6 @@ export default {
 
     onMounted(fetchData);
   }
->>>>>>> Stashed changes
 };
 </script>
 
