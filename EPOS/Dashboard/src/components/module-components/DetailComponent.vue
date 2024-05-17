@@ -124,6 +124,9 @@ let responseData = ref({});
     border-radius: 20px;
     display: inline-block;
     margin-bottom: 20px;
+    margin: 10px 0;
+    font-size: 1.5rem;
+    font-weight: bold;
   }
   
   .summary-page {
@@ -161,12 +164,6 @@ let responseData = ref({});
     width: 100px;
     height: 100px;
     border-radius: 50%;
-  }
-  
-  .course-title {
-    margin: 10px 0;
-    font-size: 1.5rem;
-    color: #333;
   }
   
   .info-section {

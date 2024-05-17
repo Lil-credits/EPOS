@@ -4,6 +4,7 @@
       :visible="isModalVisible"
       title="Invite URL"
       @close="closeModal"
+      class="modal"
     >
     <p class="url-box" :class="{ copied: isCopied }" @click="copyToClipboard">
       <span class="url-text">{{ invitationUrl }}</span>
@@ -162,6 +163,11 @@ export default {
   margin: 0 auto;
 }
 
+.modal {
+  z-index: 99;
+  position: absolute;
+}
+
 .url-box {
   display: flex;
   justify-content: space-between;
@@ -174,6 +180,7 @@ export default {
   padding: 10px;
   background-color: rgb(224, 224, 224);
   position: relative;
+  overflow: hidden;
 }
 
 .copy-text-hint {

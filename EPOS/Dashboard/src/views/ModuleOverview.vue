@@ -86,7 +86,7 @@ export default {
 }
 .module {
   background-color: #FB0017;
-  color: Black;
+  color: black;
 }
 .create-own {
   background-color: #00A4E7;
