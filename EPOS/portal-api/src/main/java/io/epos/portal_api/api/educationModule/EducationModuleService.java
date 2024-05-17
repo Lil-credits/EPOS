@@ -64,7 +64,7 @@ public class EducationModuleService {
     educationModule.setName(createEducationModuleRequest.getCourseName());
     educationModule.setImageUrl(createEducationModuleRequest.getImageUrl());
     // temporary team id
-    educationModule.setTeamId(1);
+    educationModule.setTeamId(2);
 
     // create a EducationModuleVersion object from the request body
     EducationModuleVersion educationModuleVersion = new EducationModuleVersion();
