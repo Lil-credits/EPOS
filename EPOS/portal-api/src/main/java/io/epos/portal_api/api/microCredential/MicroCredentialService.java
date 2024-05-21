@@ -43,6 +43,7 @@ public class MicroCredentialService {
   }
   public Future<String> issueMicroCredential(WaltidClient waltidClient, JsonObject microCredential) {
     Promise<String> promise = Promise.promise();
+    // ipv onComplete kan je ook eventueel .onSuccess en .onFailure gebruiken
     waltidClient.issue(microCredential).onComplete(ar -> {
       if (ar.succeeded()) {
         String qrCodeLink = ar.result();

@@ -1,85 +1,41 @@
 package io.epos.portal_api.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.sqlclient.templates.annotations.Column;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Entity
+@Table(name = "educationmoduleversion")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class EducationModuleVersion {
 
+  @Column
+  @Id
+  @GeneratedValue
   private int id;
+
+  @Column
   private int version;
+
+  @Column
   private String description;
+
+  @Column
   private JsonObject attributes;
+
+  @Column(name = "requiredachievements")
   private JsonArray requiredAchievements;
+  @Column
   private JsonArray skills;
+
+  @Column(name = "educationmoduleid")
   private int educationModuleID;
   private String status;
-
-  public EducationModuleVersion() {
-  }
-
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public int getVersion() {
-    return version;
-  }
-
-  public void setVersion(int version) {
-    this.version = version;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public JsonObject getAttributes() {
-    return attributes;
-  }
-
-  public void setAttributes(JsonObject attributes) {
-    this.attributes = attributes;
-  }
-
-  public JsonArray getRequiredAchievements() {
-    return requiredAchievements;
-  }
-
-  public void setRequiredAchievements(JsonArray requiredAchievements) {
-    this.requiredAchievements = requiredAchievements;
-  }
-
-  public JsonArray getSkills() {
-    return skills;
-  }
-
-  public void setSkills(JsonArray skills) {
-    this.skills = skills;
-  }
-
-  public int getEducationModuleID() {
-    return educationModuleID;
-  }
-
-  public void setEducationModuleID(int educationModuleID) {
-    this.educationModuleID = educationModuleID;
-  }
-
-  public String getStatus() {
-    return status;
-  }
-
-  public void setStatus(String status) {
-    this.status = status;
-  }
 }

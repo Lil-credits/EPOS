@@ -27,6 +27,7 @@ public class MicroCredentialHandler {
         LOGGER.error("Failed to issue micro credential ", throwable);
         ResponseUtils.buildErrorResponse(routingContext, throwable);
         });
+
   }
 
   public void readAll(RoutingContext routingContext) {

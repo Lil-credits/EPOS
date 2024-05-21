@@ -38,6 +38,7 @@ public class WaltidClient {
           } else {
             String qrCodeLink = ar.result().bodyAsString();
             promise.complete(qrCodeLink);
+
           }
         } else {
             promise.fail(new RuntimeException(ar.cause().getMessage()));

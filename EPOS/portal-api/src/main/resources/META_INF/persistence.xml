@@ -1,0 +1,41 @@
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+
+  <persistence-unit name="epos-postgresql">
+    <provider>org.hibernate.reactive.provider.ReactivePersistenceProvider</provider>
+
+    <class>io.epos.portal_api.domain.EducationModule</class>
+    <class>io.epos.portal_api.domain.EducationModuleVersion</class>
+    <class>io.epos.portal_api.domain.IssuedMicroCredential</class>
+    <class>io.epos.portal_api.domain.User</class>
+
+    <properties>
+
+      <!-- PostgreSQL -->
+      <property name="jakarta.persistence.jdbc.url"
+                value="${JDBC_URL}"/>
+
+      <!-- Credentials -->
+      <property name="jakarta.persistence.jdbc.user"
+                value="${JDBC_USER}"/>
+      <property name="jakarta.persistence.jdbc.password"
+                value="${JDBC_PASSWORD}"/>
+
+      <!-- The Vert.x SQL Client connection pool size -->
+      <property name="hibernate.connection.pool_size"
+                value="10"/>
+
+      <!-- Automatic schema export -->
+<!--      <property name="jakarta.persistence.schema-generation.database.action"-->
+<!--                value="drop-and-create"/>-->
+
+      <!-- SQL statement logging -->
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="true"/>
+      <property name="hibernate.highlight_sql" value="true"/>
+
+    </properties>
+  </persistence-unit>
+</persistence>

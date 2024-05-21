@@ -48,6 +48,17 @@ dependencies {
   implementation("org.flywaydb:flyway-core:10.11.0")
 // https://mvnrepository.com/artifact/org.postgresql/postgresql
   implementation("org.postgresql:postgresql:42.7.3")
+  // https://mvnrepository.com/artifact/org.hibernate.reactive/hibernate-reactive-core
+  implementation("org.hibernate.reactive:hibernate-reactive-core:2.3.0.Final")
+  // https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
+  implementation("org.hibernate.validator:hibernate-validator:8.0.1.Final")
+
+// https://mvnrepository.com/artifact/io.smallrye.reactive/smallrye-mutiny-vertx-core
+  implementation("io.smallrye.reactive:smallrye-mutiny-vertx-core:3.12.0")
+// https://mvnrepository.com/artifact/org.projectlombok/lombok
+  compileOnly("org.projectlombok:lombok:1.18.32")
+
+
 // https://mvnrepository.com/artifact/org.flywaydb/flyway-database-postgresql
   runtimeOnly("org.flywaydb:flyway-database-postgresql:10.11.0")
   testImplementation("io.vertx:vertx-junit5")

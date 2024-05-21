@@ -14,10 +14,8 @@ public class ApiVerticle extends AbstractVerticle {
 
   @Override
   public void start(Promise<Void> promise) {
-    final Pool dbClient = DbUtils.buildDbClient(vertx);
     final Router router = Router.router(vertx);
-    final WaltidClient waltidClient = new WaltidClient(vertx);
-    ApiInitializer.initializeApis(vertx, router, dbClient, waltidClient);
+//    ApiInitializer.initializeApis(vertx, router);
     buildHttpServer(vertx, promise, router);
   }
 
