@@ -11,8 +11,7 @@ public class ProductRouter {
   private final Vertx vertx;
   private final ProductHandler productHandler;
 
-  public ProductRouter(Vertx vertx,
-                               ProductHandler productHandler) {
+  public ProductRouter(Vertx vertx, ProductHandler productHandler) {
     this.vertx = vertx;
     this.productHandler = productHandler;
   }

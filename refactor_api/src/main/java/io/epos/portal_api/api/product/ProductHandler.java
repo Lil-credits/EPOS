@@ -26,7 +26,7 @@ public class ProductHandler {
       .getResultList());
   }
   public Uni<Product> createProduct(RoutingContext ctx) {
-    Product product = ctx.body().asPojo(Product.class);
+    Product product = new Product(ctx.body().asJsonObject());
     return emf.withSession(session -> session.
       persist(product)
       .call(session::flush)
