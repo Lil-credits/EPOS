@@ -7,6 +7,12 @@ import io.vertx.mutiny.ext.web.RoutingContext;
 import java.util.List;
 
 public class EducationModuleHandler {
+
+  private final EducationModuleService service;
+  public EducationModuleHandler(EducationModuleService service) {
+    this.service = service;
+  }
+
   public Uni<EducationModule> getEducationModule(RoutingContext routingContext) {
     return null;
   }

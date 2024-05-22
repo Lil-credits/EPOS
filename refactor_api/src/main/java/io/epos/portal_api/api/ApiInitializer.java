@@ -2,6 +2,7 @@ package io.epos.portal_api.api;
 
 
 
+import io.epos.portal_api.api.educationModule.EducationModuleFactory;
 import io.epos.portal_api.api.product.ProductHandler;
 import io.epos.portal_api.api.product.ProductRouter;
 import io.vertx.core.http.HttpMethod;
@@ -9,6 +10,8 @@ import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.ext.web.Router;
 import io.vertx.mutiny.ext.web.handler.CorsHandler;
 import org.hibernate.reactive.mutiny.Mutiny;
+
+import java.util.List;
 
 public class ApiInitializer {
   public static void initializeApis(Vertx vertx, Router router, Mutiny.SessionFactory emf){
@@ -27,6 +30,15 @@ public class ApiInitializer {
     router.route().handler(corsHandler);
     ProductRouter productRouter = new ProductRouter(vertx, new ProductHandler(emf));
     productRouter.setRouter(router);
+
+    List<ApiComponentFactory> factories = List.of(
+      new EducationModuleFactory()
+    );
+
+    // Initialize all APIs using factories
+    for (ApiComponentFactory factory : factories) {
+      factory.create(vertx, router, emf);
+    }
 
   }
 }
