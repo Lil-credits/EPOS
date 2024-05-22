@@ -27,7 +27,7 @@ public class ProductRouter {
     final Router productRouter = Router.router(vertx);
 
     productRouter.route("/products*").handler(BodyHandler.create());
-    productRouter.get("/products/:id").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).respond(productHandler::getProduct);
+    productRouter.get("/products/:id").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(productHandler::getProduct);
     productRouter.post("/products").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).respond(productHandler::createProduct);
     productRouter.get("/products").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).respond(productHandler::listProducts);
     return productRouter;

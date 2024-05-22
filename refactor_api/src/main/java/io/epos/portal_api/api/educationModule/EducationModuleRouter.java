@@ -11,13 +11,13 @@ import org.slf4j.LoggerFactory;
 public class EducationModuleRouter {
   private final Vertx vertx;
   private final EducationModuleValidationHandler validationHandler;
-  private final EducationModuleHandler educationModuleHandler;
-  private static final Logger logger = LoggerFactory.getLogger(EducationModuleHandler.class);
+  private final EducationModuleController educationModuleController;
+  private static final Logger logger = LoggerFactory.getLogger(EducationModuleController.class);
 
 
-  public EducationModuleRouter(Vertx vertx, EducationModuleHandler educationModuleHandler, EducationModuleValidationHandler validationHandler) {
+  public EducationModuleRouter(Vertx vertx, EducationModuleController educationModuleController, EducationModuleValidationHandler validationHandler) {
     this.vertx = vertx;
-    this.educationModuleHandler = educationModuleHandler;
+    this.educationModuleController = educationModuleController;
     this.validationHandler = validationHandler;
 
   }
@@ -33,9 +33,9 @@ public class EducationModuleRouter {
     final Router educationModuleRouter = Router.router(vertx);
     educationModuleRouter.route("/education-module").respond(ctx -> ctx.response().end("Hello Education Module!"));
     educationModuleRouter.route("/education_modules*").handler(BodyHandler.create());
-    educationModuleRouter.get("/education_modules/:id").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).respond(educationModuleHandler::getEducationModule);
-    educationModuleRouter.post("/education_modules").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).respond(educationModuleHandler::createEducationModule);
-    educationModuleRouter.get("/education_modules").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).respond(educationModuleHandler::listEducationModules);
+    educationModuleRouter.get("/education_modules/:id").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(educationModuleController::getEducationModule);
+    educationModuleRouter.post("/education_modules").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(educationModuleController::createEducationModule);
+    educationModuleRouter.get("/education_modules").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(educationModuleController::listEducationModules);
     return educationModuleRouter;
   }
 }
