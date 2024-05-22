@@ -1,8 +1,6 @@
 package io.epos.portal_api.api.educationModule;
 
 import io.epos.portal_api.domain.EducationModule;
-import io.epos.portal_api.domain.EducationModuleVersion;
-import io.epos.portal_api.domain.Product;
 import io.epos.portal_api.util.LogUtils;
 import io.smallrye.mutiny.Uni;
 import org.hibernate.reactive.mutiny.Mutiny;
