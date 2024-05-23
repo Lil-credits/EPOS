@@ -8,24 +8,24 @@ import org.hibernate.reactive.mutiny.Mutiny;
 import java.util.List;
 
 public class EducationModuleService {
-
   private final EducationModuleRepository repository;
-  public EducationModuleService(EducationModuleRepository repository) {
+  private final Mutiny.SessionFactory emf;
+
+  public EducationModuleService(EducationModuleRepository repository, Mutiny.SessionFactory emf) {
     this.repository = repository;
+    this.emf = emf;
   }
 
   public Uni<EducationModule> getEducationModule(int id) {
-    return repository.getEducationModule(id);
+    return emf.withSession(session -> repository.getEducationModule(session, id));
   }
 
   public Uni<List<EducationModule>> getEducationModules() {
-    return repository.listEducationModules();
+    return emf.withSession(repository::listEducationModules);
   }
 
-  public Uni<EducationModule> createEducationModule(EducationModule educationModule, EducationModuleVersion educationModuleVersion) {
-    educationModule.setEducationModuleVersions(List.of(educationModuleVersion));
-    return repository.createEducationModule(educationModule);
+  public Uni<EducationModuleVersion> createEducationModule(EducationModule educationModule, EducationModuleVersion educationModuleVersion) {
+    educationModuleVersion.setEducationModule(educationModule);
+    return emf.withTransaction(session -> repository.createEducationModule(session, educationModuleVersion));
   }
-
-
 }

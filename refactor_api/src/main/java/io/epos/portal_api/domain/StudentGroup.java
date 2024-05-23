@@ -1,12 +1,11 @@
 package io.epos.portal_api.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
+@Entity
+@Table(name="class")
 public class StudentGroup {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;

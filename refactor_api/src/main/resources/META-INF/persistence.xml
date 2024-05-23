@@ -7,12 +7,22 @@
     <provider>org.hibernate.reactive.provider.ReactivePersistenceProvider</provider>
 
     <class>io.epos.portal_api.domain.Product</class>
+    <class>io.epos.portal_api.domain.Account</class>
+    <class>io.epos.portal_api.domain.Company</class>
+    <class>io.epos.portal_api.domain.EducationModule</class>
+    <class>io.epos.portal_api.domain.EducationModuleVersion</class>
+    <class>io.epos.portal_api.domain.Image</class>
+    <class>io.epos.portal_api.domain.IssuedCredential</class>
+    <class>io.epos.portal_api.domain.Membership</class>
+    <class>io.epos.portal_api.domain.OrganisationalUnit</class>
+    <class>io.epos.portal_api.domain.StudentGroup</class>
+    <class>io.epos.portal_api.domain.Subsidiary</class>
 
     <properties>
 
       <!-- Postgresql -->
       <property name="javax.persistence.jdbc.url"
-                value="jdbc:postgresql://localhost:5432/epos"/>  <!--3-->
+                value="jdbc:postgresql://localhost:5432/epos"/>
 
       <!-- Credentials -->
       <property name="javax.persistence.jdbc.user"
@@ -24,6 +34,11 @@
       <!-- The Vert.x SQL Client connection pool size -->
       <property name="hibernate.connection.pool_size"
                 value="10"/>
+
+
+      <!-- Automatic schema export -->
+      <property name="jakarta.persistence.schema-generation.database.action"
+                value="drop-and-create"/>
 
       <!-- SQL statement logging -->
       <property name="hibernate.show_sql" value="true"/>
