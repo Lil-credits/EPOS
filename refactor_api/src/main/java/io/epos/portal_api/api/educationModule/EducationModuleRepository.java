@@ -12,7 +12,9 @@ import java.util.NoSuchElementException;
 public class EducationModuleRepository {
   public Uni<EducationModule> getEducationModule(Mutiny.Session session, int id) {
     return session.find(EducationModule.class, id)
-      .onItem().ifNull().failWith(new NoSuchElementException("No education module with ID " + id));
+      .onItem().ifNull().failWith(new NoSuchElementException("No education module with ID " + id))
+      .chain(module -> Mutiny.fetch(module.getEducationModuleVersions())
+        .replaceWith(module));
   }
 
   public Uni<List<EducationModule>> listEducationModules(Mutiny.Session session) {
