@@ -1,11 +1,24 @@
 package io.epos.portal_api.api.educationModule;
 
+import io.epos.portal_api.api.common.BaseValidationHandler;
 import io.vertx.mutiny.core.Vertx;
+import io.vertx.mutiny.ext.web.RoutingContext;
 
-public class EducationModuleValidationHandler {
+import static io.epos.portal_api.util.FileUtils.readJsonSchema;
 
-  private final Vertx vertx;
+public class EducationModuleValidationHandler extends BaseValidationHandler {
+  private static final String BASE_URI = "app://";
+
   public EducationModuleValidationHandler(Vertx vertx) {
-    this.vertx = vertx;
+    super(vertx, BASE_URI);
+  }
+
+  @Override
+  protected void loadSchemas(Vertx vertx) {
+    schemaRepository.dereference("create_education_module.json", readJsonSchema("create_education_module.json", vertx));
+  }
+
+  public void create(RoutingContext routingContext) {
+    validateCreate(routingContext, "create_education_module.json");
   }
 }

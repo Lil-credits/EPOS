@@ -33,6 +33,8 @@ dependencies {
   implementation("io.smallrye.reactive:smallrye-mutiny-vertx-core:3.12.0")
   // https://mvnrepository.com/artifact/io.smallrye.reactive/smallrye-mutiny-vertx-web
   implementation("io.smallrye.reactive:smallrye-mutiny-vertx-web:3.12.0")
+  // https://mvnrepository.com/artifact/io.smallrye.reactive/smallrye-mutiny-vertx-json-schema
+  implementation("io.smallrye.reactive:smallrye-mutiny-vertx-json-schema:3.12.0")
   // https://mvnrepository.com/artifact/io.smallrye.reactive/smallrye-mutiny-vertx-web-client
   implementation("io.smallrye.reactive:smallrye-mutiny-vertx-web-client:3.12.0")
   // https://mvnrepository.com/artifact/io.smallrye.reactive/smallrye-mutiny-vertx-pg-client

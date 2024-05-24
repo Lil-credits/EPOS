@@ -33,9 +33,9 @@ public class EducationModuleRouter {
     final Router educationModuleRouter = Router.router(vertx);
     educationModuleRouter.route("/education-module").respond(ctx -> ctx.response().end("Hello Education Module!"));
     educationModuleRouter.route("/education-modules*").handler(BodyHandler.create());
-    educationModuleRouter.get("/education-modules/:id").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(educationModuleController::getEducationModule);
-    educationModuleRouter.post("/education-modules").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(educationModuleController::createEducationModule);
-    educationModuleRouter.get("/education-modules").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(educationModuleController::listEducationModules);
+    educationModuleRouter.get("/education-modules/:id").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(validationHandler::readOne).handler(educationModuleController::getEducationModule);
+    educationModuleRouter.get("/education-modules").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(validationHandler::readAll).handler(educationModuleController::listEducationModules);
+    educationModuleRouter.post("/education-modules").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(validationHandler::create).handler(educationModuleController::createEducationModule);
     return educationModuleRouter;
   }
 }
