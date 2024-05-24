@@ -1,54 +1,63 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "required": [
-    "courseName",
-    "studyYear",
-    "description",
-    "imageUrl",
-    "requiredAchievements",
-    "skills",
-    "attributes"
-  ],
+  "required": ["baseCredential", "name"],
   "properties": {
-    "courseName": {
-      "type": "string"
-    },
-    "studyYear": {
-      "type": "integer"
-    },
-    "description": {
-      "type": "string"
-    },
-    "imageUrl": {
-      "type": "string"
-    },
-    "requiredAchievements": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "skills": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "attributes": {
+    "baseCredential": {
       "type": "object",
-      "required": ["EC", "language", "EQF"],
+      "required": [
+        "courseName",
+        "studyYear",
+        "description",
+        "imageUrl",
+        "requiredAchievements",
+        "skills",
+        "attributes"
+      ],
       "properties": {
-        "EC": {
-          "type": "integer"
-        },
-        "language": {
+        "courseName": {
           "type": "string"
         },
-        "EQF": {
+        "studyYear": {
           "type": "integer"
+        },
+        "description": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "requiredAchievements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "skills": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "attributes": {
+          "type": "object",
+          "required": ["EC", "language", "EQF"],
+          "properties": {
+            "EC": {
+              "type": "integer"
+            },
+            "language": {
+              "type": "string"
+            },
+            "EQF": {
+              "type": "integer"
+            }
+          }
         }
       }
+    },
+    "name": {
+      "type": "string"
     }
   }
 }

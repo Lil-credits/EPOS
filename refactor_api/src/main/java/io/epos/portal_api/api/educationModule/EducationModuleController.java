@@ -42,7 +42,8 @@ public class EducationModuleController {
   }
 
   public void listEducationModules(RoutingContext routingContext) {
-    educationModuleService.getEducationModules()
+
+    educationModuleService.getEducationModules(routingContext.queryParams().get(RequestParameters.PAGE_PARAMETER), routingContext.queryParams().get(RequestParameters.LIMIT_PARAMETER))
       .subscribe().with(
         educationModules -> ResponseBuilder.buildOkResponse(routingContext, educationModules),
         error -> ResponseBuilder.buildErrorResponse(routingContext, error)

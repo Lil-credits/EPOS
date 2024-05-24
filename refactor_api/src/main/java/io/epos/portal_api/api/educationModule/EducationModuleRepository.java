@@ -19,11 +19,14 @@ public class EducationModuleRepository {
         .replaceWith(module));
   }
 
-  public Uni<List<EducationModule>> listEducationModules(Mutiny.Session session) {
-    return session.createQuery("SELECT em FROM EducationModule em LEFT JOIN FETCH em.educationModuleVersions", EducationModule.class)
+  public Uni<List<EducationModule>> listEducationModules(Mutiny.Session session, int limit, int offset) {
+    String query = "SELECT em FROM EducationModule em LEFT JOIN FETCH em.educationModuleVersions";
+
+    return session.createQuery(query, EducationModule.class)
+      .setFirstResult(offset)
+      .setMaxResults(limit)
       .getResultList();
   }
-
 
   public Uni<EducationModuleVersion> createEducationModule(Mutiny.Session session, EducationModuleVersion educationModuleVersion) {
     return session.persist(educationModuleVersion.getEducationModule())
