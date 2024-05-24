@@ -3,8 +3,6 @@ package io.epos.portal_api.api;
 
 
 import io.epos.portal_api.api.educationModule.EducationModuleFactory;
-import io.epos.portal_api.api.product.ProductHandler;
-import io.epos.portal_api.api.product.ProductRouter;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.ext.web.Router;
@@ -28,8 +26,7 @@ public class ApiInitializer {
       .allowedHeader("*"); // Allow all headers
 
     router.route().handler(corsHandler);
-    ProductRouter productRouter = new ProductRouter(vertx, new ProductHandler(emf));
-    productRouter.setRouter(router);
+
 
     List<ApiComponentFactory> factories = List.of(
       new EducationModuleFactory()

@@ -6,7 +6,6 @@
   <persistence-unit name="pg-epos">
     <provider>org.hibernate.reactive.provider.ReactivePersistenceProvider</provider>
 
-    <class>io.epos.portal_api.domain.Product</class>
     <class>io.epos.portal_api.domain.Account</class>
     <class>io.epos.portal_api.domain.Company</class>
     <class>io.epos.portal_api.domain.EducationModule</class>
@@ -36,9 +35,9 @@
                 value="10"/>
 
 
-      <!-- Automatic schema export -->
-      <property name="jakarta.persistence.schema-generation.database.action"
-                value="drop-and-create"/>
+<!--      &lt;!&ndash; Automatic schema export &ndash;&gt;-->
+<!--      <property name="jakarta.persistence.schema-generation.database.action"-->
+<!--                value="create"/>-->
 
       <!-- SQL statement logging -->
       <property name="hibernate.show_sql" value="true"/>
