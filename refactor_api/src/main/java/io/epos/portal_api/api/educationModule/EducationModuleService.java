@@ -1,5 +1,6 @@
 package io.epos.portal_api.api.educationModule;
 
+import io.epos.portal_api.api.educationModule.dto.EducationModuleListResponseDTO;
 import io.epos.portal_api.api.educationModule.dto.EducationModuleResponseDTO;
 import io.epos.portal_api.domain.EducationModule;
 import io.epos.portal_api.domain.EducationModuleVersion;
@@ -25,14 +26,22 @@ public class EducationModuleService {
         .map(EducationModuleMapper::toDTO));
   }
 
-  public Uni<List<EducationModuleResponseDTO>> getEducationModules(String p, String l) {
+  public Uni<EducationModuleListResponseDTO> getEducationModules(String p, String l) {
     int page = QueryUtils.getPage(p);
     int limit = QueryUtils.getLimit(l);
     int offset = QueryUtils.getOffset(page, limit);
-    return emf.withSession(session -> repository.listEducationModules(session, limit, offset))
-      .map(modules -> modules.stream()
-      .map(EducationModuleMapper::toDTO)
-      .collect(Collectors.toList()));
+
+        Uni<List<EducationModule>> educationModulesUni = emf.withSession(session -> repository.listEducationModules(session, limit, offset));
+        Uni<Long> totalUni = emf.withSession(repository::countEducationModules);
+
+        return Uni.combine().all().unis(educationModulesUni, totalUni).asTuple().
+          onItem().transform(tuple -> {
+            List<EducationModuleResponseDTO> moduleDTOs = tuple.getItem1().stream()
+              .map(EducationModuleMapper::toDTO)
+              .collect(Collectors.toList());
+            int total = tuple.getItem2().intValue();
+            return new EducationModuleListResponseDTO(total, page, limit, moduleDTOs);
+          });
   }
 
   public Uni<EducationModuleVersion> createEducationModule(EducationModule educationModule, EducationModuleVersion educationModuleVersion) {

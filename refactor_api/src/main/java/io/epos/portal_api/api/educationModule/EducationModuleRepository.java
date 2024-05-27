@@ -28,6 +28,13 @@ public class EducationModuleRepository {
       .getResultList();
   }
 
+  public Uni<Long> countEducationModules(Mutiny.Session session) {
+    String query = "SELECT COUNT(em) FROM EducationModule em";
+
+    return session.createQuery(query, Long.class)
+      .getSingleResult();
+  }
+
   public Uni<EducationModuleVersion> createEducationModule(Mutiny.Session session, EducationModuleVersion educationModuleVersion) {
     return session.persist(educationModuleVersion.getEducationModule())
       .call(() -> session.persist(educationModuleVersion))
