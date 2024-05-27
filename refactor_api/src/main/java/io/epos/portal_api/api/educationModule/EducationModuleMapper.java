@@ -33,6 +33,7 @@ public class EducationModuleMapper {
     dto.setName(version.getName());
     dto.setEffectuationDate(version.getEffectuationDate());
     dto.setBaseCredential(version.getBaseCredential());
+    dto.setEducationModuleId(version.getEducationModule().getId());
     return dto;
   }
 }

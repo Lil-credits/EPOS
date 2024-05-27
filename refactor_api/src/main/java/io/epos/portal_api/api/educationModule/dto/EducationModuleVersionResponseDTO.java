@@ -10,6 +10,8 @@ public class EducationModuleVersionResponseDTO {
   private JsonObject baseCredential;
   private Date effectuationDate;
 
+  private int educationModuleId;
+
   public int getId() {
     return id;
   }
@@ -40,5 +42,13 @@ public class EducationModuleVersionResponseDTO {
 
   public void setEffectuationDate(Date effectuationDate) {
     this.effectuationDate = effectuationDate;
+  }
+
+  public int getEducationModuleId() {
+    return educationModuleId;
+  }
+
+  public void setEducationModuleId(int educationModuleId) {
+    this.educationModuleId = educationModuleId;
   }
 }

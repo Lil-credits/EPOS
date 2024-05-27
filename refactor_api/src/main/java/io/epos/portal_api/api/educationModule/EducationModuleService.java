@@ -2,6 +2,7 @@ package io.epos.portal_api.api.educationModule;
 
 import io.epos.portal_api.api.educationModule.dto.EducationModuleListResponseDTO;
 import io.epos.portal_api.api.educationModule.dto.EducationModuleResponseDTO;
+import io.epos.portal_api.api.educationModule.dto.EducationModuleVersionResponseDTO;
 import io.epos.portal_api.domain.EducationModule;
 import io.epos.portal_api.domain.EducationModuleVersion;
 import io.epos.portal_api.util.QueryUtils;
@@ -9,7 +10,6 @@ import io.smallrye.mutiny.Uni;
 import org.hibernate.reactive.mutiny.Mutiny;
 
 import java.util.List;
-import java.util.concurrent.Flow;
 import java.util.stream.Collectors;
 
 public class EducationModuleService {
@@ -44,8 +44,8 @@ public class EducationModuleService {
           });
   }
 
-  public Uni<EducationModuleVersion> createEducationModule(EducationModule educationModule, EducationModuleVersion educationModuleVersion) {
+  public Uni<EducationModuleVersionResponseDTO> createEducationModule(EducationModule educationModule, EducationModuleVersion educationModuleVersion) {
     educationModuleVersion.setEducationModule(educationModule);
-    return emf.withTransaction(session -> repository.createEducationModule(session, educationModuleVersion));
+    return emf.withTransaction(session -> repository.createEducationModule(session, educationModuleVersion)).map(EducationModuleMapper::toDTO);
   }
 }
