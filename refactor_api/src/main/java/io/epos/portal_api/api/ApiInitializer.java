@@ -1,7 +1,5 @@
 package io.epos.portal_api.api;
 
-
-
 import io.epos.portal_api.api.educationModule.EducationModuleFactory;
 import io.epos.portal_api.api.microCredential.MicroCredentialFactory;
 import io.vertx.core.http.HttpMethod;
