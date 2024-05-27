@@ -2,9 +2,7 @@ package io.epos.portal_api.api.admin;
 
 import io.epos.portal_api.api.common.ResponseBuilder;
 import io.epos.portal_api.api.educationModule.EducationModuleController;
-import io.epos.portal_api.domain.Company;
-import io.epos.portal_api.domain.OrganisationalUnit;
-import io.epos.portal_api.domain.Subsidiary;
+import io.epos.portal_api.domain.*;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.ext.web.RoutingContext;
 import org.slf4j.Logger;
@@ -93,11 +91,29 @@ public class AdminController {
 //    );
 //  }
 //
-//  public void createEducationModule(RoutingContext routingContext){
-//    logger.info("Creating education module");
-//    adminService.createEducationModule().subscribe().with(
-//      result -> ResponseBuilder.buildOkResponse(routingContext, result),
-//      error -> ResponseBuilder.buildErrorResponse(routingContext, error)
-//    );
-//  }
+  public void createEducationModule(RoutingContext routingContext){
+    logger.info("Creating education module");
+    JsonObject body = routingContext.body().asJsonObject();
+    EducationModule educationModule = new EducationModule();
+    EducationModuleVersion educationModuleVersion = new EducationModuleVersion();
+    educationModuleVersion.setName(body.getString("name"));
+    educationModuleVersion.setBaseCredential(body.getJsonObject("baseCredential"));
+    adminService.createEducationModule(educationModule, educationModuleVersion, body.getInteger("organisationalUnitId")).subscribe().with(
+      result -> ResponseBuilder.buildOkResponse(routingContext, result),
+      error -> ResponseBuilder.buildErrorResponse(routingContext, error)
+    );
+  }
+
+  public void getEducationModules(RoutingContext routingContext) {
+    logger.info("Getting education modules");
+    adminService.getEducationModules().subscribe().with(
+      result -> ResponseBuilder.buildOkResponse(routingContext, result),
+      error -> ResponseBuilder.buildErrorResponse(routingContext, error)
+    );
+  }
+
+  public void createMember(RoutingContext routingContext) {
+    logger.info("Creating member");
+    JsonObject body = routingContext.body().asJsonObject();
+  }
 }

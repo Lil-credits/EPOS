@@ -38,6 +38,8 @@ public class AdminRouter {
     adminRouter.post("/admin/subsidiary").handler(LoggerHandler.create()).handler(validationHandler::createSubsidiary).handler(adminController::createSubsidiary);
     adminRouter.get("/admin/organisational-unit").handler(LoggerHandler.create()).handler(validationHandler::readAll).handler(adminController::getOrganisationUnits);
     adminRouter.post("/admin/organisational-unit").handler(LoggerHandler.create()).handler(validationHandler::createOrganisationUnit).handler(adminController::createOrganisationUnit);
+    adminRouter.get("/admin/education-module").handler(LoggerHandler.create()).handler(validationHandler::readAll).handler(adminController::getEducationModules);
+    adminRouter.post("/admin/education-module").handler(LoggerHandler.create()).handler(validationHandler::createEducationModule).handler(adminController::createEducationModule);
     return adminRouter;
   }
 }

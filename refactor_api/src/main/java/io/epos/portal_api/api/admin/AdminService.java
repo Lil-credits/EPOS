@@ -4,13 +4,16 @@ import io.epos.portal_api.api.admin.dto.AdminMapper;
 import io.epos.portal_api.api.admin.dto.CompanyDTO;
 import io.epos.portal_api.api.admin.dto.OrganisationalUnitDTO;
 import io.epos.portal_api.api.admin.dto.SubsidiaryDTO;
-import io.epos.portal_api.domain.Company;
-import io.epos.portal_api.domain.OrganisationalUnit;
-import io.epos.portal_api.domain.Subsidiary;
+import io.epos.portal_api.api.educationModule.EducationModuleRepository;
+import io.epos.portal_api.api.educationModule.dto.EducationModuleMapper;
+import io.epos.portal_api.api.educationModule.dto.EducationModuleResponseDTO;
+import io.epos.portal_api.api.educationModule.dto.EducationModuleVersionResponseDTO;
+import io.epos.portal_api.domain.*;
 import io.smallrye.mutiny.Uni;
 import org.hibernate.reactive.mutiny.Mutiny;
 
 import java.util.List;
+import java.util.concurrent.Flow;
 import java.util.stream.Collectors;
 
 public class AdminService {
@@ -18,9 +21,12 @@ public class AdminService {
   private final AdminRepository repository;
   private final Mutiny.SessionFactory emf;
 
-  public AdminService(AdminRepository repository, Mutiny.SessionFactory emf) {
+  private final EducationModuleRepository educationModuleRepository;
+
+  public AdminService(AdminRepository repository, Mutiny.SessionFactory emf, EducationModuleRepository educationModuleRepository) {
     this.repository = repository;
     this.emf = emf;
+    this.educationModuleRepository = educationModuleRepository;
   }
 
   public Uni<Company> createCompany(Company company) {
@@ -50,8 +56,8 @@ public class AdminService {
   }
 
   public Uni<List<OrganisationalUnitDTO>> getOrganisationUnits() {
-    return emf.withSession(repository::getOrganisationUnits).map(organisationalUnits -> organisationalUnits.stream()
-      .map(AdminMapper::toDTO)
+    return emf.withSession(repository::getOrganisationUnits)
+      .map(organisationalUnits -> organisationalUnits.stream().map(AdminMapper::toDTO)
       .collect(Collectors.toList()));
   }
 
@@ -70,4 +76,23 @@ public class AdminService {
         );
       });
   }
+
+  public Uni<EducationModuleVersionResponseDTO> createEducationModule(EducationModule educationModule, EducationModuleVersion educationModuleVersion, Integer organisationUnitId) {
+    Uni<OrganisationalUnit> organisationalUnitUni = emf.withSession(session -> repository.getOrganisationalUnit(session, organisationUnitId));
+    return organisationalUnitUni.onItem().transformToUni(organisationalUnit -> {
+      educationModule.setOrganisationalUnit(organisationalUnit);
+      educationModule.setCompany(organisationalUnit.getCompany());
+      educationModule.setSubsidiary(organisationalUnit.getSubsidiary());
+      educationModuleVersion.setEducationModule(educationModule);
+      return emf.withTransaction(session -> educationModuleRepository.createEducationModule(session, educationModuleVersion))
+        .map(EducationModuleMapper::toDTO);
+    });
+  }
+
+  public Uni<List<EducationModuleResponseDTO>> getEducationModules() {
+    return emf.withSession(repository::getEducationModules).
+      onItem().transform(educationModules -> educationModules.stream().map(EducationModuleMapper::toDTO).collect(Collectors.toList()));
+  }
+
+
 }

@@ -1,9 +1,6 @@
 package io.epos.portal_api.api.admin;
 
-import io.epos.portal_api.domain.Company;
-import io.epos.portal_api.domain.EducationModule;
-import io.epos.portal_api.domain.OrganisationalUnit;
-import io.epos.portal_api.domain.Subsidiary;
+import io.epos.portal_api.domain.*;
 import io.smallrye.mutiny.Uni;
 import org.hibernate.reactive.mutiny.Mutiny;
 
@@ -52,6 +49,18 @@ public class AdminRepository {
     String query = "SELECT o FROM OrganisationalUnit o";
 
     return session.createQuery(query, OrganisationalUnit.class)
+      .getResultList();
+  }
+
+  public Uni<OrganisationalUnit> getOrganisationalUnit(Mutiny.Session session, Integer organisationUnitId) {
+    return session.find(OrganisationalUnit.class, organisationUnitId)
+      .onItem().ifNull().failWith(new NoSuchElementException("Organisational unit with id " + organisationUnitId + " not found"));
+  }
+
+  public Uni<List<EducationModule>> getEducationModules(Mutiny.Session session) {
+    String query = "SELECT em FROM EducationModule em LEFT JOIN FETCH em.educationModuleVersions";
+
+    return session.createQuery(query, EducationModule.class)
       .getResultList();
   }
 }
