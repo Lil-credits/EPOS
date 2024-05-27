@@ -10,6 +10,7 @@ public class AdminValidationHandler extends BaseValidationHandler {
   private static final String BASE_URI = "app://";
   private static final String SCHEMA_CREATE_COMPANY = "create_company.json";
   private static final String SCHEMA_CREATE_SUBSIDIARY = "create_subsidiary.json";
+  private static final String SCHEMA_CREATE_ORGANISATION_UNIT = "create_organisation_unit.json";
 
   public AdminValidationHandler(Vertx vertx) {
     super(vertx, BASE_URI);
@@ -19,6 +20,7 @@ public class AdminValidationHandler extends BaseValidationHandler {
   protected void loadSchemas(Vertx vertx) {
     schemaRepository.dereference(SCHEMA_CREATE_COMPANY, readJsonSchema(SCHEMA_CREATE_COMPANY, vertx));
     schemaRepository.dereference(SCHEMA_CREATE_SUBSIDIARY, readJsonSchema(SCHEMA_CREATE_SUBSIDIARY, vertx));
+    schemaRepository.dereference(SCHEMA_CREATE_ORGANISATION_UNIT, readJsonSchema(SCHEMA_CREATE_ORGANISATION_UNIT, vertx));
   }
 
   public void createCompany(RoutingContext routingContext) {
@@ -27,5 +29,9 @@ public class AdminValidationHandler extends BaseValidationHandler {
 
   public void createSubsidiary(RoutingContext routingContext) {
     validateCreate(routingContext, SCHEMA_CREATE_SUBSIDIARY);
+  }
+
+  public void createOrganisationUnit(RoutingContext routingContext) {
+    validateCreate(routingContext, SCHEMA_CREATE_ORGANISATION_UNIT);
   }
 }

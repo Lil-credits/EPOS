@@ -3,6 +3,7 @@ package io.epos.portal_api.api.admin;
 import io.epos.portal_api.api.common.ResponseBuilder;
 import io.epos.portal_api.api.educationModule.EducationModuleController;
 import io.epos.portal_api.domain.Company;
+import io.epos.portal_api.domain.OrganisationalUnit;
 import io.epos.portal_api.domain.Subsidiary;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.ext.web.RoutingContext;
@@ -43,7 +44,7 @@ public class AdminController {
     JsonObject body = routingContext.body().asJsonObject();
     Subsidiary subsidiary = new Subsidiary();
     subsidiary.setName(body.getString("name"));
-    adminService.createSubsidiary(subsidiary, body.getInteger("organisationId")).subscribe().with(
+    adminService.createSubsidiary(subsidiary, body.getInteger("companyId")).subscribe().with(
       result -> ResponseBuilder.buildOkResponse(routingContext, result),
       error -> ResponseBuilder.buildErrorResponse(routingContext, error)
     );
@@ -56,22 +57,25 @@ public class AdminController {
       error -> ResponseBuilder.buildErrorResponse(routingContext, error)
     );
   }
-//
-//  public void createOrganisationUnit(RoutingContext routingContext) {
-//    logger.info("Creating organisation unit");
-//    adminService.createOrganisationUnit().subscribe().with(
-//      result -> ResponseBuilder.buildOkResponse(routingContext, result),
-//      error -> ResponseBuilder.buildErrorResponse(routingContext, error)
-//    );
-//  }
-//
-//  public void getOrganisationUnits(RoutingContext routingContext) {
-//    logger.info("Getting organisation units");
-//    adminService.getOrganisationUnits().subscribe().with(
-//      result -> ResponseBuilder.buildOkResponse(routingContext, result),
-//      error -> ResponseBuilder.buildErrorResponse(routingContext, error)
-//    );
-//  }
+  public void createOrganisationUnit(RoutingContext routingContext) {
+    logger.info("Creating organisation unit");
+    JsonObject body = routingContext.body().asJsonObject();
+    OrganisationalUnit organisationalUnit = new OrganisationalUnit();
+    organisationalUnit.setName(body.getString("name"));
+
+    adminService.createOrganisationUnit(organisationalUnit, body.getInteger("companyId"), body.getInteger("subsidiaryId")).subscribe().with(
+      result -> ResponseBuilder.buildOkResponse(routingContext, result),
+      error -> ResponseBuilder.buildErrorResponse(routingContext, error)
+    );
+  }
+
+  public void getOrganisationUnits(RoutingContext routingContext) {
+    logger.info("Getting organisation units");
+    adminService.getOrganisationUnits().subscribe().with(
+      result -> ResponseBuilder.buildOkResponse(routingContext, result),
+      error -> ResponseBuilder.buildErrorResponse(routingContext, error)
+    );
+  }
 //
 //  public void createMember(RoutingContext routingContext) {
 //    logger.info("Creating member");

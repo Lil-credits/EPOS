@@ -38,6 +38,22 @@ public class AdminRepository {
   public Uni<Subsidiary> createSubsidiary(Mutiny.Session session, Subsidiary subsidiary) {
     return session.persist(subsidiary).replaceWith(subsidiary);
   }
+
+  public Uni<OrganisationalUnit> createOrganisationUnit(Mutiny.Session session, OrganisationalUnit organisationalUnit) {
+    return session.persist(organisationalUnit).replaceWith(organisationalUnit);
+  }
+
+  public Uni<Subsidiary> getSubsidiary(Mutiny.Session session, int subsidiaryId) {
+    return session.find(Subsidiary.class, subsidiaryId)
+      .onItem().ifNull().failWith(new NoSuchElementException("Subsidiary with id " + subsidiaryId + " not found"));
+  }
+
+  public Uni<List<OrganisationalUnit>> getOrganisationUnits(Mutiny.Session session) {
+    String query = "SELECT o FROM OrganisationalUnit o";
+
+    return session.createQuery(query, OrganisationalUnit.class)
+      .getResultList();
+  }
 }
 
 

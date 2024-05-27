@@ -1,6 +1,7 @@
 package io.epos.portal_api.api.admin.dto;
 
 import io.epos.portal_api.domain.Company;
+import io.epos.portal_api.domain.OrganisationalUnit;
 import io.epos.portal_api.domain.Subsidiary;
 
 public class AdminMapper {
@@ -24,6 +25,17 @@ public class AdminMapper {
     SubsidiaryDTO dto = new SubsidiaryDTO();
     dto.setId(subsidiary.getId());
     dto.setName(subsidiary.getName());
+    return dto;
+  }
+
+  public static OrganisationalUnitDTO toDTO(OrganisationalUnit organisationalUnit) {
+    if (organisationalUnit == null) {
+      return null;
+    }
+
+    OrganisationalUnitDTO dto = new OrganisationalUnitDTO();
+    dto.setId(organisationalUnit.getId());
+    dto.setName(organisationalUnit.getName());
     return dto;
   }
 }

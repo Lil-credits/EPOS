@@ -32,10 +32,12 @@ public class AdminRouter {
   private Router buildAdminRouter() {
     final Router adminRouter = Router.router(vertx);
     adminRouter.route("/admin*").handler(BodyHandler.create());
-    adminRouter.get("/admin/company").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(validationHandler::readAll).handler(adminController::getCompanies);
-    adminRouter.post("/admin/company").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(validationHandler::createCompany).handler(adminController::createCompany);
-    adminRouter.get("/admin/subsidiary").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(validationHandler::readAll).handler(adminController::getSubsidiaries);
-    adminRouter.post("/admin/subsidiary").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(validationHandler::createSubsidiary).handler(adminController::createSubsidiary);
+    adminRouter.get("/admin/company").handler(LoggerHandler.create()).handler(validationHandler::readAll).handler(adminController::getCompanies);
+    adminRouter.post("/admin/company").handler(LoggerHandler.create()).handler(validationHandler::createCompany).handler(adminController::createCompany);
+    adminRouter.get("/admin/subsidiary").handler(LoggerHandler.create()).handler(validationHandler::readAll).handler(adminController::getSubsidiaries);
+    adminRouter.post("/admin/subsidiary").handler(LoggerHandler.create()).handler(validationHandler::createSubsidiary).handler(adminController::createSubsidiary);
+    adminRouter.get("/admin/organisational-unit").handler(LoggerHandler.create()).handler(validationHandler::readAll).handler(adminController::getOrganisationUnits);
+    adminRouter.post("/admin/organisational-unit").handler(LoggerHandler.create()).handler(validationHandler::createOrganisationUnit).handler(adminController::createOrganisationUnit);
     return adminRouter;
   }
 }
