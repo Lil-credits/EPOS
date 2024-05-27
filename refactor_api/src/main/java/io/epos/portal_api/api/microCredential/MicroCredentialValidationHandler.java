@@ -18,11 +18,7 @@ public class MicroCredentialValidationHandler extends BaseValidationHandler {
   protected void loadSchemas(Vertx vertx) {
     schemaRepository.dereference(SCHEMA_CREATE, readJsonSchema(SCHEMA_CREATE, vertx));
   }
-
-  public void create(RoutingContext routingContext) {
-    validateCreate(routingContext, SCHEMA_CREATE);
-  }
-
   public void issue(RoutingContext routingContext) {
+    validateCreate(routingContext, SCHEMA_CREATE);
   }
 }

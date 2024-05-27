@@ -1,5 +1,6 @@
 package io.epos.portal_api.api;
 
+import io.epos.portal_api.api.admin.AdminFactory;
 import io.epos.portal_api.api.educationModule.EducationModuleFactory;
 import io.epos.portal_api.api.microCredential.MicroCredentialFactory;
 import io.vertx.core.http.HttpMethod;
@@ -29,7 +30,8 @@ public class ApiInitializer {
 
     List<ApiComponentFactory> factories = List.of(
       new EducationModuleFactory(),
-      new MicroCredentialFactory()
+      new MicroCredentialFactory(),
+      new AdminFactory()
     );
 
     // Initialize all APIs using factories
