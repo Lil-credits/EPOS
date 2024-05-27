@@ -3,6 +3,7 @@ package io.epos.portal_api.api.admin;
 import io.epos.portal_api.api.common.ResponseBuilder;
 import io.epos.portal_api.api.educationModule.EducationModuleController;
 import io.epos.portal_api.domain.Company;
+import io.epos.portal_api.domain.Subsidiary;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.ext.web.RoutingContext;
 import org.slf4j.Logger;
@@ -36,22 +37,25 @@ public class AdminController {
     );
   }
 
-//
-//  public void createSubsidiary(RoutingContext routingContext) {
-//    logger.info("Creating subsidiary");
-//    adminService.createSubsidiary().subscribe().with(
-//      result -> ResponseBuilder.buildOkResponse(routingContext, result),
-//      error -> ResponseBuilder.buildErrorResponse(routingContext, error)
-//    );
-//  }
-//
-//  public void getSubsidiaries(RoutingContext routingContext) {
-//    logger.info("Getting subsidiaries");
-//    adminService.getSubsidiaries().subscribe().with(
-//      result -> ResponseBuilder.buildOkResponse(routingContext, result),
-//      error -> ResponseBuilder.buildErrorResponse(routingContext, error)
-//    );
-//  }
+
+  public void createSubsidiary(RoutingContext routingContext) {
+    logger.info("Creating subsidiary");
+    JsonObject body = routingContext.body().asJsonObject();
+    Subsidiary subsidiary = new Subsidiary();
+    subsidiary.setName(body.getString("name"));
+    adminService.createSubsidiary(subsidiary, body.getInteger("organisationId")).subscribe().with(
+      result -> ResponseBuilder.buildOkResponse(routingContext, result),
+      error -> ResponseBuilder.buildErrorResponse(routingContext, error)
+    );
+  }
+
+  public void getSubsidiaries(RoutingContext routingContext) {
+    logger.info("Getting subsidiaries");
+    adminService.getSubsidiaries().subscribe().with(
+      result -> ResponseBuilder.buildOkResponse(routingContext, result),
+      error -> ResponseBuilder.buildErrorResponse(routingContext, error)
+    );
+  }
 //
 //  public void createOrganisationUnit(RoutingContext routingContext) {
 //    logger.info("Creating organisation unit");

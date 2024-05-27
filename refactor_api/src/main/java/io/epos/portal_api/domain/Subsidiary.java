@@ -29,4 +29,36 @@ public class Subsidiary {
   public void setId(int id) {
     this.id = id;
   }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public List<EducationModule> getEducationModules() {
+    return educationModules;
+  }
+
+  public void setEducationModules(List<EducationModule> educationModules) {
+    this.educationModules = educationModules;
+  }
+
+  public List<OrganisationalUnit> getOrganisationalUnits() {
+    return OrganisationalUnits;
+  }
+
+  public void setOrganisationalUnits(List<OrganisationalUnit> organisationalUnits) {
+    OrganisationalUnits = organisationalUnits;
+  }
+
+  public Company getCompany() {
+    return company;
+  }
+
+  public void setCompany(Company company) {
+    this.company = company;
+  }
 }

@@ -8,7 +8,8 @@ import static io.epos.portal_api.util.FileUtils.readJsonSchema;
 
 public class AdminValidationHandler extends BaseValidationHandler {
   private static final String BASE_URI = "app://";
-  private static final String SCHEMA_CREATE = "create_company.json";
+  private static final String SCHEMA_CREATE_COMPANY = "create_company.json";
+  private static final String SCHEMA_CREATE_SUBSIDIARY = "create_subsidiary.json";
 
   public AdminValidationHandler(Vertx vertx) {
     super(vertx, BASE_URI);
@@ -16,12 +17,15 @@ public class AdminValidationHandler extends BaseValidationHandler {
 
   @Override
   protected void loadSchemas(Vertx vertx) {
-    schemaRepository.dereference(SCHEMA_CREATE, readJsonSchema(SCHEMA_CREATE, vertx));
+    schemaRepository.dereference(SCHEMA_CREATE_COMPANY, readJsonSchema(SCHEMA_CREATE_COMPANY, vertx));
+    schemaRepository.dereference(SCHEMA_CREATE_SUBSIDIARY, readJsonSchema(SCHEMA_CREATE_SUBSIDIARY, vertx));
   }
 
-  public void create(RoutingContext routingContext) {
-    validateCreate(routingContext, SCHEMA_CREATE);
+  public void createCompany(RoutingContext routingContext) {
+    validateCreate(routingContext, SCHEMA_CREATE_COMPANY);
   }
 
-
+  public void createSubsidiary(RoutingContext routingContext) {
+    validateCreate(routingContext, SCHEMA_CREATE_SUBSIDIARY);
+  }
 }

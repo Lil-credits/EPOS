@@ -3,10 +3,12 @@ package io.epos.portal_api.api.admin;
 import io.epos.portal_api.domain.Company;
 import io.epos.portal_api.domain.EducationModule;
 import io.epos.portal_api.domain.OrganisationalUnit;
+import io.epos.portal_api.domain.Subsidiary;
 import io.smallrye.mutiny.Uni;
 import org.hibernate.reactive.mutiny.Mutiny;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 public class AdminRepository {
@@ -14,11 +16,27 @@ public class AdminRepository {
     return session.persist(company).replaceWith(company);
   }
 
+  public Uni<Company> getCompany(Mutiny.Session session, int id) {
+    return session.find(Company.class, id)
+      .onItem().ifNull().failWith(new NoSuchElementException("Company with id " + id + " not found"));
+  }
+
   public Uni<List<Company>> getCompanies(Mutiny.Session session) {
     String query = "SELECT c FROM Company c";
 
     return session.createQuery(query, Company.class)
       .getResultList();
+  }
+
+  public Uni<List<Subsidiary>> getSubsidiaries(Mutiny.Session session) {
+    String query = "SELECT s FROM Subsidiary s";
+
+    return session.createQuery(query, Subsidiary.class)
+      .getResultList();
+  }
+
+  public Uni<Subsidiary> createSubsidiary(Mutiny.Session session, Subsidiary subsidiary) {
+    return session.persist(subsidiary).replaceWith(subsidiary);
   }
 }
 
