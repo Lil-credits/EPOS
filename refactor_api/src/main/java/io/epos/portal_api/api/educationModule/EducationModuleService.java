@@ -1,6 +1,7 @@
 package io.epos.portal_api.api.educationModule;
 
 import io.epos.portal_api.api.educationModule.dto.EducationModuleListResponseDTO;
+import io.epos.portal_api.api.educationModule.dto.EducationModuleMapper;
 import io.epos.portal_api.api.educationModule.dto.EducationModuleResponseDTO;
 import io.epos.portal_api.api.educationModule.dto.EducationModuleVersionResponseDTO;
 import io.epos.portal_api.domain.EducationModule;

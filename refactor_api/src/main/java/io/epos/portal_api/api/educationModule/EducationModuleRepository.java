@@ -2,13 +2,10 @@ package io.epos.portal_api.api.educationModule;
 
 import io.epos.portal_api.domain.EducationModule;
 import io.epos.portal_api.domain.EducationModuleVersion;
-import io.epos.portal_api.util.LogUtils;
 import io.smallrye.mutiny.Uni;
 import org.hibernate.reactive.mutiny.Mutiny;
-
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 public class EducationModuleRepository {
   public Uni<EducationModule> getEducationModule(Mutiny.Session session, int id) {
