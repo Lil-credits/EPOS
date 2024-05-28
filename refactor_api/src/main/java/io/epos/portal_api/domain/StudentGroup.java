@@ -20,6 +20,14 @@ public class StudentGroup {
   @Column(name = "end_date")
   private Date endDate;
 
+  @ManyToOne
+  @JoinColumn(name = "organisational_unit_id")
+  private OrganisationalUnit organisationalUnit;
+
+  @ManyToOne
+  @JoinColumn(name = "education_module_version_id")
+  private EducationModuleVersion educationModuleVersion;
+
   @ManyToMany(mappedBy = "studentGroups")
   private List<Account> accounts;
 
@@ -63,5 +71,21 @@ public class StudentGroup {
 
   public void setAccounts(List<Account> accounts) {
     this.accounts = accounts;
+  }
+
+  public OrganisationalUnit getOrganisationalUnit() {
+    return organisationalUnit;
+  }
+
+  public void setOrganisationalUnit(OrganisationalUnit organisationalUnit) {
+    this.organisationalUnit = organisationalUnit;
+  }
+
+  public EducationModuleVersion getEducationModuleVersion() {
+    return educationModuleVersion;
+  }
+
+  public void setEducationModuleVersion(EducationModuleVersion educationModuleVersion) {
+    this.educationModuleVersion = educationModuleVersion;
   }
 }

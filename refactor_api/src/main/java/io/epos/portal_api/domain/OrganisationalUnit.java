@@ -28,6 +28,9 @@ public class OrganisationalUnit {
   @OneToMany(mappedBy = "organisationalUnit")
   private List<Membership> memberships;
 
+  @OneToMany(mappedBy = "organisationalUnit")
+  private List<StudentGroup> studentGroups;
+
   public int getId() {
     return id;
   }
@@ -74,5 +77,13 @@ public class OrganisationalUnit {
 
   public void setMemberships(List<Membership> memberships) {
     this.memberships = memberships;
+  }
+
+  public List<StudentGroup> getStudentGroups() {
+    return studentGroups;
+  }
+
+  public void setStudentGroups(List<StudentGroup> studentGroups) {
+    this.studentGroups = studentGroups;
   }
 }

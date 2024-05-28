@@ -23,6 +23,9 @@ public class EducationModuleVersion {
   @Column(name = "effectuation_date")
   private Date effectuationDate;
 
+  @OneToMany(mappedBy = "educationModuleVersion")
+  private List<StudentGroup> studentGroups;
+
   @ManyToOne
   @JoinColumn(name = "education_module_id")
   private EducationModule educationModule;
@@ -100,5 +103,13 @@ public class EducationModuleVersion {
 
   public void setIssuedCredentials(List<IssuedCredential> issuedCredentials) {
     this.issuedCredentials = issuedCredentials;
+  }
+
+  public List<StudentGroup> getStudentGroups() {
+    return studentGroups;
+  }
+
+  public void setStudentGroups(List<StudentGroup> studentGroups) {
+    this.studentGroups = studentGroups;
   }
 }
