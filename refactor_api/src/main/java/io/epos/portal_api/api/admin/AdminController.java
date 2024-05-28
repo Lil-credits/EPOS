@@ -116,4 +116,23 @@ public class AdminController {
     logger.info("Creating member");
     JsonObject body = routingContext.body().asJsonObject();
   }
+
+    public void createAccount(RoutingContext routingContext) {
+    logger.info("Creating account");
+    JsonObject body = routingContext.body().asJsonObject();
+    adminService.createAccount(body.getString("name")).subscribe().with(
+      result -> ResponseBuilder.buildOkResponse(routingContext, result),
+      error -> ResponseBuilder.buildErrorResponse(routingContext, error)
+    );
+
+
+    }
+
+  public void getAccounts(RoutingContext routingContext) {
+    logger.info("Getting accounts");
+    adminService.getAccounts().subscribe().with(
+      result -> ResponseBuilder.buildOkResponse(routingContext, result),
+      error -> ResponseBuilder.buildErrorResponse(routingContext, error)
+    );
+  }
 }

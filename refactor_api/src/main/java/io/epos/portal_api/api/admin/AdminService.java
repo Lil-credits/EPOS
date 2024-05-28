@@ -1,9 +1,6 @@
 package io.epos.portal_api.api.admin;
 
-import io.epos.portal_api.api.admin.dto.AdminMapper;
-import io.epos.portal_api.api.admin.dto.CompanyDTO;
-import io.epos.portal_api.api.admin.dto.OrganisationalUnitDTO;
-import io.epos.portal_api.api.admin.dto.SubsidiaryDTO;
+import io.epos.portal_api.api.admin.dto.*;
 import io.epos.portal_api.api.educationModule.EducationModuleRepository;
 import io.epos.portal_api.api.educationModule.dto.EducationModuleMapper;
 import io.epos.portal_api.api.educationModule.dto.EducationModuleResponseDTO;
@@ -13,6 +10,7 @@ import io.smallrye.mutiny.Uni;
 import org.hibernate.reactive.mutiny.Mutiny;
 
 import java.util.List;
+import java.util.concurrent.Flow;
 import java.util.stream.Collectors;
 
 public class AdminService {
@@ -94,4 +92,14 @@ public class AdminService {
   }
 
 
+  public Uni<Account> createAccount(String name) {
+    Account account = new Account();
+    account.setName(name);
+    return emf.withTransaction(session -> repository.createAccount(session, account));
+  }
+
+  public Uni<List<AccountDTO>> getAccounts() {
+    return emf.withSession(repository::getAccounts).
+      onItem().transform(accounts -> accounts.stream().map(AdminMapper::toDTO).collect(Collectors.toList()));
+  }
 }

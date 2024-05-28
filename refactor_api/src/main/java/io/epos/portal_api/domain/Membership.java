@@ -3,7 +3,7 @@ package io.epos.portal_api.domain;
 import io.vertx.core.json.JsonObject;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -20,10 +20,10 @@ public class Membership {
   private JsonObject issuanceKey;
 
   @Column(name = "start_date")
-  private Date startDate;
+  private LocalDate startDate;
 
   @Column(name = "end_date")
-  private Date endDate;
+  private LocalDate endDate;
 
   @ManyToOne
   @JoinColumn(name = "account_id")
@@ -73,19 +73,19 @@ public class Membership {
     this.issuanceKey = issuanceKey;
   }
 
-  public Date getStartDate() {
+  public LocalDate getStartDate() {
     return startDate;
   }
 
-  public void setStartDate(Date startDate) {
+  public void setStartDate(LocalDate startDate) {
     this.startDate = startDate;
   }
 
-  public Date getEndDate() {
+  public LocalDate getEndDate() {
     return endDate;
   }
 
-  public void setEndDate(Date endDate) {
+  public void setEndDate(LocalDate endDate) {
     this.endDate = endDate;
   }
 

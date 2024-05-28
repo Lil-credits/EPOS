@@ -2,13 +2,16 @@ package io.epos.portal_api.api.educationModule.dto;
 
 import io.vertx.core.json.JsonObject;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class EducationModuleVersionResponseDTO {
   private int id;
   private String name;
   private JsonObject baseCredential;
-  private Date effectuationDate;
+  private LocalDate effectuationDate;
+
+  private LocalDateTime createdAt;
 
   private int educationModuleId;
 
@@ -36,11 +39,11 @@ public class EducationModuleVersionResponseDTO {
     this.baseCredential = baseCredential;
   }
 
-  public Date getEffectuationDate() {
+  public LocalDate getEffectuationDate() {
     return effectuationDate;
   }
 
-  public void setEffectuationDate(Date effectuationDate) {
+  public void setEffectuationDate(LocalDate effectuationDate) {
     this.effectuationDate = effectuationDate;
   }
 

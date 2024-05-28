@@ -62,6 +62,17 @@ public class AdminRepository {
     return session.createQuery(query, EducationModule.class)
       .getResultList();
   }
+
+    public Uni<Account> createAccount(Mutiny.Session session, Account account) {
+      return session.persist(account).replaceWith(account);
+    }
+
+  public Uni<List<Account>> getAccounts(Mutiny.Session session) {
+    String query = "SELECT a FROM Account a";
+
+    return session.createQuery(query, Account.class)
+      .getResultList();
+  }
 }
 
 

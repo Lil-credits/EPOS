@@ -41,4 +41,8 @@ public class AdminValidationHandler extends BaseValidationHandler {
   public void createEducationModule(RoutingContext routingContext) {
     validateCreate(routingContext, SCHEMA_CREATE_EDUCATION_MODULE);
   }
+
+    public void createAccount(RoutingContext routingContext) {
+      routingContext.next();
+    }
 }

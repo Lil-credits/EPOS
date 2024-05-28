@@ -3,13 +3,15 @@ package io.epos.portal_api.domain;
 import io.vertx.core.json.JsonObject;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "education_module_versions")
 public class EducationModuleVersion {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
   @Column(nullable = false)
@@ -18,10 +20,11 @@ public class EducationModuleVersion {
   @Column(name = "base_credential")
   private JsonObject baseCredential;
 
-//  @Column(name = "created_at")
+  @Column(name = "created_at", nullable = false, updatable = false)
+  private LocalDateTime createdAt;
 
   @Column(name = "effectuation_date")
-  private Date effectuationDate;
+  private LocalDate effectuationDate;
 
   @OneToMany(mappedBy = "educationModuleVersion")
   private List<StudentGroup> studentGroups;
@@ -40,6 +43,13 @@ public class EducationModuleVersion {
 
   @OneToMany(mappedBy = "educationModuleVersion")
   private List<IssuedCredential> issuedCredentials;
+
+  @PrePersist
+  protected void onCreate() {
+    createdAt = LocalDateTime.now();
+  }
+
+  // Getters and setters
 
   public int getId() {
     return id;
@@ -65,11 +75,15 @@ public class EducationModuleVersion {
     this.baseCredential = baseCredential;
   }
 
-  public Date getEffectuationDate() {
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public LocalDate getEffectuationDate() {
     return effectuationDate;
   }
 
-  public void setEffectuationDate(Date effectuationDate) {
+  public void setEffectuationDate(LocalDate effectuationDate) {
     this.effectuationDate = effectuationDate;
   }
 
@@ -113,3 +127,4 @@ public class EducationModuleVersion {
     this.studentGroups = studentGroups;
   }
 }
+

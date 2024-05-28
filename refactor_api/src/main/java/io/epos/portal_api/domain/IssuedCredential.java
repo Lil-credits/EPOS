@@ -1,18 +1,21 @@
 package io.epos.portal_api.domain;
 
-
 import io.vertx.core.json.JsonObject;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "issued_credentials")
 public class IssuedCredential {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
+
   @Column(name = "credential")
   private JsonObject credential;
 
-  // @Column(name = "created_at")
+  @Column(name = "created_at", nullable = false, updatable = false)
+  private LocalDateTime createdAt;
 
   @ManyToOne
   @JoinColumn(name = "education_module_version_id")
@@ -25,6 +28,13 @@ public class IssuedCredential {
   @ManyToOne
   @JoinColumn(name = "subject_id")
   private Membership subjectMembership;
+
+  @PrePersist
+  protected void onCreate() {
+    createdAt = LocalDateTime.now();
+  }
+
+  // Getters and setters
 
   public int getId() {
     return id;
@@ -40,6 +50,10 @@ public class IssuedCredential {
 
   public void setCredential(JsonObject credential) {
     this.credential = credential;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
   }
 
   public EducationModuleVersion getEducationModuleVersion() {

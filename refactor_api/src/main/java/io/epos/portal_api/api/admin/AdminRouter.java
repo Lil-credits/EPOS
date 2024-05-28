@@ -31,14 +31,18 @@ public class AdminRouter {
   private Router buildAdminRouter() {
     final Router adminRouter = Router.router(vertx);
     adminRouter.route("/admin*").handler(BodyHandler.create());
-    adminRouter.get("/admin/company").handler(LoggerHandler.create()).handler(validationHandler::readAll).handler(adminController::getCompanies);
-    adminRouter.post("/admin/company").handler(LoggerHandler.create()).handler(validationHandler::createCompany).handler(adminController::createCompany);
-    adminRouter.get("/admin/subsidiary").handler(LoggerHandler.create()).handler(validationHandler::readAll).handler(adminController::getSubsidiaries);
-    adminRouter.post("/admin/subsidiary").handler(LoggerHandler.create()).handler(validationHandler::createSubsidiary).handler(adminController::createSubsidiary);
-    adminRouter.get("/admin/organisational-unit").handler(LoggerHandler.create()).handler(validationHandler::readAll).handler(adminController::getOrganisationUnits);
-    adminRouter.post("/admin/organisational-unit").handler(LoggerHandler.create()).handler(validationHandler::createOrganisationUnit).handler(adminController::createOrganisationUnit);
-    adminRouter.get("/admin/education-module").handler(LoggerHandler.create()).handler(validationHandler::readAll).handler(adminController::getEducationModules);
-    adminRouter.post("/admin/education-module").handler(LoggerHandler.create()).handler(validationHandler::createEducationModule).handler(adminController::createEducationModule);
+    adminRouter.route("/admin*").handler(LoggerHandler.create());
+    adminRouter.get("/admin/company").handler(validationHandler::readAll).handler(adminController::getCompanies);
+    adminRouter.post("/admin/company").handler(validationHandler::createCompany).handler(adminController::createCompany);
+    adminRouter.get("/admin/subsidiary").handler(validationHandler::readAll).handler(adminController::getSubsidiaries);
+    adminRouter.post("/admin/subsidiary").handler(validationHandler::createSubsidiary).handler(adminController::createSubsidiary);
+    adminRouter.get("/admin/organisational-unit").handler(validationHandler::readAll).handler(adminController::getOrganisationUnits);
+    adminRouter.post("/admin/organisational-unit").handler(validationHandler::createOrganisationUnit).handler(adminController::createOrganisationUnit);
+    adminRouter.get("/admin/education-module").handler(validationHandler::readAll).handler(adminController::getEducationModules);
+    adminRouter.post("/admin/education-module").handler(validationHandler::createEducationModule).handler(adminController::createEducationModule);
+    adminRouter.get("/admin/account").handler(validationHandler::readAll).handler(adminController::getAccounts);
+    adminRouter.post("/admin/account").handler(validationHandler::createAccount).handler(adminController::createAccount);
+
     return adminRouter;
   }
 }
