@@ -1,7 +1,5 @@
 package io.epos.portal_api.api.educationModule.dto;
 
-import io.epos.portal_api.domain.EducationModule;
-
 import java.util.List;
 
 public class EducationModuleListResponseDTO {

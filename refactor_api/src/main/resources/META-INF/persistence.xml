@@ -36,8 +36,8 @@
 
 
 <!--      &lt;!&ndash; Automatic schema export &ndash;&gt;-->
-<!--      <property name="jakarta.persistence.schema-generation.database.action"-->
-<!--                value="create"/>-->
+      <property name="jakarta.persistence.schema-generation.database.action"
+                value="create"/>
 
       <!-- SQL statement logging -->
       <property name="hibernate.show_sql" value="true"/>

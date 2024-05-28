@@ -1,7 +1,5 @@
 package io.epos.portal_api.w3ih.models.openbadges;
 
-import java.util.Map;
-
 /**
  * The information in CredentialStatus is used to discover information about the current
  * status of a verifiable credential, such as whether it is suspended or revoked.

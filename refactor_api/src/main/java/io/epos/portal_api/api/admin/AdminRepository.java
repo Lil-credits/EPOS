@@ -6,7 +6,6 @@ import org.hibernate.reactive.mutiny.Mutiny;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 public class AdminRepository {
   public Uni<Company> createCompany(Mutiny.Session session, Company company) {

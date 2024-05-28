@@ -1,7 +1,5 @@
 package io.epos.portal_api.w3ih.models.openbadges;
 
-import java.util.Map;
-
 /**
  * The information in RefreshService is used to refresh the verifiable credential.
  */

@@ -1,7 +1,5 @@
 package io.epos.portal_api.w3ih.models.openbadges;
 
-import java.util.Map;
-
 /**
  * Terms of use can be utilized by an issuer or a holder to communicate the terms under
  * which a verifiable credential or verifiable presentation was issued

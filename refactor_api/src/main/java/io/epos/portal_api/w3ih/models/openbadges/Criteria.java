@@ -1,7 +1,5 @@
 package io.epos.portal_api.w3ih.models.openbadges;
 
-import java.util.Map;
-
 /**
  * Descriptive metadata about the achievements necessary to be recognized with an assertion
  * of a particular achievement. This data is added to the Achievement class so that it may

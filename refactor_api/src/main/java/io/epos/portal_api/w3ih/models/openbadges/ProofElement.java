@@ -1,7 +1,5 @@
 package io.epos.portal_api.w3ih.models.openbadges;
 
-import java.util.Map;
-
 /**
  * A JSON-LD Linked Data proof.
  */

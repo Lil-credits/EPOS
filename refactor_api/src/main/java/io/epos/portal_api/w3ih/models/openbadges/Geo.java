@@ -1,6 +1,6 @@
 package io.epos.portal_api.w3ih.models.openbadges;
 
-import nl.hu.w3ih.models.openbadges.enums.GeoType;
+import io.epos.portal_api.w3ih.models.openbadges.enums.GeoType;
 
 /**
  * The geographic coordinates of a location.

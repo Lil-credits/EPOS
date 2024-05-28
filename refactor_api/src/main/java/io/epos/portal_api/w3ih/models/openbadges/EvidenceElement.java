@@ -1,7 +1,5 @@
 package io.epos.portal_api.w3ih.models.openbadges;
 
-import java.util.Map;
-
 /**
  * Descriptive metadata about evidence related to the achievement assertion. Each instance
  * of the evidence class present in an assertion corresponds to one entity, though a single

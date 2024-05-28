@@ -1,6 +1,5 @@
 package io.epos.portal_api.api.admin;
 
-import io.vertx.ext.web.handler.LoggerFormat;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.ext.web.Router;
 import io.vertx.mutiny.ext.web.handler.BodyHandler;

@@ -1,7 +1,6 @@
 package io.epos.portal_api.domain;
 
 import jakarta.persistence.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 

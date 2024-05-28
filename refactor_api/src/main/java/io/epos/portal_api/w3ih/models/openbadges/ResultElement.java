@@ -1,6 +1,7 @@
 package io.epos.portal_api.w3ih.models.openbadges;
 
-import nl.hu.w3ih.models.openbadges.enums.Status;
+
+import io.epos.portal_api.w3ih.models.openbadges.enums.Status;
 
 /**
  * Describes a result that was achieved.

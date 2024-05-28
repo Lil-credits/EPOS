@@ -1,25 +1,30 @@
 package io.epos.portal_api.domain;
 
-
-import io.vertx.core.json.JsonObject;
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
 @Table(name = "accounts")
 public class Account {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
-  @Column(name = "did")
-  private String did;
-
-  @Column(name = "issuance_key")
-  private JsonObject issuanceKey;
+  @Column(name = "name")
+  private String name;
 
   @OneToMany(mappedBy = "account")
   private List<Membership> memberships;
+
+  @ManyToMany
+  @JoinTable(
+    name = "account_class",
+    joinColumns = @JoinColumn(name = "account_id"),
+    inverseJoinColumns = @JoinColumn(name = "class_id")
+  )
+  private List<StudentGroup> studentGroups;
+
+  // Getters and setters
 
   public int getId() {
     return id;
@@ -29,20 +34,12 @@ public class Account {
     this.id = id;
   }
 
-  public String getDid() {
-    return did;
+  public String getName() {
+    return name;
   }
 
-  public void setDid(String did) {
-    this.did = did;
-  }
-
-  public JsonObject getIssuanceKey() {
-    return issuanceKey;
-  }
-
-  public void setIssuanceKey(JsonObject issuanceKey) {
-    this.issuanceKey = issuanceKey;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public List<Membership> getMemberships() {
@@ -51,5 +48,13 @@ public class Account {
 
   public void setMemberships(List<Membership> memberships) {
     this.memberships = memberships;
+  }
+
+  public List<StudentGroup> getStudentGroups() {
+    return studentGroups;
+  }
+
+  public void setStudentGroups(List<StudentGroup> studentGroups) {
+    this.studentGroups = studentGroups;
   }
 }

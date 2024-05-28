@@ -1,8 +1,5 @@
 package io.epos.portal_api.api.microCredential;
 
-import io.epos.portal_api.api.educationModule.dto.EducationModuleListResponseDTO;
-import io.epos.portal_api.api.educationModule.dto.EducationModuleMapper;
-import io.epos.portal_api.api.educationModule.dto.EducationModuleResponseDTO;
 import io.epos.portal_api.domain.EducationModuleVersion;
 import io.epos.portal_api.domain.IssuedCredential;
 import io.epos.portal_api.domain.Membership;
@@ -10,9 +7,6 @@ import io.epos.portal_api.integration.waltid.WaltidClient;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.json.JsonObject;
 import org.hibernate.reactive.mutiny.Mutiny;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static io.epos.portal_api.util.FileUtils.readJsonObject;
 

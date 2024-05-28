@@ -1,6 +1,7 @@
 package io.epos.portal_api.w3ih.models.openbadges;
 
-import nl.hu.w3ih.models.openbadges.enums.OtherIdentifierType;
+
+import io.epos.portal_api.w3ih.models.openbadges.enums.OtherIdentifierType;
 
 /**
  * No description supplied.
