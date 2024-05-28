@@ -42,6 +42,10 @@ public class AdminRouter {
     adminRouter.post("/admin/education-module").handler(validationHandler::createEducationModule).handler(adminController::createEducationModule);
     adminRouter.get("/admin/account").handler(validationHandler::readAll).handler(adminController::getAccounts);
     adminRouter.post("/admin/account").handler(validationHandler::createAccount).handler(adminController::createAccount);
+    adminRouter.get("/admin/membership").handler(validationHandler::readAll).handler(adminController::getMemberships);
+    adminRouter.post("/admin/membership").handler(validationHandler::createMembership).handler(adminController::createMembership);
+    adminRouter.post("/admin/class").handler(validationHandler::createClass).handler(adminController::createClass);
+    adminRouter.get("/admin/class").handler(validationHandler::readAll).handler(adminController::getClasses);
 
     return adminRouter;
   }

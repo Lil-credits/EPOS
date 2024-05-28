@@ -73,6 +73,33 @@ public class AdminRepository {
     return session.createQuery(query, Account.class)
       .getResultList();
   }
+
+  public Uni<Account> getAccount(Mutiny.Session session, Integer accountId) {
+    return session.find(Account.class, accountId)
+      .onItem().ifNull().failWith(new NoSuchElementException("Account with id " + accountId + " not found"));
+  }
+
+  public Uni<Membership> createMembership(Mutiny.Session session, Membership membership) {
+    return session.persist(membership).replaceWith(membership);
+  }
+
+  public Uni<List<Membership>> getMemberships(Mutiny.Session session) {
+    String query = "SELECT m FROM Membership m";
+
+    return session.createQuery(query, Membership.class)
+      .getResultList();
+  }
+
+  public Uni<List<StudentGroup>> getClasses(Mutiny.Session session) {
+    String query = "SELECT sg FROM StudentGroup sg";
+
+    return session.createQuery(query, StudentGroup.class)
+      .getResultList();
+  }
+
+  public Uni<StudentGroup> createClass(Mutiny.Session session, StudentGroup studentGroup) {
+    return session.persist(studentGroup).replaceWith(studentGroup);
+  }
 }
 
 

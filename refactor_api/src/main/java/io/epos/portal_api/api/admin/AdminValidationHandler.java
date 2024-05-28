@@ -45,4 +45,12 @@ public class AdminValidationHandler extends BaseValidationHandler {
     public void createAccount(RoutingContext routingContext) {
       routingContext.next();
     }
+
+  public void createMembership(RoutingContext routingContext) {
+    routingContext.next();
+  }
+
+    public void createClass(RoutingContext routingContext) {
+      routingContext.next();
+    }
 }

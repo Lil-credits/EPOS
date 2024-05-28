@@ -135,4 +135,38 @@ public class AdminController {
       error -> ResponseBuilder.buildErrorResponse(routingContext, error)
     );
   }
+
+  public void createMembership(RoutingContext routingContext) {
+    logger.info("Creating membership");
+    JsonObject body = routingContext.body().asJsonObject();
+    adminService.createMembership(body.getInteger("accountId"), body.getInteger("organisationalUnitId")).subscribe().with(
+      result -> ResponseBuilder.buildOkResponse(routingContext, result),
+      error -> ResponseBuilder.buildErrorResponse(routingContext, error)
+    );
+  }
+
+  public void getMemberships(RoutingContext routingContext) {
+    logger.info("Getting memberships");
+    adminService.getMemberships().subscribe().with(
+      result -> ResponseBuilder.buildOkResponse(routingContext, result),
+      error -> ResponseBuilder.buildErrorResponse(routingContext, error)
+    );
+  }
+
+  public void createClass(RoutingContext routingContext) {
+    logger.info("Creating class");
+    JsonObject body = routingContext.body().asJsonObject();
+    adminService.createClass(body.getString("name"), body.getInteger("organisationalUnitId")).subscribe().with(
+      result -> ResponseBuilder.buildOkResponse(routingContext, result),
+      error -> ResponseBuilder.buildErrorResponse(routingContext, error)
+    );
+  }
+
+  public void getClasses(RoutingContext routingContext) {
+    logger.info("Getting classes");
+    adminService.getClasses().subscribe().with(
+      result -> ResponseBuilder.buildOkResponse(routingContext, result),
+      error -> ResponseBuilder.buildErrorResponse(routingContext, error)
+    );
+  }
 }

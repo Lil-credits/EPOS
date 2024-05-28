@@ -1,9 +1,8 @@
 package io.epos.portal_api.api.admin.dto;
 
-import io.epos.portal_api.domain.Account;
-import io.epos.portal_api.domain.Company;
-import io.epos.portal_api.domain.OrganisationalUnit;
-import io.epos.portal_api.domain.Subsidiary;
+import io.epos.portal_api.domain.*;
+
+import java.util.stream.Collectors;
 
 public class AdminMapper {
 
@@ -48,6 +47,34 @@ public class AdminMapper {
     AccountDTO dto = new AccountDTO();
     dto.setId(account.getId());
     dto.setName(account.getName());
+    return dto;
+  }
+
+
+  public static MembershipDTO toDTO(Membership membership) {
+    if (membership == null) {
+      return null;
+    }
+
+    MembershipDTO dto = new MembershipDTO();
+    dto.setId(membership.getId());
+    dto.setOrganisationalUnit(toDTO(membership.getOrganisationalUnit()));
+    dto.setAccount(toDTO(membership.getAccount()));
+    return dto;
+  }
+
+  public static StudentGroupDTO toDTO(StudentGroup studentGroup) {
+    if (studentGroup == null) {
+      return null;
+    }
+
+    StudentGroupDTO dto = new StudentGroupDTO();
+    dto.setId(studentGroup.getId());
+    dto.setName(studentGroup.getName());
+    dto.setStartDate(studentGroup.getStartDate());
+    dto.setEndDate(studentGroup.getEndDate());
+    dto.setOrganisationUnitId(studentGroup.getOrganisationalUnit().getId());
+    dto.setEducationModuleVersionId(studentGroup.getEducationModuleVersion().getId());
     return dto;
   }
 }

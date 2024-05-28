@@ -13,7 +13,7 @@ public class EducationModuleRepository {
       .onItem().ifNull().failWith(new NoSuchElementException("No education module with ID " + id))
       .call(module ->
         Mutiny.fetch(module.getEducationModuleVersions())
-        .replaceWith(module));
+          .replaceWith(module));
   }
 
   public Uni<List<EducationModule>> listEducationModules(Mutiny.Session session, int limit, int offset) {

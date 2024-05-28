@@ -1,5 +1,6 @@
 package io.epos.portal_api.api.microCredential;
 
+import io.epos.portal_api.domain.Account;
 import io.epos.portal_api.domain.EducationModuleVersion;
 import io.epos.portal_api.domain.IssuedCredential;
 import io.epos.portal_api.domain.Membership;
@@ -29,14 +30,14 @@ public class MicroCredentialService {
   }
   public Uni<String> issueMicroCredential(int issuerId, int subjectId, int educationModuleVersionId) {
     Uni<Membership> issuerUni = emf.withSession(session -> repository.getMembership(session, issuerId));
-    Uni<Membership> subjectUni = emf.withSession(session -> repository.getMembership(session, subjectId));
+    Uni<Account> subjectUni = emf.withSession(session -> repository.getAccount(session, subjectId));
     Uni<EducationModuleVersion> educationModuleVersionUni = emf.withSession(session -> repository.getEducationModuleVersion(session, educationModuleVersionId));
 
     return Uni.combine().all().unis(issuerUni, subjectUni, educationModuleVersionUni).asTuple()
       .onItem().transformToUni(tuple -> {
         IssuedCredential issuedCredential = new IssuedCredential();
         issuedCredential.setIssuerMembership(tuple.getItem1());
-        issuedCredential.setSubjectMembership(tuple.getItem2());
+        issuedCredential.setSubjectAccount(tuple.getItem2());
         issuedCredential.setEducationModuleVersion(tuple.getItem3());
 
         JsonObject microCredential = readJsonObject("micro_credential.json"); // Assume this method reads and constructs the JsonObject

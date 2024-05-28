@@ -102,4 +102,33 @@ public class AdminService {
     return emf.withSession(repository::getAccounts).
       onItem().transform(accounts -> accounts.stream().map(AdminMapper::toDTO).collect(Collectors.toList()));
   }
+
+  public Uni<MembershipDTO> createMembership(Integer accountId, Integer organisationalUnitId) {
+    return Uni.combine().all().unis(
+      emf.withSession(session -> repository.getAccount(session, accountId)),
+      emf.withSession(session -> repository.getOrganisationalUnit(session, organisationalUnitId))
+    ).asTuple().onItem().transformToUni(tuple -> {
+      Membership membership = new Membership();
+      membership.setAccount(tuple.getItem1());
+      membership.setOrganisationalUnit(tuple.getItem2());
+      return emf.withTransaction(session -> repository.createMembership(session, membership)).map(AdminMapper::toDTO);
+    });
+  }
+
+  public Uni<List<MembershipDTO>> getMemberships() {
+    return emf.withSession(repository::getMemberships).
+      onItem().transform(memberships -> memberships.stream().map(AdminMapper::toDTO).collect(Collectors.toList()));
+  }
+
+  public Uni<List<StudentGroupDTO>> getClasses() {
+    return emf.withSession(repository::getClasses).
+      onItem().transform(studentGroups -> studentGroups.stream().map(AdminMapper::toDTO).collect(Collectors.toList()));
+  }
+
+  public Uni<StudentGroup> createClass(CreateStudentGroup createStudentGroup) {
+    StudentGroup studentGroup = new StudentGroup();
+    studentGroup.setName(createStudentGroup.getName());
+    studentGroup.setAccounts();
+    return emf.withTransaction(session -> repository.createClass(session, studentGroup));
+  }
 }

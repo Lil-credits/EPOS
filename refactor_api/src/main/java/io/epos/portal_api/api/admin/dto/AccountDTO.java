@@ -1,5 +1,7 @@
 package io.epos.portal_api.api.admin.dto;
 
+import java.util.List;
+
 public class AccountDTO {
   private int id;
   private String name;

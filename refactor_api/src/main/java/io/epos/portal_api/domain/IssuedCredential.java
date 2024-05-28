@@ -1,5 +1,6 @@
 package io.epos.portal_api.domain;
 
+import io.epos.portal_api.api.admin.dto.AccountDTO;
 import io.vertx.core.json.JsonObject;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -27,7 +28,7 @@ public class IssuedCredential {
 
   @ManyToOne
   @JoinColumn(name = "subject_id")
-  private Membership subjectMembership;
+  private Account subjectAccount;
 
   @PrePersist
   protected void onCreate() {
@@ -72,11 +73,11 @@ public class IssuedCredential {
     this.issuerMembership = issuerMembership;
   }
 
-  public Membership getSubjectMembership() {
-    return subjectMembership;
+  public Account getSubjectAccount() {
+    return subjectAccount;
   }
 
-  public void setSubjectMembership(Membership subjectMembership) {
-    this.subjectMembership = subjectMembership;
+  public void setSubjectAccount(Account subjectAccount) {
+    this.subjectAccount = subjectAccount;
   }
 }
