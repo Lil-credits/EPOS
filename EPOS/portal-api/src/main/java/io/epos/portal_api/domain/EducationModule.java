@@ -1,41 +1,68 @@
 package io.epos.portal_api.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "educationmodule")
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
+@Table(name = "education_modules")
 public class EducationModule {
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
 
-  @Id
-  @GeneratedValue
-  private Integer id;
+  @ManyToOne
+  @JoinColumn(name = "company_id")
+  private Company company;
 
-  @Column
-  @NotNull
-  @Size(max = 255)
-  private String name;
+  @ManyToOne
+  @JoinColumn(name = "subsidiary_id")
+  private Subsidiary subsidiary;
 
-  @Column
-  private String imageUrl;
+  @ManyToOne
+  @JoinColumn(name = "organisational_unit_id")
+  private OrganisationalUnit organisationalUnit;
 
-  @Column
-  private Integer teamId;
-  private String team;
-  private String teamFaculty;
-  private String teamOrganization;
+  @OneToMany(mappedBy = "educationModule")
+  private List<EducationModuleVersion> educationModuleVersions;
 
-  private List<EducationModuleVersion> educationModuleVersions = new ArrayList<>();
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public Company getCompany() {
+    return company;
+  }
+
+  public void setCompany(Company company) {
+    this.company = company;
+  }
+
+  public Subsidiary getSubsidiary() {
+    return subsidiary;
+  }
+
+  public void setSubsidiary(Subsidiary subsidiary) {
+    this.subsidiary = subsidiary;
+  }
+
+  public OrganisationalUnit getOrganisationalUnit() {
+    return organisationalUnit;
+  }
+
+  public void setOrganisationalUnit(OrganisationalUnit organisationalUnit) {
+    this.organisationalUnit = organisationalUnit;
+  }
+
+  public List<EducationModuleVersion> getEducationModuleVersions() {
+    return educationModuleVersions;
+  }
+
+  public void setEducationModuleVersions(List<EducationModuleVersion> educationModuleVersions) {
+    this.educationModuleVersions = educationModuleVersions;
+  }
+
 }

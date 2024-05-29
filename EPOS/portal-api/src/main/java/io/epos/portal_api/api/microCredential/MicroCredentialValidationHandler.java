@@ -1,34 +1,24 @@
 package io.epos.portal_api.api.microCredential;
 
-import io.vertx.core.Vertx;
-import io.vertx.core.json.JsonObject;
-import io.vertx.ext.web.RoutingContext;
-import io.vertx.json.schema.JsonSchemaOptions;
-import io.vertx.json.schema.OutputUnit;
-import io.vertx.json.schema.SchemaRepository;
+import io.epos.portal_api.api.common.BaseValidationHandler;
+import io.vertx.mutiny.core.Vertx;
+import io.vertx.mutiny.ext.web.RoutingContext;
 
 import static io.epos.portal_api.util.FileUtils.readJsonSchema;
 
-public class MicroCredentialValidationHandler {
-  private final SchemaRepository schemaRepository = SchemaRepository.create(new JsonSchemaOptions().setBaseUri("app://"));
+public class MicroCredentialValidationHandler extends BaseValidationHandler {
+  private static final String BASE_URI = "app://";
+  private static final String SCHEMA_CREATE = "create_micro_credential.json";
 
   public MicroCredentialValidationHandler(Vertx vertx) {
-    schemaRepository.dereference("create_micro_credential.json", readJsonSchema("create_micro_credential.json", vertx));
+    super(vertx, BASE_URI);
+  }
+
+  @Override
+  protected void loadSchemas(Vertx vertx) {
+    schemaRepository.dereference(SCHEMA_CREATE, readJsonSchema(SCHEMA_CREATE, vertx));
   }
   public void issue(RoutingContext routingContext) {
-    JsonObject requestBody = routingContext.body().asJsonObject();
-    OutputUnit result = schemaRepository.validator("create_micro_credential.json").validate(requestBody);
-    if (!result.getValid()) {
-      routingContext.fail(400, new Exception());
-    }
-    else {
-      routingContext.next();
-    }
-  }
-
-  public void readAll(RoutingContext routingContext) {
-  }
-
-  public void issueBatch(RoutingContext routingContext) {
+    validateCreate(routingContext, SCHEMA_CREATE);
   }
 }

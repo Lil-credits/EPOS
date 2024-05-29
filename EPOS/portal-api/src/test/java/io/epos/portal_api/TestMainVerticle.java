@@ -1,6 +1,5 @@
 package io.epos.portal_api;
 
-import io.epos.portal_api.verticle.MainVerticle;
 import io.vertx.core.Vertx;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;

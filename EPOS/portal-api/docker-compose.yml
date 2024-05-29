@@ -41,6 +41,5 @@ volumes:
 
 networks:
   epos_network:
-      name: epos_network
-      external: true
-
+    name: epos_network
+    external: true

@@ -1,10 +1,8 @@
 package io.epos.portal_api.util;
 
-import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.file.FileSystem;
+import io.vertx.mutiny.core.Vertx;
 import io.vertx.core.json.JsonObject;
-import io.vertx.json.schema.JsonSchema;
+import io.vertx.mutiny.json.schema.JsonSchema;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,6 +31,3 @@ public class FileUtils {
     }
   }
 }
-
-
-

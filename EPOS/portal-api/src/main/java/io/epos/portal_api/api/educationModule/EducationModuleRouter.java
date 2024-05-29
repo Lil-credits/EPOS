@@ -1,22 +1,25 @@
 package io.epos.portal_api.api.educationModule;
 
-import io.vertx.core.Vertx;
-import io.vertx.ext.web.Router;
-import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.LoggerFormat;
-import io.vertx.ext.web.handler.LoggerHandler;
+import io.vertx.mutiny.core.Vertx;
+import io.vertx.mutiny.ext.web.Router;
+import io.vertx.mutiny.ext.web.handler.BodyHandler;
+import io.vertx.mutiny.ext.web.handler.LoggerHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EducationModuleRouter {
   private final Vertx vertx;
-  private final EducationModuleHandler educationModuleHandler;
-  private final EducationModuleValidationHandler educationModuleValidationHandler;
+  private final EducationModuleValidationHandler validationHandler;
+  private final EducationModuleController educationModuleController;
+  private static final Logger logger = LoggerFactory.getLogger(EducationModuleController.class);
 
-  public EducationModuleRouter(Vertx vertx,
-                    EducationModuleHandler educationModuleHandler,
-                    EducationModuleValidationHandler educationModuleValidationHandler) {
+
+  public EducationModuleRouter(Vertx vertx, EducationModuleController educationModuleController, EducationModuleValidationHandler validationHandler) {
     this.vertx = vertx;
-    this.educationModuleHandler = educationModuleHandler;
-    this.educationModuleValidationHandler = educationModuleValidationHandler;
+    this.educationModuleController = educationModuleController;
+    this.validationHandler = validationHandler;
+
   }
 
   /**
@@ -26,21 +29,13 @@ public class EducationModuleRouter {
    */
   public void setRouter(Router router) {
     router.route("/api/v1/*").subRouter(buildEducationModuleRouter());}
-
-  /**
-   * Build education module API
-   * All routes are composed by an error handler, a validation handler and the actual business logic handler
-   */
   private Router buildEducationModuleRouter() {
-    final Router educationModudleRouter = Router.router(vertx);
-
-    //test book router
-    educationModudleRouter.route("/education-module").handler(ctx -> ctx.response().end("Hello Education Module!"));
-    educationModudleRouter.route("/education-modules*").handler(BodyHandler.create());
-    educationModudleRouter.get("/education-modules/:id").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(educationModuleValidationHandler::readOne).handler(educationModuleHandler::readOne);
-    educationModudleRouter.post("/education-modules").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(educationModuleValidationHandler::create).handler(educationModuleHandler::create);
-    educationModudleRouter.get("/education-modules").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(educationModuleValidationHandler::readAll).handler(educationModuleHandler::readAll);
-
-    return educationModudleRouter;
+    final Router educationModuleRouter = Router.router(vertx);
+    educationModuleRouter.route("/education-module").respond(ctx -> ctx.response().end("Hello Education Module!"));
+    educationModuleRouter.route("/education-modules*").handler(BodyHandler.create());
+    educationModuleRouter.get("/education-modules/:id").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(validationHandler::readOne).handler(educationModuleController::getEducationModule);
+    educationModuleRouter.get("/education-modules").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(validationHandler::readAll).handler(educationModuleController::listEducationModules);
+    educationModuleRouter.post("/education-modules").handler(LoggerHandler.create(LoggerFormat.DEFAULT)).handler(validationHandler::create).handler(educationModuleController::createEducationModule);
+    return educationModuleRouter;
   }
 }
