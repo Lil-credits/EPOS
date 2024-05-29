@@ -3,139 +3,109 @@ import requests
 import json
 from psycopg2 import Error
 
-"""Database INFO"""
-USER = "postgres"
-PASSWORD = "AXEe263eqPFqwy4z"
-HOST = "localhost"
-PORT = "5432"
-DATABASE = "epos"
-
-ORGANISATION = "Hogeschool Utrecht"
-TEAMFACULTY = "Natuur & Techniek"
-TEAM = "Open-ICT"
+BASE_URL = "http://localhost:8080/api/v1/admin/"
+COMPANY = "Hogeschool Utrecht"
+SUBSIDIARY = "Natuur & Techniek"
+ORGANISATIONAL_UNIT = "Open-ICT"
 COURSE = "Open Innovation Semester 2 2023-2024 Backend"
-MODULE_VERSION_DATA = {
-    "Version": 1,
-    "Description": "First version",
-    "Attributes": {"EC": 6, "language": "English", "EQF": 6},
-    "RequiredAchievements": ["value1", "value2"],
-    "Skills": ["value1", "value2"],
-    "Status": "Active",
+BASE_CREDENTIAL = {
+    "courseName": "Nederlands",
+    "studyYear": 2021,
+    "description": "Dutch language course",
+    "imageUrl": "url to image",
+    "requiredAchievements": ["A2", "B1"],
+    "skills": ["listening", "speaking", "reading", "1"],
+    "attributes": {"EC": 1, "language": "Dutch", "EQF": 1},
 }
+
+
 DOCENTEN = ["Jeroen", "Robert"]
 STUDENTEN = ["Roy", "Kyan", "Jasper", "Sebastiaan"]
-
-
-# Function to establish a connection to PostgreSQL database
-def connect_to_db():
-    try:
-        connection = psycopg2.connect(
-            user=USER,
-            password=PASSWORD,
-            host=HOST,
-            port=PORT,
-            database=DATABASE,
-        )
-        return connection
-    except (Exception, Error) as error:
-        print("Error while connecting to PostgreSQL", error)
-        return None
+CLASS = "Open Innovation Semester 2 2023-2024 Backend"
 
 
 # Function to populate the database
-def populate_database(connection):
-    try:
-        # Start transaction
-        connection.autocommit = False
-        cursor = connection.cursor()
+def populate_database():
+    # create company
+    response = requests.post(
+        url=BASE_URL + "company",
+        json={"name": COMPANY},
+        timeout=5,
+    )
+    company_id = response.json()["id"]
 
-        # Create a new organisation
-        cursor.execute(
-            f"INSERT INTO Organisation (Name) VALUES ('{ORGANISATION}') RETURNING id"
+    # create subsidiary
+    response = requests.post(
+        url=BASE_URL + "subsidiary",
+        json={"name": SUBSIDIARY, "companyId": company_id},
+        timeout=5,
+    )
+    subsidiary_id = response.json()["id"]
+
+    # create organisational unit
+    response = requests.post(
+        url=BASE_URL + "organisational-unit",
+        json={
+            "name": ORGANISATIONAL_UNIT,
+            "subsidiaryId": subsidiary_id,
+            "companyId": company_id,
+        },
+        timeout=5,
+    )
+    team_id = response.json()["id"]
+
+    # create education module
+    response = requests.post(
+        url=BASE_URL + "education-module",
+        json={
+            "organisationalUnitId": team_id,
+            "name": COURSE,
+            "baseCredential": BASE_CREDENTIAL,
+        },
+        timeout=5,
+    )
+
+    education_module_version_id = response.json()["id"]
+    # create class
+    response = requests.post(
+        url=BASE_URL + "class",
+        json={
+            "name": CLASS,
+            "educationModuleVersionId": education_module_version_id,
+            "organisationalUnitId": team_id,
+        },
+        timeout=5,
+    )
+    class_id = response.json()["id"]
+
+    # create docenten and onboard them as members of the organisational unit
+    for docent in DOCENTEN:
+        response = requests.post(
+            url=BASE_URL + "account",
+            json={"name": docent, "role": "docent"},
+            timeout=5,
         )
-        organisation_id = cursor.fetchone()[0]
-
-        # Create a team faculty
-        cursor.execute(
-            f"INSERT INTO TeamFaculty (Name, OrgansationId) VALUES ('{TEAMFACULTY}', {organisation_id}) RETURNING id"
-        )
-        faculty_id = cursor.fetchone()[0]
-
-        # Create a team
-        cursor.execute(
-            f"INSERT INTO Teams (Name, FacultyId) VALUES ('{TEAM}', {faculty_id}) RETURNING id"
-        )
-        team_id = cursor.fetchone()[0]
-
-        # Create an education module and initial module version
-
-        cursor.execute(
-            f"INSERT INTO EducationModule (Name, TeamId) VALUES ('{COURSE}', {team_id}) RETURNING id"
-        )
-        module_id = cursor.fetchone()[0]
-
-        MODULE_VERSION_DATA["EducationModuleId"] = module_id
-
-        cursor.execute(
-            f"""INSERT INTO EducationModuleVersion (Version, Description, Attributes, RequiredAchievements, Skills, EducationModuleID, Status) 
-            VALUES ('{MODULE_VERSION_DATA['Version']}', '{MODULE_VERSION_DATA['Description']}', '{json.dumps(MODULE_VERSION_DATA['Attributes'])}', 
-            '{json.dumps(MODULE_VERSION_DATA['RequiredAchievements'])}', '{json.dumps(MODULE_VERSION_DATA['Skills'])}', 
-            '{MODULE_VERSION_DATA['EducationModuleId']}', '{MODULE_VERSION_DATA['Status']}')"""
+        user_id = response.json()["id"]
+        response = requests.post(
+            url=BASE_URL + "membership",
+            json={"accountId": user_id, "organisationalUnitId": team_id},
+            timeout=5,
         )
 
-        # Onboarding issuer
-        onboard_issuer_input = {
-            "issuanceKeyConfig": {"type": "jwk", "algorithm": "secp256r1"},
-            "issuerDidConfig": {"method": "jwk"},
-        }
-
-        # Create the users for the team
-        for docent in DOCENTEN:
-            # Get DID and JWK from the issuer API for the docent
-            response = requests.post(
-                url="http://localhost:7002/onboard/issuer",
-                json=onboard_issuer_input,
-                timeout=5,
-            )
-            did = response.json()["issuerDid"]
-            issuance_key = response.json()["issuanceKey"]
-            issuance_key["jwk"] = json.dumps(issuance_key["jwk"])
-
-            cursor.execute(
-                f"INSERT INTO Users (Name, Did, IssuanceKey) VALUES ('{docent}', '{did}', '{json.dumps(issuance_key)}') RETURNING id"
-            )
-
-            user_id = cursor.fetchone()[0]
-
-            # Add user to the team
-            cursor.execute(
-                f"INSERT INTO TeamUsers (TeamId, UserId) VALUES ({team_id}, {user_id})"
-            )
-
-        # Create users for the students
-        for student in STUDENTEN:
-            cursor.execute(f"INSERT INTO Users (Name) VALUES ('{student}')")
-
-        # Commit transaction if all queries succeed
-        connection.commit()
-        print("Database populated successfully")
-
-    except Exception as e:
-        # Rollback transaction if any error occurs
-        print("Error:", e)
-        connection.rollback()
-
-    finally:
-        # Reset autocommit mode
-        connection.autocommit = True
+    # create studenten
+    for student in STUDENTEN:
+        response = requests.post(
+            url=BASE_URL + "account",
+            json={"name": student, "role": "student"},
+            timeout=5,
+        )
+        user_id = response.json()["id"]
 
 
 # Main function
 def main():
-    connection = connect_to_db()
-    if connection:
-        populate_database(connection)
-        connection.close()
+    populate_database()
+    print("Database populated")
 
 
 if __name__ == "__main__":
