@@ -39,7 +39,7 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRoute } from "vue-router";
-import ModalComponent from "../components/module-components/ModalComponent.vue";
+import ModalComponent from "../components/page-components/module/old/ModalComponent.vue";
 
 export default {
   name: 'IssueModule',

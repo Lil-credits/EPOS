@@ -3,20 +3,21 @@ import ModuleDetails from '../views/ModuleDetails.vue';
 import ModuleOverview from '../views/ModuleOverview.vue';
 import CreateModule from '../views/CreateModule.vue';
 import IssueModule from '../views/IssueModule.vue';
+import ComponentTest from '../views/ComponentTest.vue';
 const routes = [
   {
     path: '/modules/',
     name: 'ModuleOveriew',
-    component: ModuleOverview
+    component: ModuleOverview,
   },
   {
     path: '/modules/:id',
     name: 'ModuleDetails',
     component: ModuleDetails,
-    props: true // This allows route params to be passed as props to the component
+    props: true
   },
   {
-    path: '/modules/create', // Corrected and changed to kebab-case
+    path: '/modules/create',
     name: 'CreateModule',
     component: CreateModule,
   },
@@ -25,7 +26,12 @@ const routes = [
     name: 'IssueModule',
     component: IssueModule,
     props: true
-  }
+  },
+  {
+    path: '/test',
+    name: 'Test',
+    component: ComponentTest
+  },
 ];
 
 const router = createRouter({
