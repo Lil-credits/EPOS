@@ -14,14 +14,6 @@ ORGANISATION = "Hogeschool Utrecht"
 TEAMFACULTY = "Natuur & Techniek"
 TEAM = "Open-ICT"
 COURSE = "Open Innovation Semester 2 2023-2024 Backend"
-MODULE_VERSION_DATA = {
-    "Version": 1,
-    "Description": "First version",
-    "Attributes": {"EC": 6, "language": "English", "EQF": 6},
-    "RequiredAchievements": ["value1", "value2"],
-    "Skills": ["value1", "value2"],
-    "Status": "Active",
-}
 DOCENTEN = ["Jeroen", "Robert"]
 STUDENTEN = ["Roy", "Kyan", "Jasper", "Sebastiaan"]
 
@@ -67,42 +59,11 @@ def populate_database(connection):
         )
         team_id = cursor.fetchone()[0]
 
-        # Create an education module and initial module version
-
-        cursor.execute(
-            f"INSERT INTO EducationModule (Name, TeamId) VALUES ('{COURSE}', {team_id}) RETURNING id"
-        )
-        module_id = cursor.fetchone()[0]
-
-        MODULE_VERSION_DATA["EducationModuleId"] = module_id
-
-        cursor.execute(
-            f"""INSERT INTO EducationModuleVersion (Version, Description, Attributes, RequiredAchievements, Skills, EducationModuleID, Status) 
-            VALUES ('{MODULE_VERSION_DATA['Version']}', '{MODULE_VERSION_DATA['Description']}', '{json.dumps(MODULE_VERSION_DATA['Attributes'])}', 
-            '{json.dumps(MODULE_VERSION_DATA['RequiredAchievements'])}', '{json.dumps(MODULE_VERSION_DATA['Skills'])}', 
-            '{MODULE_VERSION_DATA['EducationModuleId']}', '{MODULE_VERSION_DATA['Status']}')"""
-        )
-
-        # Onboarding issuer
-        onboard_issuer_input = {
-            "issuanceKeyConfig": {"type": "jwk", "algorithm": "secp256r1"},
-            "issuerDidConfig": {"method": "jwk"},
-        }
-
         # Create the users for the team
         for docent in DOCENTEN:
-            # Get DID and JWK from the issuer API for the docent
-            response = requests.post(
-                url="http://localhost:7002/onboard/issuer",
-                json=onboard_issuer_input,
-                timeout=5,
-            )
-            did = response.json()["issuerDid"]
-            issuance_key = response.json()["issuanceKey"]
-            issuance_key["jwk"] = json.dumps(issuance_key["jwk"])
 
             cursor.execute(
-                f"INSERT INTO Users (Name, Did, IssuanceKey) VALUES ('{docent}', '{did}', '{json.dumps(issuance_key)}') RETURNING id"
+                f"INSERT INTO Users (Name) VALUES ('{docent}') RETURNING id"
             )
 
             user_id = cursor.fetchone()[0]
