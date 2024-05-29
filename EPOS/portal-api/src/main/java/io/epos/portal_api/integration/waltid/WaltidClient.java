@@ -1,5 +1,6 @@
 package io.epos.portal_api.integration.waltid;
 
+import io.epos.portal_api.configuration.AppConfiguration;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
@@ -8,9 +9,9 @@ import io.vertx.mutiny.ext.web.client.WebClient;
 
 public class WaltidClient {
 
-  private final int PORT = 7002;
+  private final String PORT = AppConfiguration.getWaltIdPort();
 
-  private final String HOST;
+  private final String HOST = AppConfiguration.getWaltIdHost();
 
   private final String REQUESTURI_ISSUE = "/openid4vc/jwt/issue";
   private final String REQUEST_URI_ONBOARD = "/onboard/issuer";
@@ -18,16 +19,10 @@ public class WaltidClient {
 
   public WaltidClient(Vertx vertx) {
     this.client = WebClient.create(vertx);
-
-    if (Boolean.parseBoolean(System.getenv("DOCKER"))) {
-      this.HOST = "docker-compose-issuer-api-1";
-    } else {
-      this.HOST = "localhost";
-    }
   }
 
   public Uni<String> issue(JsonObject microCredential) {
-    return client.post(PORT, HOST, REQUESTURI_ISSUE)
+    return client.post(Integer.parseInt(PORT), HOST, REQUESTURI_ISSUE)
       .sendJson(microCredential)
       .onItem().transformToUni(response -> {
         if (response.statusCode() == 500) {
@@ -44,7 +39,7 @@ public class WaltidClient {
   public Uni<JsonObject> onboard(){
     JsonObject requestBody = (JsonObject) Json.decodeValue("{\"issuanceKeyConfig\": {\"type\": \"local\",\"algorithm\": \"secp256r1\"},\"issuerDidConfig\": {\"method\": \"jwk\"}}");
 //    return Uni.createFrom().item(requestBody);
-    return client.post(PORT, HOST, REQUEST_URI_ONBOARD)
+    return client.post(Integer.parseInt(PORT), HOST, REQUEST_URI_ONBOARD)
     .sendJson(requestBody).onItem().transform(response -> {
     if (response.statusCode() == 500) {
       throw new RuntimeException("Failed to onboard, " + response.bodyAsString());

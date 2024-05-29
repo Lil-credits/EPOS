@@ -1,6 +1,7 @@
 package io.epos.portal_api;
 
 import io.epos.portal_api.api.ApiInitializer;
+import io.epos.portal_api.util.db.DbUtil;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.vertx.core.AbstractVerticle;
 import io.vertx.mutiny.ext.web.Router;
@@ -26,7 +27,7 @@ public class MainVerticle extends AbstractVerticle {
   private Uni<Router> startHibernate() {
     // Define the blocking operation as a Uni
     Uni<Void> startHibernate = Uni.createFrom().deferred(() -> {
-      emf = Persistence.createEntityManagerFactory("pg-epos")
+      emf = Persistence.createEntityManagerFactory("pg-epos", DbUtil.getHibernateProperties())
         .unwrap(Mutiny.SessionFactory.class);
       return Uni.createFrom().voidItem();
     });

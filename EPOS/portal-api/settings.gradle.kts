@@ -1,1 +1,1 @@
-rootProject.name = "portal_api"
+rootProject.name = "portal-api"
