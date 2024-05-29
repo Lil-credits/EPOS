@@ -2,8 +2,6 @@ package io.epos.portal_api.api.admin.dto;
 
 import io.epos.portal_api.domain.*;
 
-import java.util.stream.Collectors;
-
 public class AdminMapper {
 
   public static CompanyDTO toDTO(Company company) {
@@ -60,6 +58,8 @@ public class AdminMapper {
     dto.setId(membership.getId());
     dto.setOrganisationalUnit(toDTO(membership.getOrganisationalUnit()));
     dto.setAccount(toDTO(membership.getAccount()));
+    dto.setIssuanceKey(membership.getIssuanceKey());
+    dto.setDid(membership.getDid());
     return dto;
   }
 
@@ -70,6 +70,7 @@ public class AdminMapper {
 
     StudentGroupDTO dto = new StudentGroupDTO();
     dto.setId(studentGroup.getId());
+    System.out.println(studentGroup.getName());
     dto.setName(studentGroup.getName());
     dto.setStartDate(studentGroup.getStartDate());
     dto.setEndDate(studentGroup.getEndDate());
@@ -77,4 +78,11 @@ public class AdminMapper {
     dto.setEducationModuleVersionId(studentGroup.getEducationModuleVersion().getId());
     return dto;
   }
+
+//  public static CreateClassRequest toCreateClassRequest(JsonObject body) {
+//    CreateClassRequest createClassRequest = new CreateClassRequest();
+//    createClassRequest.setName(body.getString("name"));
+//    createClassRequest.
+//
+//  }
 }

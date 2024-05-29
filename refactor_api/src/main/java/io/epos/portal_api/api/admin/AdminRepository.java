@@ -100,6 +100,28 @@ public class AdminRepository {
   public Uni<StudentGroup> createClass(Mutiny.Session session, StudentGroup studentGroup) {
     return session.persist(studentGroup).replaceWith(studentGroup);
   }
+
+  public Uni<List<Account>> findByIds(Mutiny.Session session, List<Integer> ids) {
+      return session.createQuery("SELECT a FROM Account a WHERE a.id IN :ids", Account.class)
+        .setParameter("ids", ids)
+        .getResultList();
+  }
+
+  public Uni<StudentGroup> createStudentGroup(Mutiny.Session session, StudentGroup studentGroup) {
+    return session.persist(studentGroup)
+      .call(session::flush)
+      .replaceWith(studentGroup);
+  }
+
+  public Uni<EducationModuleVersion> getEducationModuleVersion(Mutiny.Session session, int id){
+    return session.find(EducationModuleVersion.class, id)
+      .onItem().ifNull().failWith(new NoSuchElementException("Education module version with id " + id + " not found"));
+  }
+
+  public Uni<StudentGroup> getStudentGroup(Mutiny.Session session, Integer classId) {
+    return session.find(StudentGroup.class, classId)
+      .onItem().ifNull().failWith(new NoSuchElementException("Class with id " + classId + " not found"));
+  }
 }
 
 

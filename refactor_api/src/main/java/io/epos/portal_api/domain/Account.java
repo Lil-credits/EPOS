@@ -16,6 +16,9 @@ public class Account {
   @OneToMany(mappedBy = "account")
   private List<Membership> memberships;
 
+  @OneToMany(mappedBy = "subjectAccount")
+  private List<IssuedCredential> receivedCredentials;
+
   @ManyToMany
   @JoinTable(
     name = "account_class",
@@ -56,5 +59,13 @@ public class Account {
 
   public void setStudentGroups(List<StudentGroup> studentGroups) {
     this.studentGroups = studentGroups;
+  }
+
+  public List<IssuedCredential> getReceivedCredentials() {
+    return receivedCredentials;
+  }
+
+  public void setReceivedCredentials(List<IssuedCredential> receivedCredentials) {
+    this.receivedCredentials = receivedCredentials;
   }
 }

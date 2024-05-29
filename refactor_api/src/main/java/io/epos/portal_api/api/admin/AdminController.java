@@ -1,5 +1,8 @@
 package io.epos.portal_api.api.admin;
 
+import io.epos.portal_api.api.admin.dto.AdminMapper;
+import io.epos.portal_api.api.admin.dto.CreateClassRequest;
+import io.epos.portal_api.api.common.RequestParameters;
 import io.epos.portal_api.api.common.ResponseBuilder;
 import io.epos.portal_api.api.educationModule.EducationModuleController;
 import io.epos.portal_api.domain.*;
@@ -9,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class AdminController {
-  private static final Logger logger = LoggerFactory.getLogger(EducationModuleController.class);
+  private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
   private final AdminService adminService;
 
   public AdminController(AdminService adminService) {
@@ -156,7 +159,7 @@ public class AdminController {
   public void createClass(RoutingContext routingContext) {
     logger.info("Creating class");
     JsonObject body = routingContext.body().asJsonObject();
-    adminService.createClass(body.getString("name"), body.getInteger("organisationalUnitId")).subscribe().with(
+    adminService.createClass(body.mapTo(CreateClassRequest.class)).subscribe().with(
       result -> ResponseBuilder.buildOkResponse(routingContext, result),
       error -> ResponseBuilder.buildErrorResponse(routingContext, error)
     );
@@ -168,5 +171,15 @@ public class AdminController {
       result -> ResponseBuilder.buildOkResponse(routingContext, result),
       error -> ResponseBuilder.buildErrorResponse(routingContext, error)
     );
+  }
+
+  public void addStudentToClass(RoutingContext routingContext) {
+    logger.info("Adding student to class");
+    JsonObject body = routingContext.body().asJsonObject();
+    adminService.addStudentToClass(Integer.valueOf(routingContext.pathParam(RequestParameters.ID_PARAMETER)), body.getInteger("studentId")).subscribe().with(
+      result -> ResponseBuilder.buildOkResponse(routingContext, result),
+      error -> ResponseBuilder.buildErrorResponse(routingContext, error)
+    );
+
   }
 }

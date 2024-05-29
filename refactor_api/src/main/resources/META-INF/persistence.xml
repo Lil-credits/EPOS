@@ -35,11 +35,11 @@
                 value="10"/>
 
 
-<!--      &lt;!&ndash; Automatic schema export &ndash;&gt;-->
-<!--      <property name="jakarta.persistence.schema-generation.database.action"-->
-<!--                value="create"/>-->
+      <!-- Automatic schema export -->
+      <property name="jakarta.persistence.schema-generation.database.action"
+                value="create"/>
 
-      <!-- SQL statement logging -->
+<!--       SQL statement logging-->
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>
       <property name="hibernate.highlight_sql" value="true"/>

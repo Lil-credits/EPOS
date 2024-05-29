@@ -1,11 +1,11 @@
 package io.epos.portal_api.api.admin.dto;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public class StudentGroupDTO {
   private int id;
-  private LocalDate startDate;
-  private LocalDate endDate;
+  private Date startDate;
+  private Date endDate;
   private String name;
 
   private int organisationUnitId;
@@ -21,19 +21,19 @@ public class StudentGroupDTO {
     this.id = id;
   }
 
-  public LocalDate getStartDate() {
+  public Date getStartDate() {
     return startDate;
   }
 
-  public void setStartDate(LocalDate startDate) {
+  public void setStartDate(Date startDate) {
     this.startDate = startDate;
   }
 
-  public LocalDate getEndDate() {
+  public Date getEndDate() {
     return endDate;
   }
 
-  public void setEndDate(LocalDate endDate) {
+  public void setEndDate(Date endDate) {
     this.endDate = endDate;
   }
 

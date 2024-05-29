@@ -43,9 +43,6 @@ public class Membership {
   @OneToMany(mappedBy = "issuerMembership")
   private List<IssuedCredential> issuedCredentials;
 
-  @OneToMany(mappedBy = "subjectMembership")
-  private List<IssuedCredential> receivedCredentials;
-
   @OneToMany(mappedBy = "membership")
   private List<EducationModuleVersion> educationModuleVersions;
 
@@ -127,14 +124,6 @@ public class Membership {
 
   public void setIssuedCredentials(List<IssuedCredential> issuedCredentials) {
     this.issuedCredentials = issuedCredentials;
-  }
-
-  public List<IssuedCredential> getReceivedCredentials() {
-    return receivedCredentials;
-  }
-
-  public void setReceivedCredentials(List<IssuedCredential> receivedCredentials) {
-    this.receivedCredentials = receivedCredentials;
   }
 
   public List<EducationModuleVersion> getEducationModuleVersions() {
