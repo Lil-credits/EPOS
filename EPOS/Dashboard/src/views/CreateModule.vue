@@ -28,9 +28,9 @@
           hidden
         />
         <label for="course-badge" class="upload-label">
-          <div v-if="courseDetails.badgeImage" class="image-preview">
+          <div v-if="formData.image" class="image-preview">
             <img
-              :src="courseDetails.badgeImage"
+              :src="from"
               alt="Uploaded image preview"
               class="preview-image"
             />
@@ -98,15 +98,12 @@ export default {
   setup() {
     const step = ref(1);
     const formData = ref({
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      address: '',
-      city: '',
-      state: '',
-      zipCode: '',
-      country: ''
+      title: '',
+      image: '',
+      description: '',
+      attriburtes: {},
+      skills: [],
+      requiredAdmission: [],
     });
 
     const nextStep = () => {
@@ -119,6 +116,17 @@ export default {
       console.log('Step:', step.value);
     };
 
+    const handleImageUpload = (event) => {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        formData.value.image = reader.result;
+      };
+
+      reader.readAsDataURL(file);
+    };
+
     const submitForm = () => {
       console.log('Form Submitted', formData.value);
     };
@@ -128,7 +136,8 @@ export default {
       formData,
       nextStep,
       prevStep,
-      submitForm
+      submitForm,
+      handleImageUpload
     };
   }
 };
