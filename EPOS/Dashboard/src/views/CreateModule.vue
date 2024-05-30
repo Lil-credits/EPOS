@@ -69,6 +69,7 @@
         label="Select EQF Level"
         required
         variant="outlined"
+        @update:model-value="handleDropdown('EQF Level', $event)"
         ></v-select>
 </div>
     </v-form>
@@ -105,12 +106,19 @@
           <detailDescription :description="formData.description" />
           <detailList listTitle="Skills" :list="formData.skills" />
           <detailList listTitle="Admission Requirements" :list="formData.requiredAdmission" />
+          <v-button></v-button>
         </div>
       </div>
     </v-stepper>
     <div class="stepbutton">
-      <v-icon class="btn" @click="prevStep">mdi-arrow-left</v-icon>
-      <v-icon class="btn" @click="nextStep">mdi-arrow-right</v-icon>
+      <div v-if="step===5">
+        <v-icon class="btn" @click="prevStep">mdi-arrow-left</v-icon>
+        <v-icon class="btn" @click="submitForm">mdi-check</v-icon>
+      </div>
+      <div v-else>
+        <v-icon class="btn" @click="prevStep">mdi-arrow-left</v-icon>
+        <v-icon class="btn" @click="nextStep">mdi-arrow-right</v-icon>
+      </div>
     </div>
   </v-col>
   </v-row>
@@ -139,7 +147,7 @@ export default {
       title: '',
       image: '',
       description: '',
-      attriburtes: {},
+      attriburtes: {language:null, studyLoad:null, EQFLevel:null},
       skills: [],
       requiredAdmission: [],
     });
@@ -192,6 +200,11 @@ export default {
       }
     };
 
+    const handleDropdown = (label, value) => {
+      console.log(label, value);
+      console.log(formData);
+    };
+
     return {
       step,
       formData,
@@ -205,8 +218,10 @@ export default {
       skills,
       newSkill,
       addSkill,
+      handleDropdown,
     };
-  }
+  },
+
 };
 </script>
 
