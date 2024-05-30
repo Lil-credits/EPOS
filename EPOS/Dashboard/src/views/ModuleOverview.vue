@@ -7,8 +7,8 @@
         class="module-item"
       >
         <overviewItem 
-          :title="module.name" 
-          :image="module.imageUrl" 
+          :title="module.versions[0].name" 
+          :image="module.versions[0].imageData" 
           :moduleId="module.id"
         />
       </v-col>

@@ -53,12 +53,15 @@ export default {
         const call = await api.getModule(moduleId); // Use the module ID from the route
         const data = call.data;
         console.log(data);
-        title.value = data.name;
-        imageUrl.value = data.imageUrl;
-        attributes.value = data.attributes;
-        description.value = data.description;
-        skills.value = data.skills;
-        requiredAchievements.value = data.requiredAchievements;
+        console.log(data.versions)
+        console.log(data.versions[0].name)
+        console.log(data.versions[0].attributes)
+        title.value = data.versions[0].name;
+        imageUrl.value = data.versions[0].baseCredential.imageData;
+        attributes.value = data.versions[0].baseCredential.attributes;
+        description.value = data.versions[0].baseCredential.description;
+        skills.value = data.versions[0].baseCredential.skills;
+        requiredAchievements.value = data.versions[0].baseCredential.requiredAchievements;
       } catch (error) {
         console.error("Error fetching module data:", error);
       }
