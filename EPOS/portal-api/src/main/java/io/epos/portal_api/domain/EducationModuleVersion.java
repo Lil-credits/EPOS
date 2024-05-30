@@ -37,7 +37,7 @@ public class EducationModuleVersion {
   @JoinColumn(name = "membership_id")
   private Membership membership;
 
-  @ManyToOne
+  @ManyToOne()
   @JoinColumn(name = "image_id")
   private Image image;
 

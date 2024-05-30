@@ -62,7 +62,6 @@ def populate_database():
     },
     timeout=5,
   )
-
   education_module_version_id = response.json()["id"]
   # create class
   response = requests.post(

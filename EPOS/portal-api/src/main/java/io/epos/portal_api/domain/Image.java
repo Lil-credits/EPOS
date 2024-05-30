@@ -14,8 +14,7 @@ public class Image {
   @Column(name = "file_name")
   private String fileName;
 
-  @Column(name = "image_data")
-  @Lob
+  @Column(name = "image_data", columnDefinition = "TEXT")
   private String imageData;
 
   @Column(name = "content_type")
