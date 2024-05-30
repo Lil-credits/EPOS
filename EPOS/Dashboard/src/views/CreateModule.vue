@@ -14,7 +14,7 @@
         <v-divider></v-divider>
         <v-stepper-item :complete="step > 5" step="5" value="5" @click="step = 5"/>
       </v-stepper-header>
-<!-- hello -->
+<!---->
 <!-- Step 1 -->
       <div class="steps">
         <div step="1" v-if="step === 1">
@@ -120,14 +120,9 @@
 <script>
 import { ref } from 'vue';
 
-
-
-
 export default {
   name: 'MultiStepForm',
-  components: {
-  
-  },
+  components: {},
   setup() {
     const step = ref(1);
     const formData = ref({
@@ -164,13 +159,44 @@ export default {
       console.log('Form Submitted', formData.value);
     };
 
+    const requirements = ref([]);
+    const newRequirement = ref('');
+
+    const addRequirement = () => {
+      if (newRequirement.value.trim() !== '') {
+        requirements.value.push(newRequirement.value);
+        newRequirement.value = '';
+      }
+    };
+
+    const skills = ref([]);
+    const newSkill = ref('');
+
+    const addSkill = () => {
+      if (newSkill.value.trim() !== '') {
+        skills.value.push(newSkill.value);
+        newSkill.value = '';
+      }
+    };
+
+    const submitStep = () => {
+      // Add your logic for submitting the step here
+    };
+
     return {
       step,
       formData,
       nextStep,
       prevStep,
       submitForm,
-      handleImageUpload
+      handleImageUpload,
+      requirements,
+      newRequirement,
+      addRequirement,
+      skills,
+      newSkill,
+      addSkill,
+      submitStep
     };
   }
 };
