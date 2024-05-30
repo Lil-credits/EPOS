@@ -270,9 +270,6 @@ export default {
   font-size: 40px;
 }
 
-.btn {
-  margin: 0 40%;
-}
 
 .container {
   height: 100vh;
