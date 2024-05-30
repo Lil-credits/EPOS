@@ -29,6 +29,16 @@
           class="title-input"
         />
       </div>
+      <div class="description-container">
+      <label for="course-description" class="description-label">Description</label>
+      <textarea 
+        id="course-description"
+        rows="10"
+        placeholder="Type here the description..."
+        v-model="courseDescription"
+      ></textarea>
+
+    </div>
     </v-form>
 </template>
 
@@ -38,7 +48,8 @@ export default {
         return {
             courseDetails: {
                 badgeImage: '',
-                courseTitle: ''
+                courseTitle: '',
+                courseDescription: ''
             }
         }
     },
@@ -72,6 +83,9 @@ export default {
 }
 
 .image-upload {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 30px;
 }
 
@@ -134,5 +148,23 @@ export default {
 .preview-image {
   max-width: 100%;
   max-height: 100%;
+}
+.description-container {
+  margin-bottom: 20px;
+}
+
+.description-label {
+  display: block;
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+textarea {
+  width: 100%;
+  padding: 15px;
+  border-radius: 25px;
+  border: 2px solid #007bff;
+  resize: none; /* Prevent resizing of the textarea */
+  font-size: 1rem;
 }
 </style>
