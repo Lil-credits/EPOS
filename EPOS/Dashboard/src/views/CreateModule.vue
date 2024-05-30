@@ -151,6 +151,9 @@ import detailHeading from '@/components/page-components/module/detailHeading.vue
 import detailAttributes from '@/components/page-components/module/detailAttributes.vue';
 import detailList from '@/components/page-components/module/detailList.vue';  
 import detailDescription from '@/components/page-components/module/detailDescription.vue';
+import api from '@/api/api.js'; // Ensure the correct path
+import router from '@/router';
+
 
 export default {
   name: 'MultiStepForm',
@@ -195,6 +198,31 @@ export default {
 
     const submitForm = () => {
       console.log('Form Submitted', formData.value);
+      let requestBody = {
+        name: formData.value.title,
+        imageData: formData.value.image,
+        baseCredential: {
+          courseName: formData.value.title,
+          attributes: {
+            language: formData.value.attributes.language,
+            EC: formData.value.attributes.studyLoad,
+            EQF: formData.value.attributes.EQFLevel},
+          description: formData.value.description,
+          skills: formData.value.skills,
+          requiredAchievements: formData.value.requiredAdmission,
+          imageUrl: formData.value.image,
+          studyYear: 2024,
+        }};
+        api.createModule(requestBody).then((response) => {
+          console.log(response);
+          // go to module overview
+          router.push("/modules");
+        }).catch((error) => {
+          console.error(error);
+        });
+
+
+
     };
 
     const requirements = ref([]);
