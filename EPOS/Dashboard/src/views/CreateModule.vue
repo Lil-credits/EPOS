@@ -205,8 +205,8 @@ export default {
           courseName: formData.value.title,
           attributes: {
             language: formData.value.attributes.language,
-            EC: formData.value.attributes.studyLoad,
-            EQF: formData.value.attributes.EQFLevel},
+            EC: formData.value.attributes.ects,
+            EQF: formData.value.attributes.eqf},
           description: formData.value.description,
           skills: formData.value.skills,
           requiredAchievements: formData.value.requiredAdmission,
