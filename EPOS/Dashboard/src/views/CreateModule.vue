@@ -16,7 +16,7 @@
       </v-stepper-header>
 
 
-      <div>
+      <div class="steps">
         <div step="1" v-if="step === 1">
           <createStep1/>
         </div>
@@ -110,10 +110,18 @@ export default {
 
 <style scoped>
 .stepbutton {
-  margin-left: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: fixed;
   bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 40px;
+}
+
+.btn {
+  margin: 0 40%;
 }
 
 .container {
@@ -137,4 +145,5 @@ export default {
   justify-content: space-between;
 }
 </style>
+
 
