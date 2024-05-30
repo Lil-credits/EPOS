@@ -100,11 +100,11 @@
         </div>
 
         <div step="5" v-if="step === 5">
-          <v-form>
-            <v-text-field label="Country" v-model="formData.country"></v-text-field>
-            <v-btn color="primary" @click="prevStep">Previous</v-btn>
-            <v-btn color="success" @click="submitForm">Submit</v-btn>
-          </v-form>
+          <detailHeading :imageUrl="formData.image" :title="formData.title" />
+          <detailAttributes :attributes="formData.attributes" />
+          <detailDescription :description="formData.description" />
+          <detailList listTitle="Skills" :list="formData.skills" />
+          <detailList listTitle="Admission Requirements" :list="formData.requiredAdmission" />
         </div>
       </div>
     </v-stepper>
@@ -120,9 +120,19 @@
 <script>
 import { ref } from 'vue';
 
+import detailHeading from '@/components/page-components/module/detailHeading.vue';
+import detailAttributes from '@/components/page-components/module/detailAttributes.vue';
+import detailList from '@/components/page-components/module/detailList.vue';  
+import detailDescription from '@/components/page-components/module/detailDescription.vue';
+
 export default {
   name: 'MultiStepForm',
-  components: {},
+  components: {
+    detailHeading,
+    detailAttributes,
+    detailList,
+    detailDescription,
+  },
   setup() {
     const step = ref(1);
     const formData = ref({
