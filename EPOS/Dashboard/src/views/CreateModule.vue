@@ -15,7 +15,7 @@
         <v-stepper-item :complete="step > 5" step="5" value="5" @click="step = 5"/>
       </v-stepper-header>
 
-
+<!-- Step 1-->
       <div class="steps">
         <div step="1" v-if="step === 1">
           <v-form>
@@ -47,17 +47,56 @@
     </div>
     </v-form>
         </div>
-
+<!-- Step 2 -->
         <div step="2" v-if="step === 2">
-          <createStep2/>
+        <v-form>
+<div class="dropdown">
+    <v-select
+        :items="['Nederlands', 'Deutsch', 'English', 'Español', 'Zhōngguó ren']"
+        label="Select Language"
+        required
+        variant="outlined"
+        ></v-select>
+    <v-select
+        :items="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
+        label="Select Study Load"
+        required
+        variant="outlined"
+        ></v-select>
+    <v-select
+        :items="[5, 7, 8, 9, 10]"
+        label="Select EQF Level"
+        required
+        variant="outlined"
+        ></v-select>
+</div>
+    </v-form>
         </div>
-
+<!-- Step 3 -->
         <div step="3" v-if="step === 3">
-          <createStep3/>
+          <div class="list">
+    <div class="skills-container">
+      <h2>Skills</h2>
+      <ul class="skills-list">
+        <li v-for="(skill, index) in skills" :key="index">{{ skill }}</li>
+      </ul>
+      <input type="text" v-model="newSkill" placeholder="Type here more Skills..." @keyup.enter="addSkill">
+      <v-text-field v-modal="newSkill" label="Add more skills..." @keyup.enter="addSkill"></v-text-field>
+    </div>
+</div>
         </div>
 
+<!-- Step 4 -->
         <div step="4" v-if="step === 4">
-          <createStep4/>
+          <div class="list">
+        <div class="requirements-container">
+      <h2>Admission Requirements</h2>
+      <ul class="requirements-list">
+        <li v-for="(requirement, index) in requirements" :key="index">{{ requirement }}</li>
+      </ul>
+      <input type="text" v-model="newRequirement" placeholder="Type here more Admission Requirements..." @keyup.enter="addRequirement">
+    </div>
+  </div>
         </div>
 
         <div step="5" v-if="step === 5">
@@ -72,8 +111,6 @@
     <div class="stepbutton">
       <v-icon class="btn" @click="prevStep">mdi-arrow-left</v-icon>
       <v-icon class="btn" @click="nextStep">mdi-arrow-right</v-icon>
-      <!-- <v-btn color="primary" @click="prevStep">Previous</v-btn>
-      <v-btn color="primary" @click="nextStep">Next</v-btn> -->
     </div>
   </v-col>
   </v-row>
@@ -84,16 +121,12 @@
 import { ref } from 'vue';
 
 
-import createStep2 from '@/components/page-components/module/form/createStep2.vue';
-import createStep3 from '@/components/page-components/module/form/createStep3.vue';
-import createStep4 from '@/components/page-components/module/form/createStep4.vue';
+
 
 export default {
   name: 'MultiStepForm',
   components: {
-    createStep2,
-    createStep3,
-    createStep4,
+  
   },
   setup() {
     const step = ref(1);
@@ -179,6 +212,177 @@ export default {
 .v-stepper-header {
   justify-content: space-between;
 }
+
+/* styling of step 1 */
+.step-one {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image-upload {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+  margin-top: 30px;
+  box-shadow: none;
+}
+
+.upload-label {
+  background-color: #007bff;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-image-icon {
+  color: white;
+  font-size: 24px;
+  position: absolute;
+}
+
+.upload-label div {
+  color: white;
+  font-size: 14px;
+}
+
+.title-input {
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 10px;
+  width: 100%;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 15px 30px;
+  font-size: 16px;
+  width: calc(100% - 60px); /* Account for padding */
+  cursor: pointer;
+}
+
+.image-preview {
+  background-color: white;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 100%;
+}
+.description-container {
+  margin-bottom: 20px;
+}
+
+.description-label {
+  display: block;
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+textarea {
+  width: 100%;
+  padding: 15px;
+  border-radius: 25px;
+  border: 2px solid #007bff;
+  resize: none; /* Prevent resizing of the textarea */
+  font-size: 1rem;
+}
+
+/* styling of step 2 */
+
+.dropdown {
+    margin-top: 10px;
+  }
+  .v-select label{
+    margin: 10px;
+  }
+
+
+/* styling of step 3 */
+
+.skills-container {
+  text-align: left;
+  margin: 20px;
+}
+
+.skills-list {
+  list-style: inside; /* Position the bullets inside the list */
+  padding-left: 0; /* Remove default padding */
+}
+
+.skills-list li {
+  background-color: #007bff; /* Blue background */
+  color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px; /* Rounded corners */
+}
+
+input[type="text"] {
+  width: calc(100% - 22px); /* Input width accounting for padding */
+  padding: 10px;
+  margin-top: 10px;
+  border: 2px solid #007bff; /* Blue border */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 1rem;
+}
+
+/* styling of step 4 */
+
+.requirements-container {
+  text-align: left;
+  margin: 20px;
+}
+
+.requirements-list {
+  list-style: inside; /* Position the bullets inside the list */
+  padding-left: 0; /* Remove default padding */
+}
+
+.requirements-list li {
+  background-color: #007bff; /* Blue background */
+  color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px; /* Rounded corners */
+}
+
+input[type="text"] {
+  width: calc(100% - 22px); /* Input width accounting for padding */
+  padding: 10px;
+  margin-top: 10px;
+  border: 2px solid #007bff; /* Blue border */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 1rem;
+}
+
 </style>
 
 
