@@ -80,8 +80,7 @@
       <ul class="skills-list">
         <li v-for="(skill, index) in skills" :key="index">{{ skill }}</li>
       </ul>
-      <input type="text" v-model="newSkill" placeholder="Type here more Skills..." @keyup.enter="addSkill">
-      <v-text-field v-modal="newSkill" label="Add more skills..." @keyup.enter="addSkill"></v-text-field>
+      <v-text-field type="text" v-model="newSkill" label="Add more skills..." @keyup.enter="addSkill"></v-text-field>
     </div>
 </div>
         </div>
@@ -94,7 +93,7 @@
       <ul class="requirements-list">
         <li v-for="(requirement, index) in requirements" :key="index">{{ requirement }}</li>
       </ul>
-      <input type="text" v-model="newRequirement" placeholder="Type here more Admission Requirements..." @keyup.enter="addRequirement">
+      <v-text-field type="text" v-model="newRequirement" label="Add more Admission Requirements..." @keyup.enter="addRequirement"></v-text-field>
     </div>
   </div>
         </div>
@@ -239,7 +238,7 @@ export default {
   justify-content: space-between;
 }
 
-/* styling of step 1 */
+/* ------------------------------------styling of step 1------------------------------------ */
 .step-one {
   max-width: 400px;
   margin: 0 auto;
@@ -341,7 +340,7 @@ textarea {
   font-size: 1rem;
 }
 
-/* styling of step 2 */
+/* ------------------------------------styling of step 2------------------------------------ */
 
 .dropdown {
     margin-top: 10px;
@@ -351,7 +350,7 @@ textarea {
   }
 
 
-/* styling of step 3 */
+/* ------------------------------------styling of step 3------------------------------------ */
 
 .skills-container {
   text-align: left;
@@ -380,7 +379,7 @@ input[type="text"] {
   font-size: 1rem;
 }
 
-/* styling of step 4 */
+/* ------------------------------------styling of step 4------------------------------------ */
 
 .requirements-container {
   text-align: left;
