@@ -19,7 +19,7 @@
         </v-col>
         <v-col cols="auto">
           <v-avatar size="40">
-                <img :src="require('../assets/profile.jpg')" alt="User Avatar" style="max-width: 100%; max-height: 100%;">
+                <img :src="require('../assets/profile.jpg')" alt="User Avatar" style="max-width: 100%; max-height: 100%;" @click="$router.push('/')">
             </v-avatar>
         </v-col>
       </v-row>
