@@ -14,8 +14,8 @@
         <v-divider></v-divider>
         <v-stepper-item :complete="step > 5" step="5" value="5" @click="step = 5"/>
       </v-stepper-header>
-
-<!-- Step 1-->
+<!-- hello -->
+<!-- Step 1 -->
       <div class="steps">
         <div step="1" v-if="step === 1">
           <v-form>
@@ -33,7 +33,7 @@
               :src="from"
               alt="Uploaded image preview"
               class="preview-image"
-            />
+            />.
           </div>
           <div v-else>Add Image</div>
         </label>
