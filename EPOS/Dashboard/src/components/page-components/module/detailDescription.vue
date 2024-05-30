@@ -1,8 +1,11 @@
 <template>
-      <div class="description">
-        <h2>Description</h2>
-        <p>{{ description }}</p>
-      </div>
+<v-expansion-panels>
+  <v-expansion-panel
+    title="Description"
+   :text=description
+  >
+  </v-expansion-panel>
+</v-expansion-panels>
 </template>
 
 <script>

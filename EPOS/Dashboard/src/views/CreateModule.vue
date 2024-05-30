@@ -1,110 +1,140 @@
 <template>
-  <div class="container">
-    <button class="back-button" @click="prevStep" :hidden="currentStep === 1">&larr;</button>
-    <div v-if="currentStep <= totalSteps">
-      <!-- Dynamic component based on current step -->
-      <component
-          :is="currentComponent"
-          :step-data="formData"
-          @update-step-data="handleUpdateStepData"
-          @validate-step="validateStep"
-      ></component>
+  <v-container class="container">
+    <v-row align="center" justify="center" class="fill-height">
+      <v-col cols="12" class="fill-height">
+    <v-stepper>
+      <v-stepper-header>
+        <v-stepper-item :rules="[() => true]" :complete="step > 1" step="1" value="1" @click="step = 1"/>
+        <v-divider></v-divider>
+        <v-stepper-item :complete="step > 2" step="2" value="2" @click="step = 2"/>
+        <v-divider></v-divider>
+        <v-stepper-item :complete="step > 3" step="3" value="3" @click="step = 3"/>
+        <v-divider></v-divider>
+        <v-stepper-item :complete="step > 4" step="4" value="4" @click="step = 4"/>
+        <v-divider></v-divider>
+        <v-stepper-item :complete="step > 5" step="5" value="5" @click="step = 5"/>
+      </v-stepper-header>
 
+
+      <div>
+        <div step="1" v-if="step === 1">
+          <createStep1/>
+        </div>
+
+        <div step="2" v-if="step === 2">
+          <v-form>
+            <v-text-field label="Email" v-model="formData.email"></v-text-field>
+            <v-text-field label="Phone" v-model="formData.phone"></v-text-field>
+            <v-btn color="primary" @click="prevStep">Previous</v-btn>
+            <v-btn color="primary" @click="nextStep">Next</v-btn>
+          </v-form>
+        </div>
+
+        <div step="3" v-if="step === 3">
+          <v-form>
+            <v-text-field label="Address" v-model="formData.address"></v-text-field>
+            <v-text-field label="City" v-model="formData.city"></v-text-field>
+            <v-btn color="primary" @click="prevStep">Previous</v-btn>
+            <v-btn color="primary" @click="nextStep">Next</v-btn>
+          </v-form>
+        </div>
+
+        <div step="4" v-if="step === 4">
+          <v-form>
+            <v-text-field label="State" v-model="formData.state"></v-text-field>
+            <v-text-field label="Zip Code" v-model="formData.zipCode"></v-text-field>
+            <v-btn color="primary" @click="prevStep">Previous</v-btn>
+            <v-btn color="primary" @click="nextStep">Next</v-btn>
+          </v-form>
+        </div>
+
+        <div step="5" v-if="step === 5">
+          <v-form>
+            <v-text-field label="Country" v-model="formData.country"></v-text-field>
+            <v-btn color="primary" @click="prevStep">Previous</v-btn>
+            <v-btn color="success" @click="submitForm">Submit</v-btn>
+          </v-form>
+        </div>
+      </div>
+    </v-stepper>
+    <div>
+      <v-btn color="primary" @click="prevStep">Previous</v-btn>
+      <v-btn color="primary" @click="nextStep">Next</v-btn>
     </div>
-    <div v-else>
-      <h2>Form Submitted Successfully!</h2>
-      <p>{{ formData }}</p>
-    </div>
-  </div>
+  </v-col>
+  </v-row>
+  </v-container>
 </template>
 
-<script setup>
-import { ref, computed } from 'vue';
-import StepOne from '../components/form-components/StepOneForm.vue';
-import StepTwo from '../components/form-components/StepTwoFrom.vue';
-import StepThree from '../components/form-components/StepThreeFrom.vue';
-import StepFour from '../components/form-components/StepFourForm.vue';
-import StepFive from '../components/form-components/StepFiveForm.vue';
-import SummaryForm from '../components/form-components/SummaryForm.vue';
+<script>
+import { ref } from 'vue';
 
-const currentStep = ref(1);
-const formData = ref({
-  1: {courseTitle: '', badgeImage: ''},
-  2: {},
-  3: {},
-  4: {},
-  5: {},
+import createStep1 from '@/components/page-components/module/form/createStep1.vue';
 
-});
-const isStepValid = ref(true);
+export default {
+  name: 'MultiStepForm',
+  components: {
+    createStep1
+  },
+  setup() {
+    const step = ref(1);
+    const formData = ref({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      address: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      country: ''
+    });
 
-const componentsMap = {
-  1: StepOne,
-  2: StepTwo,
-  3: StepThree,
-  4: StepFour,
-  5: StepFive,
-  6: SummaryForm
-};
+    const nextStep = () => {
+      if (step.value < 5) step.value++;
+      console.log('Step:', step.value);
+    };
 
-const currentComponent = computed(() => componentsMap[currentStep.value]);
-const totalSteps = 6;
+    const prevStep = () => {
+      if (step.value > 1) step.value--;
+      console.log('Step:', step.value);
+    };
 
-function nextStep() {
-  if (isStepValid.value && currentStep.value < totalSteps) {
-    console.log(formData.value)
-    currentStep.value++;
-  } else if (isStepValid.value && currentStep.value === totalSteps) {
-    submitForm();
+    const submitForm = () => {
+      console.log('Form Submitted', formData.value);
+    };
+
+    return {
+      step,
+      formData,
+      nextStep,
+      prevStep,
+      submitForm
+    };
   }
-}
-
-function prevStep() {
-  if (currentStep.value > 1) {
-    currentStep.value--;
-  }
-}
-
-function validateStep(valid) {
-  isStepValid.value = valid;
-}
-
-const handleUpdateStepData = ({ step, data }) => {
-  formData.value[step] = data;
-  nextStep();
 };
-
-function submitForm() {
-  console.log('Submitting form data:', formData.value);
-  // Move to a success message or handle the form submission to the server
-}
 </script>
-  
-  <style>
-  .container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  input, button {
-    display: block;
-    margin: 10px 0;
-  }
-  .submit-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 100%;
+
+<style scoped>
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-.back-button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 1.5em;
-  margin-right: -40px; /* Adjust based on your layout */
+
+.fill-height {
+  height: 100%;
 }
-  </style>
-  
+
+.v-stepper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.v-stepper-header {
+  justify-content: space-between;
+}
+</style>
+
