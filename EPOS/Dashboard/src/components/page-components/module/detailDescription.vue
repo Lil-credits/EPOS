@@ -29,6 +29,7 @@ export default {
   text-align: center;
   font-size: 16px;
   max-height: 100px;
+  text-overflow: ellipsis;
   overflow: hidden;
   transition: max-height 0.3s ease;
 }
