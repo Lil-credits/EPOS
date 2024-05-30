@@ -46,13 +46,12 @@
 <style scoped>
 
   .page-header {
-    background-color: #f2f2f2;
+    background-color: white;
     color: #ffffff;
     padding: 10px;
-    margin-bottom: 20px;
   }
   .title {
-    color: ;
+    color: white;
     text-align: center;
   }
     .backButton {
