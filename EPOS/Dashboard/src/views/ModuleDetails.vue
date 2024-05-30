@@ -2,7 +2,7 @@
   <container class="detailcontainer">
     <div class="informationbox">
       <div class="image-container">
-        <detailHeading :title="title" :image="imageUrl" />
+        <detailHeading :title="title" :imageUrl="imageUrl" />
       </div>
         <detailAttributes :attributes="attributes" />
         <div class="info-section">
