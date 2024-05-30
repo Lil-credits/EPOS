@@ -6,6 +6,7 @@
         <li v-for="(skill, index) in skills" :key="index">{{ skill }}</li>
       </ul>
       <input type="text" v-model="newSkill" placeholder="Type here more Skills..." @keyup.enter="addSkill">
+      <v-text-field v-modal="newSkill" label="Add more skills..." @keyup.enter="addSkill"></v-text-field>
     </div>
 </div>
   </template>
