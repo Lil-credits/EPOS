@@ -1,12 +1,13 @@
 <template>
-    <div class="info-section">
+
         <h2>{{ listTitle }}</h2>
+        <div class="list">
         <ul>
             <li v-for="requirement in list" :key="requirement">
               {{ requirement }}
             </li>
         </ul>
-    </div>
+        </div>
 </template>
 
 <script>
@@ -26,5 +27,10 @@ export default {
 </script>
 
 <style scoped>
-/* Your component's CSS styles go here */
+h2 {
+    text-align: center;
+}
+.list {
+padding-left: 5px;
+}
 </style>

@@ -1,11 +1,21 @@
 <template>
-    <div>
+  <container class="detailcontainer">
+    <div class="informationbox">
+      <div class="image-container">
         <detailHeading :title="title" :image="imageUrl" />
+      </div>
         <detailAttributes :attributes="attributes" />
+        <div class="info-section">
         <detailDescription :description="description" />
+        </div>
+        <div class="info-section">
         <detailList listTitle="Skills" :list="skills" />
+        </div>
+        <div class="info-sectionalt">
         <detailList listTitle="Required Achievements" :list="requiredAchievements" />
+        </div>
     </div>
+  </container>
 </template>
 
 <script>
@@ -67,10 +77,38 @@ export default {
 </script>
 
 <style scoped>
+.informationbox {
+  width: 100%;
+    margin: 0 20px;
+}
 .info-section {
   background-color: #f0f0f0; /* Light grey background */
   border-radius: 10px;
   margin-bottom: 15px;
   padding: 15px;
+}
+.image-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.detailcontainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px; /* Add padding of 20px on both sides */
+}
+
+.info-sectionalt {
+  color: white;
+  background-color:  #00A4E7;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  padding: 15px;
+}
+
+.info-section h2 {
+  text-align: center;
 }
 </style>

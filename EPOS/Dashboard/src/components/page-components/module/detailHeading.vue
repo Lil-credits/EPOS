@@ -41,12 +41,15 @@ export default {
 .badge-image {
   max-width: 100px;
   border-radius: 50%;
+  height: 100px;
 }
 
-.course-title {
-  background-color: red; /* Adjust to match your brand color */
-  color: white;
-  padding: 5px 15px;
-  border-radius: 20px;
-  display: inline-block;
-}</style>
+  .course-title {
+    background-color: red; /* Adjust to match your brand color */
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    text-align: center; /* Add this line to center the text */
+    margin: 0 auto; /* Add this line to center the box */
+  }
+</style>
