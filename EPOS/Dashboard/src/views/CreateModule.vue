@@ -57,19 +57,21 @@
         label="Select Language"
         required
         variant="outlined"
+        @update:model-value="handleDropdown('language', $event)"
         ></v-select>
     <v-select
         :items="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
         label="Select Study Load"
         required
         variant="outlined"
+        @update:model-value="handleDropdown('studyLoad', $event)"
         ></v-select>
     <v-select
         :items="[5, 7, 8, 9, 10]"
         label="Select EQF Level"
         required
         variant="outlined"
-        @update:model-value="handleDropdown('EQF Level', $event)"
+        @update:model-value="handleDropdown('EQFLevel', $event)"
         ></v-select>
 </div>
     </v-form>
@@ -161,7 +163,7 @@ export default {
       title: '',
       image: '',
       description: '',
-      attriburtes: {language:null, studyLoad:null, EQFLevel:null},
+      attributes: {language:null, studyLoad:null, EQFLevel:null},
       skills: [],
       requiredAdmission: [],
     });
@@ -215,8 +217,7 @@ export default {
     };
 
     const handleDropdown = (label, value) => {
-      console.log(label, value);
-      console.log(formData);
+      formData.value.attributes[label] = value;
     };
 
     return {
