@@ -2,7 +2,8 @@
   <v-container class="container">
     <v-row align="center" justify="center" class="fill-height">
       <v-col cols="12" class="fill-height">
-    <v-stepper>
+    <v-stepper
+    :elevation="0">
       <v-stepper-header>
         <v-stepper-item :complete="step > 1" step="1" value="1" @click="step = 1"/>
         <v-divider></v-divider>
@@ -33,7 +34,7 @@
               :src="from"
               alt="Uploaded image preview"
               class="preview-image"
-            />.
+            />
           </div>
           <div v-else>Add Image</div>
         </label>
@@ -200,6 +201,7 @@ export default {
 </script>
 
 <style scoped>
+
 .stepbutton {
   display: flex;
   justify-content: center;
