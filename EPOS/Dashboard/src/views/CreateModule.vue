@@ -30,12 +30,7 @@
         </div>
 
         <div step="4" v-if="step === 4">
-          <v-form>
-            <v-text-field label="State" v-model="formData.state"></v-text-field>
-            <v-text-field label="Zip Code" v-model="formData.zipCode"></v-text-field>
-            <v-btn color="primary" @click="prevStep">Previous</v-btn>
-            <v-btn color="primary" @click="nextStep">Next</v-btn>
-          </v-form>
+          <createStep4/>
         </div>
 
         <div step="5" v-if="step === 5">
@@ -64,6 +59,7 @@ import { ref } from 'vue';
 import createStep1 from '@/components/page-components/module/form/createStep1.vue';
 import createStep2 from '@/components/page-components/module/form/createStep2.vue';
 import createStep3 from '@/components/page-components/module/form/createStep3.vue';
+import createStep4 from '@/components/page-components/module/form/createStep4.vue';
 
 export default {
   name: 'MultiStepForm',
@@ -71,6 +67,7 @@ export default {
     createStep1,
     createStep2,
     createStep3,
+    createStep4,
   },
   setup() {
     const step = ref(1);
