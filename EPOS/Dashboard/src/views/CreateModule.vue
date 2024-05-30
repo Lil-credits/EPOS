@@ -31,7 +31,7 @@
         <label for="course-badge" class="upload-label">
           <div v-if="formData.image" class="image-preview">
             <img
-              :src="from"
+              :src="formData.image"
               alt="Uploaded image preview"
               class="preview-image"
             />
@@ -65,16 +65,16 @@
         label="Select Study Load"
         required
         variant="outlined"
-        v-model:model-value="formData.attributes['studyLoad']"
-        @update:model-value="handleDropdown('studyLoad', $event)"
+        v-model:model-value="formData.attributes['ects']"
+        @update:model-value="handleDropdown('ects', $event)"
         ></v-select>
     <v-select
         :items="[5, 7, 8, 9, 10]"
         label="Select EQF Level"
         required
         variant="outlined"
-        v-model:model-value="formData.attributes['EQFLevel']"
-        @update:model-value="handleDropdown('EQFLevel', $event)"
+        v-model:model-value="formData.attributes['eqf']"
+        @update:model-value="handleDropdown('eqf', $event)"
         ></v-select>
 </div>
     </v-form>
@@ -169,7 +169,7 @@ export default {
       title: '',
       image: '',
       description: '',
-      attributes: {language:null, studyLoad:null, EQFLevel:null},
+      attributes: {language:null, ects:null, eqf:null},
       skills: [],
       requiredAdmission: [],
     });
@@ -251,6 +251,17 @@ export default {
       formData.value.attributes[label] = value;
     };
 
+    const attributes = ref({});
+    const newAttribute = ref('');
+
+    const addAttribute = () => {
+      if (newAttribute.value.trim() !== '') {
+        attributes.value.push(newAttribute.value);
+        newAttribute.value = '';
+        formData.value.attributes = attributes.value;
+      }
+    };
+
     return {
       step,
       formData,
@@ -265,6 +276,9 @@ export default {
       newSkill,
       addSkill,
       handleDropdown,
+      attributes,
+      newAttribute,
+      addAttribute,
     };
   },
 
@@ -284,9 +298,6 @@ export default {
   font-size: 40px;
 }
 
-.btn {
-  margin: 0 40%;
-}
 
 .container {
   height: 100vh;
@@ -477,6 +488,44 @@ input[type="text"] {
   border: 2px solid #007bff; /* Blue border */
   border-radius: 10px; /* Rounded corners */
   font-size: 1rem;
+}
+
+/* ------------------------------------styling of step 5------------------------------------ */
+.informationbox {
+  width: 100%;
+    margin: 0 20px;
+}
+.info-section {
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  padding: 15px;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.detailcontainer {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.info-sectionalt {
+  color: white;
+  background-color:  #00A4E7;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  padding: 15px;
+}
+
+.info-section h2 {
+  text-align: center;
 }
 
 </style>
