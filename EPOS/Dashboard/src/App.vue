@@ -11,9 +11,12 @@
 import pageHeading from '@/components/pageHeading.vue';
 export default {
   name: 'App',
+  
   components: {
     pageHeading
   }
+
+  
 };
 </script>
 
