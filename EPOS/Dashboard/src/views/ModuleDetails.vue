@@ -52,10 +52,6 @@ export default {
       try {
         const call = await api.getModule(moduleId); // Use the module ID from the route
         const data = call.data;
-        console.log(data);
-        console.log(data.versions)
-        console.log(data.versions[0].name)
-        console.log(data.versions[0].attributes)
         title.value = data.versions[0].name;
         imageUrl.value = data.versions[0].baseCredential.imageData;
         attributes.value = data.versions[0].baseCredential.attributes;
