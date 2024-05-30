@@ -19,8 +19,8 @@
         </v-col>
         <v-col cols="auto">
           <v-avatar size="40">
-            <img src="../assets/profile.jpg" alt="User Avatar">
-          </v-avatar>
+                <img :src="require('../assets/profile.jpg')" alt="User Avatar" style="max-width: 100%; max-height: 100%;">
+            </v-avatar>
         </v-col>
       </v-row>
     </v-container>
