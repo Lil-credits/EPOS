@@ -40,7 +40,12 @@ public class MicroCredentialService {
         issuedCredential.setSubjectAccount(tuple.getItem2());
         issuedCredential.setEducationModuleVersion(tuple.getItem3());
 
-        JsonObject microCredential = readJsonObject("micro_credential.json"); // Assume this method reads and constructs the JsonObject
+        JsonObject microCredential = readJsonObject("micro_credential.json");
+        microCredential.put("issuerDid", issuedCredential.getIssuerMembership().getDid());
+        microCredential.put("issuanceKey", issuedCredential.getIssuerMembership().getIssuanceKey());
+        // fill microCredential with data from issuedCredential
+
+        issuedCredential.setCredential(microCredential);
         return waltidClient.issue(microCredential)
           .onItem().transformToUni(link ->
             emf.withTransaction(session -> repository.createIssuedCredential(session, issuedCredential)
