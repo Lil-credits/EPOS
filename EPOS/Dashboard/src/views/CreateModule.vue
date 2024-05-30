@@ -22,12 +22,7 @@
         </div>
 
         <div step="2" v-if="step === 2">
-          <v-form>
-            <v-text-field label="Email" v-model="formData.email"></v-text-field>
-            <v-text-field label="Phone" v-model="formData.phone"></v-text-field>
-            <v-btn color="primary" @click="prevStep">Previous</v-btn>
-            <v-btn color="primary" @click="nextStep">Next</v-btn>
-          </v-form>
+          <createStep2/>
         </div>
 
         <div step="3" v-if="step === 3">
@@ -57,7 +52,7 @@
         </div>
       </div>
     </v-stepper>
-    <div>
+    <div class="stepbutton">
       <v-btn color="primary" @click="prevStep">Previous</v-btn>
       <v-btn color="primary" @click="nextStep">Next</v-btn>
     </div>
@@ -70,11 +65,13 @@
 import { ref } from 'vue';
 
 import createStep1 from '@/components/page-components/module/form/createStep1.vue';
+import createStep2 from '@/components/page-components/module/form/createStep2.vue';
 
 export default {
   name: 'MultiStepForm',
   components: {
-    createStep1
+    createStep1,
+    createStep2,
   },
   setup() {
     const step = ref(1);
@@ -116,6 +113,11 @@ export default {
 </script>
 
 <style scoped>
+.stepbutton {
+  margin-left: 100px;
+  position: fixed;
+  bottom: 25px;
+}
 .container {
   height: 100vh;
   display: flex;
