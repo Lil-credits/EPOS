@@ -57,19 +57,24 @@
         label="Select Language"
         required
         variant="outlined"
+        v-model:model-value="formData.attributes['language']"
+        @update:model-value="handleDropdown('language', $event)"
         ></v-select>
     <v-select
         :items="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
         label="Select Study Load"
         required
         variant="outlined"
+        v-model:model-value="formData.attributes['studyLoad']"
+        @update:model-value="handleDropdown('studyLoad', $event)"
         ></v-select>
     <v-select
         :items="[5, 7, 8, 9, 10]"
         label="Select EQF Level"
         required
         variant="outlined"
-        @update:model-value="handleDropdown('EQF Level', $event)"
+        v-model:model-value="formData.attributes['EQFLevel']"
+        @update:model-value="handleDropdown('EQFLevel', $event)"
         ></v-select>
 </div>
     </v-form>
@@ -100,17 +105,31 @@
   </div>
         </div>
 
-        <div step="5" v-if="step === 5">
+<!-- Step 5 -->
+
+<div step="5" v-if="step === 5">
+          <container class="detailcontainer">
+          <div class="informationbox">
+          <div class="image-container">
           <detailHeading :imageUrl="formData.image" :title="formData.title" />
+          </div>
           <detailAttributes :attributes="formData.attributes" />
-          <detailDescription :description="formData.description" />
-          <detailList listTitle="Skills" :list="formData.skills" />
+          <div class="info-section">
+          <detailDescription :description="formData.description" /></div>
+          <div class="info-section">
+          <detailList listTitle="Skills" :list="formData.skills" /></div>
+          <div class="info-sectionalt">
           <detailList listTitle="Admission Requirements" :list="formData.requiredAdmission" />
           <v-button></v-button>
         </div>
+        </div>
+        </container>
+        </div>
       </div>
     </v-stepper>
-    <div class="stepbutton">
+
+<!-- stepbuttons -->    
+<div class="stepbutton">
       <div v-if="step===5">
         <v-icon class="btn" @click="prevStep">mdi-arrow-left</v-icon>
         <v-icon class="btn" @click="submitForm">mdi-check</v-icon>
@@ -147,7 +166,7 @@ export default {
       title: '',
       image: '',
       description: '',
-      attriburtes: {language:null, studyLoad:null, EQFLevel:null},
+      attributes: {language:null, studyLoad:null, EQFLevel:null},
       skills: [],
       requiredAdmission: [],
     });
@@ -201,8 +220,7 @@ export default {
     };
 
     const handleDropdown = (label, value) => {
-      console.log(label, value);
-      console.log(formData);
+      formData.value.attributes[label] = value;
     };
 
     return {

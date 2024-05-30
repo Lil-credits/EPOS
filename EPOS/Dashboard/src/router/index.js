@@ -4,7 +4,14 @@ import ModuleOverview from '../views/ModuleOverview.vue';
 import CreateModule from '../views/CreateModule.vue';
 import IssueModule from '../views/IssueModule.vue';
 import ComponentTest from '../views/ComponentTest.vue';
+import Personalwallet from '../views/PersonalWallet.vue';
+
 const routes = [
+  {
+    path: '/',
+    name: 'YourWallet',
+    component: Personalwallet,
+  },
   {
     path: '/modules/',
     name: 'ModuleOveriew',
