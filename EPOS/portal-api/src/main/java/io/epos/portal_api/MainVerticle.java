@@ -1,9 +1,11 @@
 package io.epos.portal_api;
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.epos.portal_api.api.ApiInitializer;
 import io.epos.portal_api.util.db.DbUtil;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.vertx.core.AbstractVerticle;
+import io.vertx.core.json.jackson.DatabindCodec;
 import io.vertx.mutiny.ext.web.Router;
 import org.hibernate.reactive.mutiny.Mutiny;
 import org.slf4j.Logger;
@@ -18,6 +20,8 @@ public class MainVerticle extends AbstractVerticle {
 
   @Override
   public Uni<Void> asyncStart() {
+    // Register the JSR-310 module with Jackson
+    DatabindCodec.mapper().registerModule(new JavaTimeModule());
     return startHibernate()
       .flatMap(this::startHttpServer)
       .onFailure().invoke(e -> logger.error("Failed to start application", e))

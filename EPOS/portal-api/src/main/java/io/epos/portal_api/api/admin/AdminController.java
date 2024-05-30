@@ -101,7 +101,9 @@ public class AdminController {
     EducationModuleVersion educationModuleVersion = new EducationModuleVersion();
     educationModuleVersion.setName(body.getString("name"));
     educationModuleVersion.setBaseCredential(body.getJsonObject("baseCredential"));
-    adminService.createEducationModule(educationModule, educationModuleVersion, body.getInteger("organisationalUnitId")).subscribe().with(
+    Image image = new Image();
+    image.setImageData(body.getString("imageData"));
+    adminService.createEducationModule(educationModule, educationModuleVersion, body.getInteger("organisationalUnitId"),image).subscribe().with(
       result -> ResponseBuilder.buildOkResponse(routingContext, result),
       error -> ResponseBuilder.buildErrorResponse(routingContext, error)
     );

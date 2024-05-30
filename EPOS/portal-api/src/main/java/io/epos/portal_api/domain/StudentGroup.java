@@ -2,7 +2,7 @@ package io.epos.portal_api.domain;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -16,10 +16,10 @@ public class StudentGroup {
   private String name;
 
   @Column(name = "start_date")
-  private Date startDate;
+  private LocalDate startDate;
 
   @Column(name = "end_date")
-  private Date endDate;
+  private LocalDate endDate;
 
   @ManyToOne
   @JoinColumn(name = "organisational_unit_id")
@@ -50,19 +50,19 @@ public class StudentGroup {
     this.name = name;
   }
 
-  public Date getStartDate() {
+  public LocalDate getStartDate() {
     return startDate;
   }
 
-  public void setStartDate(Date startDate) {
+  public void setStartDate(LocalDate startDate) {
     this.startDate = startDate;
   }
 
-  public Date getEndDate() {
+  public LocalDate getEndDate() {
     return endDate;
   }
 
-  public void setEndDate(Date endDate) {
+  public void setEndDate(LocalDate endDate) {
     this.endDate = endDate;
   }
 

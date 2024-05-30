@@ -34,7 +34,8 @@ public class EducationModuleRepository {
 
   public Uni<EducationModuleVersion> createEducationModule(Mutiny.Session session, EducationModuleVersion educationModuleVersion) {
     return session.persist(educationModuleVersion.getEducationModule())
-      .call(() -> session.persist(educationModuleVersion))
+      .chain(() -> session.persist(educationModuleVersion.getImage()))
+      .chain(() -> session.persist(educationModuleVersion))
       .replaceWith(educationModuleVersion);
   }
 }

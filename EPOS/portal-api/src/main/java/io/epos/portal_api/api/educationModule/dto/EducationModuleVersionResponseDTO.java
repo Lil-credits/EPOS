@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 public class EducationModuleVersionResponseDTO {
   private int id;
   private String name;
+
+  private String imageData;
   private JsonObject baseCredential;
   private LocalDate effectuationDate;
 
@@ -53,5 +55,21 @@ public class EducationModuleVersionResponseDTO {
 
   public void setEducationModuleId(int educationModuleId) {
     this.educationModuleId = educationModuleId;
+  }
+
+  public String getImageData() {
+    return imageData;
+  }
+
+  public void setImageData(String imageData) {
+    this.imageData = imageData;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
   }
 }

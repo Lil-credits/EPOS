@@ -14,8 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -85,13 +83,14 @@ public class AdminService {
       });
   }
 
-  public Uni<EducationModuleVersionResponseDTO> createEducationModule(EducationModule educationModule, EducationModuleVersion educationModuleVersion, Integer organisationUnitId) {
+  public Uni<EducationModuleVersionResponseDTO> createEducationModule(EducationModule educationModule, EducationModuleVersion educationModuleVersion, Integer organisationUnitId, Image image) {
     Uni<OrganisationalUnit> organisationalUnitUni = emf.withSession(session -> repository.getOrganisationalUnit(session, organisationUnitId));
     return organisationalUnitUni.onItem().transformToUni(organisationalUnit -> {
       educationModule.setOrganisationalUnit(organisationalUnit);
       educationModule.setCompany(organisationalUnit.getCompany());
       educationModule.setSubsidiary(organisationalUnit.getSubsidiary());
       educationModuleVersion.setEducationModule(educationModule);
+      educationModuleVersion.setImage(image);
       return emf.withTransaction(session -> educationModuleRepository.createEducationModule(session, educationModuleVersion))
         .map(EducationModuleMapper::toDTO);
     });
@@ -150,7 +149,7 @@ public class AdminService {
               StudentGroup studentGroup = new StudentGroup();
               studentGroup.setName(request.getName());
               studentGroup.setOrganisationalUnit(organisationalUnit);
-              studentGroup.setStartDate(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+              studentGroup.setStartDate(LocalDate.now());
               studentGroup.setEducationModuleVersion(educationModuleVersion);
               return repository.createStudentGroup(session, studentGroup)
                 .onItem().transform(AdminMapper::toDTO);

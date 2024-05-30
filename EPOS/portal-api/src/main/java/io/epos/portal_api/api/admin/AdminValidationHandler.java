@@ -7,7 +7,6 @@ import io.vertx.mutiny.ext.web.RoutingContext;
 import static io.epos.portal_api.util.FileUtils.readJsonSchema;
 
 public class AdminValidationHandler extends BaseValidationHandler {
-  private static final String BASE_URI = "app://";
   private static final String SCHEMA_CREATE_COMPANY = "create_company.json";
   private static final String SCHEMA_CREATE_SUBSIDIARY = "create_subsidiary.json";
   private static final String SCHEMA_CREATE_ORGANISATION_UNIT = "create_organisation_unit.json";
@@ -15,7 +14,7 @@ public class AdminValidationHandler extends BaseValidationHandler {
   private static final String SCHEMA_CREATE_EDUCATION_MODULE = "create_education_module_admin.json";
 
   public AdminValidationHandler(Vertx vertx) {
-    super(vertx, BASE_URI);
+    super(vertx);
   }
 
   @Override

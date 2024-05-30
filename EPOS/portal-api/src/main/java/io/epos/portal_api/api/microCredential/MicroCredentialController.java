@@ -19,7 +19,7 @@ public class MicroCredentialController {
     logger.info("Issuing micro credential");
     JsonObject body = routingContext.body().asJsonObject();
     service.issueMicroCredential(body.getInteger("issuerId"), body.getInteger("subjectId"), body.getInteger("educationModuleVersionId") ).subscribe().with(
-      result -> ResponseBuilder.buildOkResponse(routingContext, result),
+      result -> ResponseBuilder.buildOkResponse(routingContext, new JsonObject().put("invitationLink", result)),
       error -> ResponseBuilder.buildErrorResponse(routingContext, error)
     );
   }

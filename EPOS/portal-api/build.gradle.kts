@@ -45,6 +45,8 @@ dependencies {
   implementation("ch.qos.logback:logback-classic:1.5.6")
   // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
   implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
+  // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
+  implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1")
   // https://mvnrepository.com/artifact/org.testcontainers/postgresql
   implementation("org.testcontainers:postgresql:1.19.8")
   testImplementation("io.vertx:vertx-junit5")

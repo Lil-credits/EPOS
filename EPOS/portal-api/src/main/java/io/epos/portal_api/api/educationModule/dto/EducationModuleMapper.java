@@ -32,6 +32,9 @@ public class EducationModuleMapper {
     dto.setEffectuationDate(version.getEffectuationDate());
     dto.setBaseCredential(version.getBaseCredential());
     dto.setEducationModuleId(version.getEducationModule().getId());
+    if (version.getImage() != null) {
+      dto.setImageData(version.getImage().getImageData());}
+    dto.setCreatedAt(version.getCreatedAt());
     return dto;
   }
 }

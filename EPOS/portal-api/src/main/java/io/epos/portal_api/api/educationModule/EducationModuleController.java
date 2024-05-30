@@ -4,6 +4,7 @@ import io.epos.portal_api.api.common.RequestParameters;
 import io.epos.portal_api.api.common.ResponseBuilder;
 import io.epos.portal_api.domain.EducationModule;
 import io.epos.portal_api.domain.EducationModuleVersion;
+import io.epos.portal_api.domain.Image;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.ext.web.RoutingContext;
 import org.slf4j.Logger;
@@ -33,7 +34,9 @@ public class EducationModuleController {
     EducationModuleVersion educationModuleVersion = new EducationModuleVersion();
     educationModuleVersion.setName(body.getString("name"));
     educationModuleVersion.setBaseCredential(body.getJsonObject("baseCredential"));
-    educationModuleService.createEducationModule(educationModule, educationModuleVersion)
+    Image image = new Image();
+    image.setImageData(body.getString("imageData"));
+    educationModuleService.createEducationModule(educationModule, educationModuleVersion, image)
       .subscribe().with(
         createdEducationModule -> ResponseBuilder.buildOkResponse(routingContext, createdEducationModule),
         error -> ResponseBuilder.buildErrorResponse(routingContext, error)

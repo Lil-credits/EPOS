@@ -57,6 +57,7 @@ def populate_database():
     json={
       "organisationalUnitId": team_id,
       "name": COURSE,
+      "imageData": "url to image",
       "baseCredential": BASE_CREDENTIAL,
     },
     timeout=5,

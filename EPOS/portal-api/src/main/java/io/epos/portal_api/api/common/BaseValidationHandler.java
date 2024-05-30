@@ -7,17 +7,15 @@ import io.vertx.json.schema.OutputUnit;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.ext.web.RoutingContext;
 import io.vertx.mutiny.json.schema.SchemaRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static io.epos.portal_api.api.common.ResponseBuilder.buildErrorResponse;
 
 public abstract class BaseValidationHandler {
-  private static final Logger LOGGER = LoggerFactory.getLogger(BaseValidationHandler.class);
+  private static final String BASE_URI = "app://";
   protected final SchemaRepository schemaRepository;
 
-  public BaseValidationHandler(Vertx vertx, String baseUri) {
-    this.schemaRepository = SchemaRepository.create(new JsonSchemaOptions().setBaseUri(baseUri));
+  public BaseValidationHandler(Vertx vertx) {
+    this.schemaRepository = SchemaRepository.create(new JsonSchemaOptions().setBaseUri(BASE_URI));
     loadSchemas(vertx);
   }
 

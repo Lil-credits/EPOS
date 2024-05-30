@@ -4,8 +4,10 @@ import io.epos.portal_api.api.educationModule.dto.EducationModuleListResponseDTO
 import io.epos.portal_api.api.educationModule.dto.EducationModuleMapper;
 import io.epos.portal_api.api.educationModule.dto.EducationModuleResponseDTO;
 import io.epos.portal_api.api.educationModule.dto.EducationModuleVersionResponseDTO;
+import io.epos.portal_api.api.repository.ImageRepository;
 import io.epos.portal_api.domain.EducationModule;
 import io.epos.portal_api.domain.EducationModuleVersion;
+import io.epos.portal_api.domain.Image;
 import io.epos.portal_api.util.QueryUtils;
 import io.smallrye.mutiny.Uni;
 import org.hibernate.reactive.mutiny.Mutiny;
@@ -17,8 +19,11 @@ public class EducationModuleService {
   private final EducationModuleRepository repository;
   private final Mutiny.SessionFactory emf;
 
-  public EducationModuleService(EducationModuleRepository repository, Mutiny.SessionFactory emf) {
+  private ImageRepository imageRepository;
+
+  public EducationModuleService(EducationModuleRepository repository, ImageRepository imageRepository, Mutiny.SessionFactory emf) {
     this.repository = repository;
+    this.imageRepository = imageRepository;
     this.emf = emf;
   }
 
@@ -45,8 +50,9 @@ public class EducationModuleService {
           });
   }
 
-  public Uni<EducationModuleVersionResponseDTO> createEducationModule(EducationModule educationModule, EducationModuleVersion educationModuleVersion) {
+  public Uni<EducationModuleVersionResponseDTO> createEducationModule(EducationModule educationModule, EducationModuleVersion educationModuleVersion, Image image) {
     educationModuleVersion.setEducationModule(educationModule);
+    educationModuleVersion.setImage(image);
     return emf.withTransaction(session -> repository.createEducationModule(session, educationModuleVersion)).map(EducationModuleMapper::toDTO);
   }
 }
