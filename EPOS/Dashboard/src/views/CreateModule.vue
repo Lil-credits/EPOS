@@ -18,7 +18,34 @@
 
       <div class="steps">
         <div step="1" v-if="step === 1">
-          <createStep1/>
+          <v-form>
+        <div class="image-upload">
+        <input
+          type="file"
+          id="course-badge"
+          @change="handleImageUpload"
+          accept="image/*"
+          hidden
+        />
+        <label for="course-badge" class="upload-label">
+          <div v-if="courseDetails.badgeImage" class="image-preview">
+            <img
+              :src="courseDetails.badgeImage"
+              alt="Uploaded image preview"
+              class="preview-image"
+            />
+          </div>
+          <div v-else>Add Image</div>
+        </label>
+      </div>
+      <div class="form-group">
+        <v-text-field label="Credential title"></v-text-field>
+      </div>
+      <div class="description-container">
+      <v-textarea no-resize label="Description" variant="solo-filled" rows="10"></v-textarea>
+
+    </div>
+    </v-form>
         </div>
 
         <div step="2" v-if="step === 2">
@@ -56,7 +83,7 @@
 <script>
 import { ref } from 'vue';
 
-import createStep1 from '@/components/page-components/module/form/createStep1.vue';
+
 import createStep2 from '@/components/page-components/module/form/createStep2.vue';
 import createStep3 from '@/components/page-components/module/form/createStep3.vue';
 import createStep4 from '@/components/page-components/module/form/createStep4.vue';
@@ -64,7 +91,6 @@ import createStep4 from '@/components/page-components/module/form/createStep4.vu
 export default {
   name: 'MultiStepForm',
   components: {
-    createStep1,
     createStep2,
     createStep3,
     createStep4,
