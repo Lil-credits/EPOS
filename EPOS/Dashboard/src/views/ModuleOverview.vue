@@ -1,16 +1,18 @@
 <template>
   <v-container>
-    <v-row align="center" justify="space-around">
-      <overviewItem 
+    <v-row align="center" justify="space-around" class="overview">
+      <v-col 
         v-for="module in educationModules" 
         :key="module.id" 
-        :title="module.name" 
-        :image="module.imageUrl" 
-        :moduleId="module.id" 
-        :cols="4"
-        :md="4"
-      />
-      <v-col cols="4" md="4">
+        class="module-item"
+      >
+        <overviewItem 
+          :title="module.name" 
+          :image="module.imageUrl" 
+          :moduleId="module.id"
+        />
+      </v-col>
+      <v-col cols="12" sm="6" md="4" lg="4" class="module-item">
         <overviewAdd />
       </v-col>
     </v-row>
@@ -60,51 +62,10 @@ export default {
 </script>
 
 <style scoped>
-.back-arrow {
-  margin: 10px;
-  cursor: pointer;
-  font-size: 24px;
-}
 .overview {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
   margin-top: 20px;
 }
-.circle-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.circle-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-  cursor: pointer;
-  position: relative;
-}
-.module {
-  background-color: #FB0017;
-  color: black;
-}
-.create-own {
-  background-color: #00A4E7;
-  color: white;
-}
-.circle-image {
-  width: 60%;
-  height: 60%;
-  border-radius: 50%;
-}
-.circle-text {
-  margin-top: 10px;
-  font-size: 14px;
-  text-align: center;
+.module-item {
+  margin-bottom: 20px;
 }
 </style>

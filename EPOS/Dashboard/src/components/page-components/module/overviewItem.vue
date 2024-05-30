@@ -40,17 +40,16 @@
     justify-content: center;
     width: 100px;
     height: 100px;
-    border-radius: 50%;
     font-size: 14px;
     font-weight: bold;
     text-align: center;
     cursor: pointer;
     position: relative;
+    box-shadow: none; /* Remove shadow */
   }
   .circle-image {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
     object-fit: cover;
   }
   .circle-text {
