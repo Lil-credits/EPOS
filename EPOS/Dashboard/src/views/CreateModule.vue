@@ -39,10 +39,10 @@
         </label>
       </div>
       <div class="form-group">
-        <v-text-field label="Credential title"></v-text-field>
+        <v-text-field v-model="formData.title" label="Credential title"></v-text-field>
       </div>
       <div class="description-container">
-      <v-textarea no-resize label="Description" variant="solo-filled" rows="10"></v-textarea>
+      <v-textarea v-model="formData.description" no-resize label="Description" variant="solo-filled" rows="10"></v-textarea>
 
     </div>
     </v-form>
@@ -136,6 +136,7 @@ export default {
     const nextStep = () => {
       if (step.value < 5) step.value++;
       console.log('Step:', step.value);
+      console.log('Form Data:', formData.value);
     };
 
     const prevStep = () => {
@@ -165,6 +166,7 @@ export default {
       if (newRequirement.value.trim() !== '') {
         requirements.value.push(newRequirement.value);
         newRequirement.value = '';
+        formData.value.requiredAdmission = requirements.value;
       }
     };
 
@@ -175,11 +177,8 @@ export default {
       if (newSkill.value.trim() !== '') {
         skills.value.push(newSkill.value);
         newSkill.value = '';
+        formData.value.skills = skills.value;
       }
-    };
-
-    const submitStep = () => {
-      // Add your logic for submitting the step here
     };
 
     return {
@@ -195,7 +194,6 @@ export default {
       skills,
       newSkill,
       addSkill,
-      submitStep
     };
   }
 };
