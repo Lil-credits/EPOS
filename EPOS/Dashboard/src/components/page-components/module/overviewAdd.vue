@@ -32,6 +32,7 @@
     text-align: center;
     cursor: pointer;
     position: relative;
+    background-color: #f5f5f5;
   }
   .circle-image {
     width: 100%;

@@ -20,23 +20,26 @@
         </label>
       </div>
       <div class="form-group">
-        <input
+        <!-- <input
           type="text"
           id="course-title"
           v-model="courseDetails.courseTitle"
           required
           placeholder="Type you here Your Credential Title"
           class="title-input"
-        />
+        /> -->
+        <v-text-field label="Credential title"></v-text-field>
       </div>
       <div class="description-container">
-      <label for="course-description" class="description-label">Description</label>
+      <!-- <label for="course-description" class="description-label">Description</label>
       <textarea 
         id="course-description"
         rows="10"
         placeholder="Type here the description..."
         v-model="courseDescription"
-      ></textarea>
+      ></textarea> -->
+
+      <v-textarea no-resize label="Description" variant="solo-filled" rows="10"></v-textarea>
 
     </div>
     </v-form>
@@ -87,6 +90,8 @@ export default {
   justify-content: center;
   align-items: center;
   margin-bottom: 30px;
+  margin-top: 30px;
+  box-shadow: none;
 }
 
 .upload-label {

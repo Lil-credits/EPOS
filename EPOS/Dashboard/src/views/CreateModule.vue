@@ -4,7 +4,7 @@
       <v-col cols="12" class="fill-height">
     <v-stepper>
       <v-stepper-header>
-        <v-stepper-item :rules="[() => true]" :complete="step > 1" step="1" value="1" @click="step = 1"/>
+        <v-stepper-item :complete="step > 1" step="1" value="1" @click="step = 1"/>
         <v-divider></v-divider>
         <v-stepper-item :complete="step > 2" step="2" value="2" @click="step = 2"/>
         <v-divider></v-divider>
@@ -48,8 +48,10 @@
       </div>
     </v-stepper>
     <div class="stepbutton">
-      <v-btn color="primary" @click="prevStep">Previous</v-btn>
-      <v-btn color="primary" @click="nextStep">Next</v-btn>
+      <v-icon class="btn" @click="prevStep">mdi-arrow-left</v-icon>
+      <v-icon class="btn" @click="nextStep">mdi-arrow-right</v-icon>
+      <!-- <v-btn color="primary" @click="prevStep">Previous</v-btn>
+      <v-btn color="primary" @click="nextStep">Next</v-btn> -->
     </div>
   </v-col>
   </v-row>
@@ -114,7 +116,9 @@ export default {
   margin-left: 100px;
   position: fixed;
   bottom: 25px;
+  font-size: 40px;
 }
+
 .container {
   height: 100vh;
   display: flex;
