@@ -57,6 +57,7 @@
         label="Select Language"
         required
         variant="outlined"
+        v-model:model-value="formData.attributes['language']"
         @update:model-value="handleDropdown('language', $event)"
         ></v-select>
     <v-select
@@ -64,6 +65,7 @@
         label="Select Study Load"
         required
         variant="outlined"
+        v-model:model-value="formData.attributes['studyLoad']"
         @update:model-value="handleDropdown('studyLoad', $event)"
         ></v-select>
     <v-select
@@ -71,6 +73,7 @@
         label="Select EQF Level"
         required
         variant="outlined"
+        v-model:model-value="formData.attributes['EQFLevel']"
         @update:model-value="handleDropdown('EQFLevel', $event)"
         ></v-select>
 </div>
@@ -104,7 +107,7 @@
 
 <!-- Step 5 -->
 
-        <div step="5" v-if="step === 5">
+<div step="5" v-if="step === 5">
           <container class="detailcontainer">
           <div class="informationbox">
           <div class="image-container">
@@ -125,8 +128,8 @@
       </div>
     </v-stepper>
 
-<!-- stepbuttons -->
-    <div class="stepbutton">
+<!-- stepbuttons -->    
+<div class="stepbutton">
       <div v-if="step===5">
         <v-icon class="btn" @click="prevStep">mdi-arrow-left</v-icon>
         <v-icon class="btn" @click="submitForm">mdi-check</v-icon>
@@ -262,7 +265,6 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 10px;
 }
 
 .fill-height {
@@ -448,42 +450,7 @@ input[type="text"] {
   border-radius: 10px; /* Rounded corners */
   font-size: 1rem;
 }
-/* ------------------------------------styling of step 5------------------------------------ */
-.informationbox {
-  width: 100%;
-    margin: 0 20px;
-}
-.info-section {
-  background-color: #f0f0f0; /* Light grey background */
-  border-radius: 10px;
-  margin-bottom: 15px;
-  padding: 15px;
-}
-.image-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
 
-.detailcontainer {
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-}
-
-.info-sectionalt {
-  color: white;
-  background-color:  #00A4E7;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  padding: 15px;
-}
-
-.info-section h2 {
-  text-align: center;
-}
 </style>
 
 
