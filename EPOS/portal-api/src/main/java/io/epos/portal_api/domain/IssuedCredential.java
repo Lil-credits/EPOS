@@ -30,6 +30,16 @@ public class IssuedCredential {
   @JoinColumn(name = "subject_id")
   private Account subjectAccount;
 
+  public IssuedCredential() {
+  }
+
+  public IssuedCredential(JsonObject credential, EducationModuleVersion educationModuleVersion, Membership issuerMembership, Account subjectAccount) {
+    this.credential = credential;
+    this.educationModuleVersion = educationModuleVersion;
+    this.issuerMembership = issuerMembership;
+    this.subjectAccount = subjectAccount;
+  }
+
   @PrePersist
   protected void onCreate() {
     createdAt = LocalDateTime.now();
