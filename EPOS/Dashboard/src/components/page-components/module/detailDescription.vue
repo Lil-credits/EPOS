@@ -1,11 +1,12 @@
 <template>
-<v-expansion-panels>
-  <v-expansion-panel
-    title="Description"
-   :text=description
-  >
-  </v-expansion-panel>
-</v-expansion-panels>
+  <div>
+    <div class="description" :class="{folded: folded}"  @click="toggleFold" >
+      <h2>Description</h2>
+      <p>
+        {{ description }}
+      </p>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -16,8 +17,20 @@ export default {
             type: String,
             required: true
         }
-    }
+    },
+  data() {
+  return {
+    folded: false
+  };
+},
+methods: {
+  toggleFold() {
+    this.folded = !this.folded;
+    console.log(this.folded);
+  }
 }
+}
+
 </script>
 
 <style scoped>
@@ -28,12 +41,12 @@ export default {
 }
 
 .description p {
-  color: #333; /* Dark text for content */
+  color: #333;
   text-align: center;
   font-size: 16px;
   max-height: 100px;
-  text-overflow: ellipsis;
   overflow: hidden;
+  text-overflow: ellipsis;
   transition: max-height 0.3s ease;
 }
 
@@ -42,7 +55,6 @@ export default {
 }
 
 .description.folded::after {
-  content: '...';
   color: #333;
   cursor: pointer;
   display: block;
@@ -50,12 +62,4 @@ export default {
   margin-top: 10px;
 }
 
-.description.folded::after:hover {
-  text-decoration: underline;
-}
-
-.description.unfolded::after {
-  content: '';
-  display: none;
-}
 </style>
