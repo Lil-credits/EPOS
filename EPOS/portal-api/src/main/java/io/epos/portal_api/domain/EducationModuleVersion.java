@@ -33,7 +33,7 @@ public class EducationModuleVersion {
   @JoinColumn(name = "education_module_id", nullable = false)
   private EducationModule educationModule;
 
-  @ManyToOne(optional = false)
+  @ManyToOne()
   @JoinColumn(name = "membership_id")
   private Membership membership;
 
