@@ -23,7 +23,6 @@ public class MicroCredentialValidationHandler extends BaseValidationHandler {
    */
   public MicroCredentialValidationHandler(Vertx vertx) {
     super(vertx);
-    loadSchemas(vertx);
   }
 
   /**

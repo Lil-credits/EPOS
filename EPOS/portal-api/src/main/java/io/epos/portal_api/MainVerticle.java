@@ -12,16 +12,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import jakarta.persistence.Persistence;
 
-
+/**
+ * Main Verticle responsible for initializing the application.
+ */
 public class MainVerticle extends AbstractVerticle {
 
   private static final Logger logger = LoggerFactory.getLogger(MainVerticle.class);
-  private Mutiny.SessionFactory emf;  // <1>
+  private Mutiny.SessionFactory emf;
 
+  /**
+   * Initiates the asynchronous start of the application.
+   *
+   * @return A Uni indicating the completion of the asynchronous start process
+   */
   @Override
   public Uni<Void> asyncStart() {
     // Register the JSR-310 module with Jackson
     DatabindCodec.mapper().registerModule(new JavaTimeModule());
+
+    // Start Hibernate asynchronously
     return startHibernate()
       .flatMap(ignored -> initializeRouter())
       .flatMap(this::startHttpServer)
@@ -29,24 +38,37 @@ public class MainVerticle extends AbstractVerticle {
       .onItem().invoke(() -> logger.info("✅ Application started successfully"));
   }
 
+  /**
+   * Starts Hibernate asynchronously.
+   *
+   * @return A Uni indicating the completion of the Hibernate startup process
+   */
   private Uni<Void> startHibernate() {
-    // Define the blocking operation as a Uni
     Uni<Void> startHibernate = Uni.createFrom().deferred(() -> {
       emf = Persistence.createEntityManagerFactory("pg-epos", DbUtil.getHibernateProperties())
         .unwrap(Mutiny.SessionFactory.class);
       return Uni.createFrom().voidItem().invoke(() -> logger.info("✅ Hibernate Reactive is ready"));
     });
-
-    // Execute the blocking operation on a worker thread
     return vertx.executeBlocking(startHibernate);
   }
 
+  /**
+   * Initializes the Router.
+   *
+   * @return A Uni emitting the initialized Router
+   */
   private Uni<Router> initializeRouter() {
     Router router = Router.router(vertx);
     ApiInitializer.initializeApis(vertx, router, emf);
     return Uni.createFrom().item(router);
   }
 
+  /**
+   * Starts the HTTP server with the provided Router.
+   *
+   * @param router The initialized Router
+   * @return A Uni indicating the completion of the HTTP server startup process
+   */
   private Uni<Void> startHttpServer(Router router) {
     return vertx.createHttpServer()
       .requestHandler(router)
