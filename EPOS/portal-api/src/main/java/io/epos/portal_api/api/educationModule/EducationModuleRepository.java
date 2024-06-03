@@ -1,11 +1,11 @@
 package io.epos.portal_api.api.educationModule;
 
+import io.epos.portal_api.api.common.exception.NotFoundException;
 import io.epos.portal_api.domain.EducationModule;
 import io.epos.portal_api.domain.EducationModuleVersion;
 import io.smallrye.mutiny.Uni;
 import org.hibernate.reactive.mutiny.Mutiny;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * Repository class for handling CRUD operations related to education modules.
@@ -21,7 +21,7 @@ public class EducationModuleRepository {
    */
   public Uni<EducationModule> getEducationModule(Mutiny.Session session, int id) {
     return session.find(EducationModule.class, id)
-      .onItem().ifNull().failWith(new NoSuchElementException("No education module with ID " + id))
+      .onItem().ifNull().failWith(new NotFoundException("No education module with ID " + id))
       .call(module ->
         Mutiny.fetch(module.getEducationModuleVersions())
           .replaceWith(module));

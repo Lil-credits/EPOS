@@ -1,5 +1,9 @@
 package io.epos.portal_api.util;
 
+
+/**
+ * Utility class for query operations.
+ */
 public class QueryUtils {
 
   private static final int DEFAULT_PAGE = 1;

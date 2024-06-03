@@ -1,5 +1,6 @@
 package io.epos.portal_api.api.microCredential;
 
+import io.epos.portal_api.api.common.exception.NotFoundException;
 import io.epos.portal_api.domain.Account;
 import io.epos.portal_api.domain.EducationModuleVersion;
 import io.epos.portal_api.domain.IssuedCredential;
@@ -29,7 +30,7 @@ public class MicroCredentialRepository {
     return session.find(Membership.class, memberId)
       .onItem().ifNull().failWith(() -> {
         logger.error("No membership found with ID {}", memberId);
-        return new NoSuchElementException("No membership with ID " + memberId);
+        return new NotFoundException("No membership with ID " + memberId);
       });
   }
 
@@ -45,7 +46,7 @@ public class MicroCredentialRepository {
     return session.find(EducationModuleVersion.class, educationModuleVersionId)
       .onItem().ifNull().failWith(() -> {
         logger.error("No education module version found with ID {}", educationModuleVersionId);
-        return new NoSuchElementException("No education module version with ID " + educationModuleVersionId);
+        return new NotFoundException("No education module version with ID " + educationModuleVersionId);
       });
   }
 
@@ -75,7 +76,7 @@ public class MicroCredentialRepository {
     return session.find(Account.class, subjectId)
       .onItem().ifNull().failWith(() -> {
         logger.error("No account found with ID {}", subjectId);
-        return new NoSuchElementException("No account with ID " + subjectId);
+        return new NotFoundException("No account with ID " + subjectId);
       });
   }
 }

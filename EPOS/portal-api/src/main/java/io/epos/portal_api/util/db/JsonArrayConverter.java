@@ -5,6 +5,9 @@ import io.vertx.core.json.JsonArray;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
+/**
+ * Converter for JSON arrays.
+ */
 @Converter(autoApply = true)
 public class JsonArrayConverter implements AttributeConverter<JsonArray, String> {
 

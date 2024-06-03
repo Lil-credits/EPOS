@@ -1,28 +1,33 @@
 package io.epos.portal_api.api.common;
 
-
+import io.epos.portal_api.api.common.exception.BadRequestException;
+import io.epos.portal_api.api.common.exception.NotFoundException;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.ext.web.RoutingContext;
+
 import java.util.NoSuchElementException;
 
-public class ResponseBuilder {
+/**
+ * Utility class for building HTTP responses.
+ */
+public final class ResponseBuilder {
 
   private static final String CONTENT_TYPE_HEADER = "Content-Type";
   private static final String APPLICATION_JSON = "application/json";
 
+  // Private constructor to prevent instantiation
   private ResponseBuilder() {
-
+    throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
   }
 
   /**
-   * Build success response using 200 OK as its status code and response as its body
+   * Builds a 200 OK success response with the given response body.
    *
-   * @param rc       Routing context
-   * @param response Response body
+   * @param rc       the routing context
+   * @param response the response body
    */
-  public static void buildOkResponse(RoutingContext rc,
-                                     Object response) {
+  public static void buildOkResponse(RoutingContext rc, Object response) {
     rc.response()
       .setStatusCode(200)
       .putHeader(CONTENT_TYPE_HEADER, APPLICATION_JSON)
@@ -30,13 +35,12 @@ public class ResponseBuilder {
   }
 
   /**
-   * Build success response using 201 Created as its status code and response as its body
+   * Builds a 201 Created success response with the given response body.
    *
-   * @param rc       Routing context
-   * @param response Response body
+   * @param rc       the routing context
+   * @param response the response body
    */
-  public static void buildCreatedResponse(RoutingContext rc,
-                                          Object response) {
+  public static void buildCreatedResponse(RoutingContext rc, Object response) {
     rc.response()
       .setStatusCode(201)
       .putHeader(CONTENT_TYPE_HEADER, APPLICATION_JSON)
@@ -44,35 +48,35 @@ public class ResponseBuilder {
   }
 
   /**
-   * Build success response using 204 No Content as its status code and no body
+   * Builds a 204 No Content success response with no response body.
    *
-   * @param rc Routing context
+   * @param rc the routing context
    */
   public static void buildNoContentResponse(RoutingContext rc) {
     rc.response()
       .setStatusCode(204)
       .endAndForget();
   }
-
   /**
-   * Build error response using 400 Bad Request, 404 Not Found or 500 Internal Server Error
-   * as its status code and throwable as its body
+   * Builds an error response based on the type of the given throwable.
+   * - 400 Bad Request for IllegalArgumentException, IllegalStateException, or NullPointerException.
+   * - 404 Not Found for NoSuchElementException.
+   * - 500 Internal Server Error for other exceptions.
    *
-   * @param rc        Routing context
-   * @param throwable Throwable
+   * @param rc        the routing context
+   * @param throwable the throwable that caused the error
    */
-  public static void buildErrorResponse(RoutingContext rc,
-                                        Throwable throwable) {
+  public static void buildErrorResponse(RoutingContext rc, Throwable throwable) {
     final int status;
     final String message;
 
-    if (throwable instanceof IllegalArgumentException || throwable instanceof IllegalStateException || throwable instanceof NullPointerException) {
+    if (throwable instanceof BadRequestException) {
       // Bad Request
-      status = 400;
+      status = ((BadRequestException) throwable).getStatusCode();
       message = throwable.getMessage();
-    } else if (throwable instanceof NoSuchElementException) {
+    } else if (throwable instanceof NotFoundException) {
       // Not Found
-      status = 404;
+      status = ((NotFoundException) throwable).getStatusCode();
       message = throwable.getMessage();
     } else {
       // Internal Server Error
@@ -85,5 +89,7 @@ public class ResponseBuilder {
       .putHeader(CONTENT_TYPE_HEADER, APPLICATION_JSON)
       .endAndForget(new JsonObject().put("error", message).encodePrettily());
   }
-
 }
+
+
+
