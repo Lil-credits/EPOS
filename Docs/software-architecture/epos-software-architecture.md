@@ -52,25 +52,57 @@ Together, these components form the backbone of the EPOS platform, enabling seam
 
 - **Walt.id**: is used to utilize their wallets and issuance capabilities of verifiable credentials on EBSI. It serves as an integral component for managing user wallets and facilitating the issuance of verifiable credentials within the EPOS ecosystem.
 
-
-## Design Patterns and Principles
-Discussion of applied design patterns or architectural principles (MVC, microservices, RESTful APIs, etc.).
-
 ## Data Model
-Description of the data model/schema, including entities, relationships, and data flow.
+The data model of EPOS includes various entities such as Users, Micro-Credentials, Education Modules, and Issued Credentials. Each entity has relationships with others, facilitating the management and issuance of micro-credentials. See ERD.
 
-## Deployment Architecture
-Explanation of how the system is deployed, including servers, databases, cloud services, etc.
 
 ## Security Considerations
-Description of security measures implemented (authentication, authorization, encryption, etc.).
+EPOS implements robust security measures, including:
+- **Authentication**: Secure login mechanisms for users.
+- **Authorization**: Role-based access control to ensure only authorized users can perform certain actions.
+- **Encryption**: Data encryption in transit and at rest to protect sensitive information.
+- **Data Privacy**: Compliance with GDPR and other data protection regulations to ensure user data privacy.
 
 ## Performance Considerations
-Discussion of performance-related decisions (caching, load balancing, etc.).
+To ensure optimal performance, EPOS employs:
+- **Asynchronous Processing**: Using Vert.x's non-blocking architecture for efficient request handling.
 
 ## Scalability
-Explanation of how the system can scale to accommodate increasing loads or user base.
-
+EPOS is designed to scale horizontally by adding more instances of the web and application servers as needed. This allows the system to handle increasing loads and a growing user base efficiently.
 
 ## Development Environment Setup
-Instructions on setting up a development environment, including dependencies and build instructions.
+To set up a development environment for EPOS with Docker, follow these steps:
+
+1. **Clone the EPOS Repository**:
+   ```bash
+   git clone https://github.com/Lil-credits/EPOS.git
+   ```
+
+2. **Clone the Waltid Repository**:
+   ```bash
+   git clone https://github.com/Lil-credits/waltid.git
+   ```
+
+3. **Create a docker network**:
+   ```bash
+   docker network create epos_network
+   ```
+
+
+4. **Run the Application**:
+   - Start the epos application:
+     ```bash
+     inside project folder: docker-compose up
+     ```
+   - Start the walt-id services:
+     ```bash
+     inside waltid project folder: docker-compose up
+     ```
+
+5. **Access the Application**:
+   - Open your browser and navigate to `http://localhost:8080` for the backend and `http://localhost:3000` for the frontend.
+
+6. **To quickly get stared with dummy data**:
+     ```bash
+    go the the portal-api folder in EPOS and run the intitiale-database.py file
+     ```
