@@ -5,16 +5,16 @@ import io.vertx.core.json.JsonObject;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * DTO class representing a response for an education module version.
+ */
 public class EducationModuleVersionResponseDTO {
   private int id;
   private String name;
-
   private String imageData;
   private JsonObject baseCredential;
   private LocalDate effectuationDate;
-
   private LocalDateTime createdAt;
-
   private int educationModuleId;
 
   public int getId() {

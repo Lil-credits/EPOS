@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 public class FileUtils {
-  private static final String JSON_SCHEMA_PATH = "src/main/resources/json_schema/";
   public static JsonSchema readJsonSchema(String filename, Vertx vertx){
     try {
       InputStream inputStream = FileUtils.class.getResourceAsStream("/json_schema/" + filename);

@@ -10,46 +10,91 @@ import io.vertx.mutiny.ext.web.RoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+/**
+ * Controller class for handling education module related operations.
+ */
 public class EducationModuleController {
   private static final Logger logger = LoggerFactory.getLogger(EducationModuleController.class);
   private final EducationModuleService educationModuleService;
+
+  /**
+   * Constructor to initialize the controller with the education module service.
+   *
+   * @param educationModuleService The education module service to be injected.
+   */
   public EducationModuleController(EducationModuleService educationModuleService) {
     this.educationModuleService = educationModuleService;
   }
 
+  /**
+   * Retrieves an education module by its ID.
+   *
+   * @param routingContext The routing context containing request information.
+   */
   public void getEducationModule(RoutingContext routingContext) {
     String id = routingContext.pathParam(RequestParameters.ID_PARAMETER);
-
     educationModuleService.getEducationModule(Integer.parseInt(id))
       .subscribe().with(
         educationModule -> ResponseBuilder.buildOkResponse(routingContext, educationModule),
-        error -> ResponseBuilder.buildErrorResponse(routingContext, error)
+        error -> {
+          logger.error("Failed to get education module with ID: {}", id, error);
+          ResponseBuilder.buildErrorResponse(routingContext, error);
+        }
       );
   }
 
+  /**
+   * Creates a new education module.
+   *
+   * @param routingContext The routing context containing request information.
+   */
   public void createEducationModule(RoutingContext routingContext) {
+    // Extract validated input data from routing context
     JsonObject body = routingContext.body().asJsonObject();
-    EducationModule educationModule = new EducationModule();
-    EducationModuleVersion educationModuleVersion = new EducationModuleVersion();
-    educationModuleVersion.setName(body.getString("name"));
-    educationModuleVersion.setBaseCredential(body.getJsonObject("baseCredential"));
-    Image image = new Image();
-    image.setImageData(body.getString("imageData"));
-    educationModuleService.createEducationModule(educationModule, educationModuleVersion, image)
+    String moduleName = body.getString("name");
+    JsonObject baseCredential = body.getJsonObject("baseCredential");
+    String imageData = body.getString("imageData");
+    // Create EducationModuleVersion and Image objects
+    EducationModuleVersion educationModuleVersion = createEducationModuleVersion(moduleName, baseCredential);
+    Image image = createImage(imageData);
+    // Create and save the education module
+    educationModuleService.createEducationModule(new EducationModule(), educationModuleVersion, image)
       .subscribe().with(
         createdEducationModule -> ResponseBuilder.buildOkResponse(routingContext, createdEducationModule),
-        error -> ResponseBuilder.buildErrorResponse(routingContext, error)
+        error -> {
+          logger.error("Failed to create education module", error);
+          ResponseBuilder.buildErrorResponse(routingContext, error);
+        }
       );
-
   }
 
-  public void listEducationModules(RoutingContext routingContext) {
+  private EducationModuleVersion createEducationModuleVersion(String moduleName, JsonObject baseCredential) {
+    EducationModuleVersion educationModuleVersion = new EducationModuleVersion();
+    educationModuleVersion.setName(moduleName);
+    educationModuleVersion.setBaseCredential(baseCredential);
+    return educationModuleVersion;
+  }
 
-    educationModuleService.getEducationModules(routingContext.queryParams().get(RequestParameters.PAGE_PARAMETER), routingContext.queryParams().get(RequestParameters.LIMIT_PARAMETER))
+  private Image createImage(String imageData) {
+    Image image = new Image();
+    image.setImageData(imageData);
+    return image;
+  }
+
+  /**
+   * Lists education modules based on pagination parameters.
+   *
+   * @param routingContext The routing context containing request information.
+   */
+  public void listEducationModules(RoutingContext routingContext) {
+    educationModuleService.getEducationModules(routingContext.queryParams().get(RequestParameters.PAGE_PARAMETER),
+        routingContext.queryParams().get(RequestParameters.LIMIT_PARAMETER))
       .subscribe().with(
         educationModules -> ResponseBuilder.buildOkResponse(routingContext, educationModules),
-        error -> ResponseBuilder.buildErrorResponse(routingContext, error)
+        error -> {
+          logger.error("Failed to list education modules", error);
+          ResponseBuilder.buildErrorResponse(routingContext, error);
+        }
       );
   }
 }

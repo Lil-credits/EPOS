@@ -10,22 +10,72 @@ import io.smallrye.mutiny.Uni;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import org.hibernate.reactive.mutiny.Mutiny;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static io.epos.portal_api.util.FileUtils.readJsonObject;
 
+/**
+ * Service class for handling micro-credential operations.
+ */
 public class MicroCredentialService {
+
+  private static final Logger logger = LoggerFactory.getLogger(MicroCredentialService.class);
 
   private final MicroCredentialRepository repository;
   private final Mutiny.SessionFactory emf;
-
   private final WaltidClient waltidClient;
 
+  /**
+   * Constructor for MicroCredentialService.
+   *
+   * @param repository   The micro-credential repository.
+   * @param emf          The Hibernate session factory.
+   * @param waltidClient The Walt.id client for issuing credentials.
+   */
   public MicroCredentialService(MicroCredentialRepository repository, Mutiny.SessionFactory emf, WaltidClient waltidClient) {
     this.repository = repository;
     this.emf = emf;
     this.waltidClient = waltidClient;
   }
 
+  /**
+   * Issues a micro-credential.
+   *
+   * @param issuerId               The ID of the issuer.
+   * @param subjectId              The ID of the subject.
+   * @param educationModuleVersionId The ID of the education module version.
+   * @return A Uni that emits the invitation link to the issued credential.
+   */
+  public Uni<String> issueMicroCredential(int issuerId, int subjectId, int educationModuleVersionId) {
+    logger.info("Issuing micro-credential for issuer ID: {}, subject ID: {}, module version ID: {}", issuerId, subjectId, educationModuleVersionId);
+
+    Uni<Membership> issuerUni = emf.withSession(session -> repository.getMembership(session, issuerId));
+    Uni<Account> subjectUni = emf.withSession(session -> repository.getAccount(session, subjectId));
+    Uni<EducationModuleVersion> educationModuleVersionUni = emf.withSession(session -> repository.getEducationModuleVersion(session, educationModuleVersionId));
+
+    return Uni.combine().all().unis(issuerUni, subjectUni, educationModuleVersionUni).asTuple()
+      .onItem().transformToUni(tuple -> {
+        JsonObject microCredential = createMicroCredential(tuple.getItem1(), tuple.getItem2(), tuple.getItem3());
+        IssuedCredential issuedCredential = new IssuedCredential(microCredential, tuple.getItem3(), tuple.getItem1(), tuple.getItem2());
+
+        return waltidClient.issue(microCredential)
+          .onItem().transformToUni(link ->
+            emf.withTransaction(session -> repository.createIssuedCredential(session, issuedCredential)
+              .replaceWith(link)
+            )
+          );
+      });
+  }
+
+  /**
+   * Creates a micro-credential JSON object.
+   *
+   * @param issuer                The issuer's membership information.
+   * @param subject               The subject's account information.
+   * @param educationModuleVersion The education module version.
+   * @return A JsonObject representing the micro-credential.
+   */
   private JsonObject createMicroCredential(Membership issuer, Account subject, EducationModuleVersion educationModuleVersion) {
     JsonObject microCredential = readJsonObject("micro_credential.json");
     fillMicroCredentialWithIssuerData(microCredential, issuer);
@@ -37,11 +87,25 @@ public class MicroCredentialService {
     return microCredential;
   }
 
+  /**
+   * Fills the micro-credential JSON object with issuer data.
+   *
+   * @param microCredential The micro-credential JSON object.
+   * @param issuer          The issuer's membership information.
+   */
   private void fillMicroCredentialWithIssuerData(JsonObject microCredential, Membership issuer) {
     microCredential.put("issuerDid", issuer.getDid());
     microCredential.put("issuanceKey", issuer.getIssuanceKey());
   }
 
+  /**
+   * Creates an achievement credential from issuer, subject, and education module version data.
+   *
+   * @param issuer                The issuer's membership information.
+   * @param subject               The subject's account information.
+   * @param educationModuleVersion The education module version.
+   * @return An AchievementCredential object.
+   */
   private AchievementCredential createAchievementCredential(Membership issuer, Account subject, EducationModuleVersion educationModuleVersion) {
     AchievementCredential achievementCredential = new AchievementCredential();
     // Fill achievementCredential with data from subject and educationModuleVersion
@@ -51,6 +115,12 @@ public class MicroCredentialService {
     return achievementCredential;
   }
 
+  /**
+   * Converts an AchievementCredential object to a JsonObject.
+   *
+   * @param achievementCredential The AchievementCredential object.
+   * @return A JsonObject representation of the achievement credential.
+   */
   private JsonObject convertAchievementCredentialToJsonObject(AchievementCredential achievementCredential) {
 //    String jsonString = Json.encode(achievementCredential);
 //    return new JsonObject(jsonString);
@@ -707,26 +777,7 @@ public class MicroCredentialService {
       "        \"id\": \"http://1edtech.edu/credentials/3732\",\n" +
       "        \"type\": \"1EdTechCredentialRefresh\"\n" +
       "    }\n" +
-      "}";
+      "}";;
     return new JsonObject(mcTest);
   }
-  public Uni<String> issueMicroCredential(int issuerId, int subjectId, int educationModuleVersionId) {
-    Uni<Membership> issuerUni = emf.withSession(session -> repository.getMembership(session, issuerId));
-    Uni<Account> subjectUni = emf.withSession(session -> repository.getAccount(session, subjectId));
-    Uni<EducationModuleVersion> educationModuleVersionUni = emf.withSession(session -> repository.getEducationModuleVersion(session, educationModuleVersionId));
-
-    return Uni.combine().all().unis(issuerUni, subjectUni, educationModuleVersionUni).asTuple()
-      .onItem().transformToUni(tuple -> {
-        // fill microCredential with data from issuedCredential
-        JsonObject microCredential = createMicroCredential(tuple.getItem1(), tuple.getItem2(), tuple.getItem3());
-        IssuedCredential issuedCredential = new IssuedCredential(microCredential, tuple.getItem3(), tuple.getItem1(), tuple.getItem2());
-        return waltidClient.issue(microCredential)
-          .onItem().transformToUni(link ->
-            emf.withTransaction(session -> repository.createIssuedCredential(session, issuedCredential)
-              .replaceWith(link)
-            )
-          );
-      });
-  }
 }
-

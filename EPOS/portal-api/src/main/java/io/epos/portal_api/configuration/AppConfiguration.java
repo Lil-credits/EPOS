@@ -1,5 +1,8 @@
 package io.epos.portal_api.configuration;
 
+/**
+ * Configuration class for the application, containing environment variable mappings.
+ */
 public class AppConfiguration {
   // Database configurations
   private static final String DB_HOST = System.getenv("DB_HOST");

@@ -11,33 +11,66 @@ import org.hibernate.reactive.mutiny.Mutiny;
 
 import java.util.List;
 
+/**
+ * Initializes API components and sets up the router with necessary configurations.
+ */
 public class ApiInitializer {
-  public static void initializeApis(Vertx vertx, Router router, Mutiny.SessionFactory emf){
 
-    // add CORS support
-    // Create a CORS handler allowing all origins, methods, and headers
+  /**
+   * Initializes all API components and configures the router.
+   *
+   * @param vertx  The Vert.x instance.
+   * @param router The main router.
+   * @param emf    The Hibernate session factory for database interactions.
+   */
+  public static void initializeApis(Vertx vertx, Router router, Mutiny.SessionFactory emf) {
+    addCorsSupport(router);
+    List<ApiComponentFactory> factories = getApiFactories();
+    initializeFactories(vertx, router, emf, factories);
+  }
+
+  /**
+   * Adds CORS support to the router.
+   *
+   * @param router The router to add CORS support to.
+   */
+  private static void addCorsSupport(Router router) {
     CorsHandler corsHandler = CorsHandler.create()
       .addOrigin("*")
-      .allowedMethod(HttpMethod.GET) // Allow all HTTP methods
+      .allowedMethod(HttpMethod.GET)
       .allowedMethod(HttpMethod.POST)
       .allowedMethod(HttpMethod.PUT)
       .allowedMethod(HttpMethod.DELETE)
-      .allowedMethod(HttpMethod.OPTIONS) // Also allow OPTIONS method
-      .allowedHeader("*"); // Allow all headers
+      .allowedMethod(HttpMethod.OPTIONS)
+      .allowedHeader("*");
 
     router.route().handler(corsHandler);
+  }
 
-
-    List<ApiComponentFactory> factories = List.of(
+  /**
+   * Returns a list of API component factories.
+   *
+   * @return A list of ApiComponentFactory instances.
+   */
+  private static List<ApiComponentFactory> getApiFactories() {
+    return List.of(
       new EducationModuleFactory(),
       new MicroCredentialFactory(),
       new AdminFactory()
     );
+  }
 
-    // Initialize all APIs using factories
+  /**
+   * Initializes each factory and sets up the routes.
+   *
+   * @param vertx     The Vert.x instance.
+   * @param router    The main router.
+   * @param emf       The Hibernate session factory.
+   * @param factories The list of factories to initialize.
+   */
+  private static void initializeFactories(Vertx vertx, Router router, Mutiny.SessionFactory emf, List<ApiComponentFactory> factories) {
     for (ApiComponentFactory factory : factories) {
       factory.create(vertx, router, emf);
     }
-
   }
 }

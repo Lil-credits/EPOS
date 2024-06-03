@@ -23,28 +23,28 @@ public class MainVerticle extends AbstractVerticle {
     // Register the JSR-310 module with Jackson
     DatabindCodec.mapper().registerModule(new JavaTimeModule());
     return startHibernate()
+      .flatMap(ignored -> initializeRouter())
       .flatMap(this::startHttpServer)
       .onFailure().invoke(e -> logger.error("Failed to start application", e))
       .onItem().invoke(() -> logger.info("✅ Application started successfully"));
   }
 
-  private Uni<Router> startHibernate() {
+  private Uni<Void> startHibernate() {
     // Define the blocking operation as a Uni
     Uni<Void> startHibernate = Uni.createFrom().deferred(() -> {
       emf = Persistence.createEntityManagerFactory("pg-epos", DbUtil.getHibernateProperties())
         .unwrap(Mutiny.SessionFactory.class);
-      return Uni.createFrom().voidItem();
+      return Uni.createFrom().voidItem().invoke(() -> logger.info("✅ Hibernate Reactive is ready"));
     });
 
     // Execute the blocking operation on a worker thread
-    return vertx.executeBlocking(startHibernate)
-      .onItem()
-      .transform(ignored -> {
-        Router router = Router.router(vertx);
-        logger.info("✅ Hibernate Reactive is ready");
-        ApiInitializer.initializeApis(vertx, router, emf);
-        return router;
-      });
+    return vertx.executeBlocking(startHibernate);
+  }
+
+  private Uni<Router> initializeRouter() {
+    Router router = Router.router(vertx);
+    ApiInitializer.initializeApis(vertx, router, emf);
+    return Uni.createFrom().item(router);
   }
 
   private Uni<Void> startHttpServer(Router router) {
