@@ -13,21 +13,14 @@ public class Account {
   @Column(name = "name")
   private String name;
 
-  @OneToMany(mappedBy = "account")
+  @OneToMany(mappedBy = "account", cascade = CascadeType.ALL) // Cascade deletion of memberships
   private List<Membership> memberships;
 
-  @OneToMany(mappedBy = "subjectAccount")
+  @OneToMany(mappedBy = "subjectAccount", cascade = CascadeType.ALL) // Cascade deletion of received credentials
   private List<IssuedCredential> receivedCredentials;
 
-  @ManyToMany
-  @JoinTable(
-    name = "account_class",
-    joinColumns = @JoinColumn(name = "account_id"),
-    inverseJoinColumns = @JoinColumn(name = "class_id")
-  )
-  private List<StudentGroup> studentGroups;
-
-  // Getters and setters
+  @OneToMany(mappedBy = "account", cascade = CascadeType.ALL) // Cascade deletion of account-student group associations
+  private List<AccountStudentGroup> accountStudentGroups;
 
   public int getId() {
     return id;
@@ -53,19 +46,19 @@ public class Account {
     this.memberships = memberships;
   }
 
-  public List<StudentGroup> getStudentGroups() {
-    return studentGroups;
-  }
-
-  public void setStudentGroups(List<StudentGroup> studentGroups) {
-    this.studentGroups = studentGroups;
-  }
-
   public List<IssuedCredential> getReceivedCredentials() {
     return receivedCredentials;
   }
 
   public void setReceivedCredentials(List<IssuedCredential> receivedCredentials) {
     this.receivedCredentials = receivedCredentials;
+  }
+
+  public List<AccountStudentGroup> getAccountStudentGroups() {
+    return accountStudentGroups;
+  }
+
+  public void setAccountStudentGroups(List<AccountStudentGroup> accountStudentGroups) {
+    this.accountStudentGroups = accountStudentGroups;
   }
 }

@@ -29,6 +29,7 @@ def populate_database():
     json={"name": COMPANY},
     timeout=5,
   )
+  print(response.json())
   company_id = response.json()["id"]
 
   # create subsidiary
@@ -62,6 +63,7 @@ def populate_database():
     },
     timeout=5,
   )
+  print(response.json())
   education_module_version_id = response.json()["id"]
   # create class
   response = requests.post(

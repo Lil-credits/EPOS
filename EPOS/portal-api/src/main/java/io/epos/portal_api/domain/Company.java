@@ -7,19 +7,20 @@ import java.util.List;
 @Entity
 @Table(name = "companies")
 public class Company {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
   @Column(nullable = false)
   private String name;
 
-  @OneToMany(mappedBy = "company")
+  @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
   private List<Subsidiary> subsidiaries;
 
-  @OneToMany(mappedBy = "company")
+  @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
   private List<EducationModule> educationModules;
 
-  @OneToMany(mappedBy = "company")
+  @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
   private List<OrganisationalUnit> organisationalUnits;
 
   public int getId() {

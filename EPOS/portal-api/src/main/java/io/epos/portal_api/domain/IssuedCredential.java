@@ -4,31 +4,32 @@ import io.epos.portal_api.api.admin.dto.AccountDTO;
 import io.vertx.core.json.JsonObject;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "issued_credentials")
 public class IssuedCredential {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
-  @Column(name = "credential")
+  @Column(name = "credential", nullable = false)
   private JsonObject credential;
 
   @Column(name = "created_at", nullable = false, updatable = false)
   private LocalDateTime createdAt;
 
   @ManyToOne
-  @JoinColumn(name = "education_module_version_id")
+  @JoinColumn(name = "education_module_version_id", nullable = false)
   private EducationModuleVersion educationModuleVersion;
 
   @ManyToOne
-  @JoinColumn(name = "issuer_membership_id")
+  @JoinColumn(name = "issuer_membership_id", nullable = false)
   private Membership issuerMembership;
 
   @ManyToOne
-  @JoinColumn(name = "subject_id")
+  @JoinColumn(name = "subject_id", nullable = false)
   private Account subjectAccount;
+
 
   public IssuedCredential() {
   }

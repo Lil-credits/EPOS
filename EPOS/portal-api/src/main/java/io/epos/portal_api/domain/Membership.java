@@ -10,13 +10,15 @@ import java.util.Set;
 @Entity
 @Table(name = "memberships")
 public class Membership {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
-  @Column(name = "did")
+  @Column(name = "did", nullable = false)
   private String did;
 
-  @Column(name = "issuance_key")
+  @Column(name = "issuance_key", nullable = false)
   private JsonObject issuanceKey;
 
   @Column(name = "start_date")
@@ -26,7 +28,7 @@ public class Membership {
   private LocalDate endDate;
 
   @ManyToOne
-  @JoinColumn(name = "account_id")
+  @JoinColumn(name = "account_id", nullable = false)
   private Account account;
 
   @ManyToOne

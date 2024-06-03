@@ -7,20 +7,23 @@ import java.util.List;
 @Entity
 @Table(name = "subsidiaries")
 public class Subsidiary {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
   @Column(nullable = false)
   private String name;
 
-  @OneToMany(mappedBy = "subsidiary")
+  @OneToMany(mappedBy = "subsidiary", cascade = CascadeType.ALL)
   private List<EducationModule> educationModules;
-  @OneToMany(mappedBy = "subsidiary")
-  private List<OrganisationalUnit> OrganisationalUnits;
-  @ManyToOne
-  @JoinColumn(name = "company_id")
-  private Company company;
 
+  @OneToMany(mappedBy = "subsidiary", cascade = CascadeType.ALL)
+  private List<OrganisationalUnit> organisationalUnits;
+
+  @ManyToOne
+  @JoinColumn(name = "company_id", nullable = false)
+  private Company company;
 
   public int getId() {
     return id;
@@ -47,11 +50,11 @@ public class Subsidiary {
   }
 
   public List<OrganisationalUnit> getOrganisationalUnits() {
-    return OrganisationalUnits;
+    return organisationalUnits;
   }
 
   public void setOrganisationalUnits(List<OrganisationalUnit> organisationalUnits) {
-    OrganisationalUnits = organisationalUnits;
+    organisationalUnits = organisationalUnits;
   }
 
   public Company getCompany() {

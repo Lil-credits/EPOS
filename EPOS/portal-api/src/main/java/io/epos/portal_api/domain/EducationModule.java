@@ -7,22 +7,23 @@ import java.util.List;
 @Entity
 @Table(name = "education_modules")
 public class EducationModule {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
-  @ManyToOne
-  @JoinColumn(name = "company_id")
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "company_id", nullable = false)
   private Company company;
 
-  @ManyToOne
-  @JoinColumn(name = "subsidiary_id")
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "subsidiary_id", nullable = false)
   private Subsidiary subsidiary;
 
-  @ManyToOne
-  @JoinColumn(name = "organisational_unit_id")
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "organisational_unit_id", nullable = false)
   private OrganisationalUnit organisationalUnit;
 
-  @OneToMany(mappedBy = "educationModule")
+  @OneToMany(mappedBy = "educationModule", cascade = CascadeType.ALL, orphanRemoval = true) // Cascade type all for education module versions
   private List<EducationModuleVersion> educationModuleVersions;
 
   public int getId() {

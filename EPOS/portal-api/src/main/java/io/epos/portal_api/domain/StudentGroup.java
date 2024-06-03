@@ -8,11 +8,12 @@ import java.util.List;
 @Entity
 @Table(name = "class")
 public class StudentGroup {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
-  @Column
+  @Column(nullable = false)
   private String name;
 
   @Column(name = "start_date")
@@ -22,17 +23,15 @@ public class StudentGroup {
   private LocalDate endDate;
 
   @ManyToOne
-  @JoinColumn(name = "organisational_unit_id")
+  @JoinColumn(name = "organisational_unit_id", nullable = false)
   private OrganisationalUnit organisationalUnit;
 
   @ManyToOne
-  @JoinColumn(name = "education_module_version_id")
+  @JoinColumn(name = "education_module_version_id", nullable = false)
   private EducationModuleVersion educationModuleVersion;
 
-  @ManyToMany(mappedBy = "studentGroups")
-  private List<Account> accounts;
-
-  // Getters and setters
+  @OneToMany(mappedBy = "studentGroup", cascade = CascadeType.ALL)
+  private List<AccountStudentGroup> studentGroupAccounts;
 
   public int getId() {
     return id;
@@ -66,14 +65,6 @@ public class StudentGroup {
     this.endDate = endDate;
   }
 
-  public List<Account> getAccounts() {
-    return accounts;
-  }
-
-  public void setAccounts(List<Account> accounts) {
-    this.accounts = accounts;
-  }
-
   public OrganisationalUnit getOrganisationalUnit() {
     return organisationalUnit;
   }
@@ -88,5 +79,13 @@ public class StudentGroup {
 
   public void setEducationModuleVersion(EducationModuleVersion educationModuleVersion) {
     this.educationModuleVersion = educationModuleVersion;
+  }
+
+  public List<AccountStudentGroup> getStudentGroupAccounts() {
+    return studentGroupAccounts;
+  }
+
+  public void setStudentGroupAccounts(List<AccountStudentGroup> studentGroupAccounts) {
+    this.studentGroupAccounts = studentGroupAccounts;
   }
 }

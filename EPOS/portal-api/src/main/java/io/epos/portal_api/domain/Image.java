@@ -7,6 +7,7 @@ import java.util.List;
 @Entity
 @Table(name = "images")
 public class Image {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
@@ -14,7 +15,7 @@ public class Image {
   @Column(name = "file_name")
   private String fileName;
 
-  @Column(name = "image_data", columnDefinition = "TEXT")
+  @Column(name = "image_data", columnDefinition = "TEXT", nullable = false)
   private String imageData;
 
   @Column(name = "content_type")
@@ -23,9 +24,8 @@ public class Image {
   @Column(name = "created_at", nullable = false, updatable = false)
   private LocalDateTime createdAt;
 
-  @OneToMany(mappedBy = "image")
+  @OneToMany(mappedBy = "image", cascade = CascadeType.ALL)
   private List<EducationModuleVersion> educationModuleVersions;
-
   @PrePersist
   protected void onCreate() {
     createdAt = LocalDateTime.now();

@@ -8,14 +8,16 @@ import java.util.List;
 @Entity
 @Table(name = "organisational_units")
 public class OrganisationalUnit {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
-  @Column(name = "name")
+  @Column(name = "name", nullable = false)
   private String name;
 
   @ManyToOne
-  @JoinColumn(name = "company_id")
+  @JoinColumn(name = "company_id", nullable = false)
   private Company company;
 
   @ManyToOne

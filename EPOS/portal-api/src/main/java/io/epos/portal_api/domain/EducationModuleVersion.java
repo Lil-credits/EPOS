@@ -17,7 +17,7 @@ public class EducationModuleVersion {
   @Column(nullable = false)
   private String name;
 
-  @Column(name = "base_credential")
+  @Column(name = "base_credential", nullable = false)
   private JsonObject baseCredential;
 
   @Column(name = "created_at", nullable = false, updatable = false)
@@ -26,22 +26,22 @@ public class EducationModuleVersion {
   @Column(name = "effectuation_date")
   private LocalDate effectuationDate;
 
-  @OneToMany(mappedBy = "educationModuleVersion")
+  @OneToMany(mappedBy = "educationModuleVersion", cascade = CascadeType.ALL)
   private List<StudentGroup> studentGroups;
 
-  @ManyToOne
-  @JoinColumn(name = "education_module_id")
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "education_module_id", nullable = false)
   private EducationModule educationModule;
 
-  @ManyToOne
+  @ManyToOne(optional = false)
   @JoinColumn(name = "membership_id")
   private Membership membership;
 
-  @ManyToOne()
+  @ManyToOne
   @JoinColumn(name = "image_id")
   private Image image;
 
-  @OneToMany(mappedBy = "educationModuleVersion")
+  @OneToMany(mappedBy = "educationModuleVersion", cascade = CascadeType.ALL)
   private List<IssuedCredential> issuedCredentials;
 
   @PrePersist

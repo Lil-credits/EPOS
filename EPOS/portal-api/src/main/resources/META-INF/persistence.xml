@@ -7,6 +7,7 @@
     <provider>org.hibernate.reactive.provider.ReactivePersistenceProvider</provider>
 
     <class>io.epos.portal_api.domain.Account</class>
+    <class>io.epos.portal_api.domain.AccountStudentGroup</class>
     <class>io.epos.portal_api.domain.Company</class>
     <class>io.epos.portal_api.domain.EducationModule</class>
     <class>io.epos.portal_api.domain.EducationModuleVersion</class>
