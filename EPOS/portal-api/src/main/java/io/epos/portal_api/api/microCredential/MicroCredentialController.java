@@ -3,6 +3,7 @@ package io.epos.portal_api.api.microCredential;
 import io.epos.portal_api.api.common.ResponseBuilder;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.ext.web.RoutingContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,5 +63,40 @@ public class MicroCredentialController {
     // Placeholder implementation for reading all micro credentials
     logger.info("Reading all micro credentials");
     // TODO: Implement the readAll method
+  }
+
+  /**
+   *  method for reading micro credentials to filter on membershipId and organisationalUnitId.
+   *
+   * @param routingContext The routing context containing request information.
+   */
+  public void readCredentials(RoutingContext routingContext){
+    String membershipId = routingContext.request().getParam("membershipId");
+    String organisationalUnitId = routingContext.request().getParam("organisationalUnitId");
+    if (membershipId != null){
+      logger.info("Reading micro credentials for membership ID {}", membershipId);
+      service.getIssuedCredentialsByMembershipId(Integer.valueOf(membershipId)).subscribe().with(
+        result -> {
+          logger.info("Successfully retrieved issued credentials for membership ID {}", membershipId);
+          ResponseBuilder.buildOkResponse(routingContext, result);
+        },
+        error -> {
+          logger.error("Failed to retrieve issued credentials for membership ID {}", membershipId, error);
+          ResponseBuilder.buildErrorResponse(routingContext, error);
+        });
+    } else if (organisationalUnitId != null) {
+      service.getIssuedCredentialsByOrganisationalUnitId(Integer.valueOf(organisationalUnitId)).subscribe().with(
+        result -> {
+          logger.info("Successfully retrieved issued credentials for organisational unit ID {}", organisationalUnitId);
+          ResponseBuilder.buildOkResponse(routingContext, result);
+        },
+        error -> {
+          logger.error("Failed to retrieve issued credentials for organisational unit ID {}", organisationalUnitId, error);
+          ResponseBuilder.buildErrorResponse(routingContext, error);
+        });
+
+    } else{
+      ResponseBuilder.buildNoContentResponse(routingContext);
+    }
   }
 }

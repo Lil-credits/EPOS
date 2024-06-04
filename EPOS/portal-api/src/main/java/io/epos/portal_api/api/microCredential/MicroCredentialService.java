@@ -1,5 +1,7 @@
 package io.epos.portal_api.api.microCredential;
 
+import io.epos.portal_api.api.microCredential.dto.IssuedCredentialDTO;
+import io.epos.portal_api.api.microCredential.dto.MicroCredentialMapper;
 import io.epos.portal_api.domain.Account;
 import io.epos.portal_api.domain.EducationModuleVersion;
 import io.epos.portal_api.domain.IssuedCredential;
@@ -13,7 +15,12 @@ import org.hibernate.reactive.mutiny.Mutiny;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+import java.util.concurrent.Flow;
+import java.util.stream.Collectors;
+
 import static io.epos.portal_api.util.FileUtils.readJsonObject;
+import static io.epos.portal_api.util.FileUtils.readJsonSchema;
 
 /**
  * Service class for handling micro-credential operations.
@@ -780,4 +787,28 @@ public class MicroCredentialService {
       "}";;
     return new JsonObject(mcTest);
   }
+
+    public Uni<List<IssuedCredentialDTO>> getIssuedCredentialsByMembershipId(Integer membershipId) {
+     return emf.withSession(session -> repository.getMembership(session, membershipId)
+       .chain(ignored -> repository.getIssuedCredentialsByMembershipId(session, membershipId))
+       .onItem().transform(issuedCredentials -> issuedCredentials.stream().map(MicroCredentialMapper::toIssuedCredentialDTO).collect(Collectors.toList()))
+      );
+    }
+  public Uni<List<IssuedCredentialDTO>> getIssuedCredentialsByOrganisationalUnitId(Integer organisationalUnitId) {
+    return emf.withSession(session ->
+      repository.getOrganisationalUnit(session, organisationalUnitId)
+        .chain(organisationalUnit ->
+          repository.getIssuedCredentialsByOrganisationalUnitId(session, organisationalUnitId)
+            .map(issuedCredentials ->
+              issuedCredentials.stream()
+                .map(MicroCredentialMapper::toIssuedCredentialDTO)
+                .collect(Collectors.toList())
+            )
+        )
+    );
+  }
+
+
+
+
 }

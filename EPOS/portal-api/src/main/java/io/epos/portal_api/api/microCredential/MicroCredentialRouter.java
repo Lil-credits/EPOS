@@ -51,19 +51,19 @@ public class MicroCredentialRouter {
 
     logger.debug("Configuring routes for MicroCredential API");
 
-    microCredentialRouter.route("/micro-credential").respond(ctx -> ctx.response().end("Hello Micro Credential!"));
 
-    microCredentialRouter.route("/micro-credentials*").handler(BodyHandler.create());
+    microCredentialRouter.route("/micro-credentials*")
+      .handler(BodyHandler.create())
+      .handler(LoggerHandler.create());
+
 
     microCredentialRouter.post("/micro-credentials/issue")
-      .handler(LoggerHandler.create())
       .handler(validationHandler::issue)
       .handler(microCredentialController::issue);
 
     microCredentialRouter.get("/micro-credentials")
-      .handler(LoggerHandler.create())
-      .handler(validationHandler::readAll)
-      .handler(microCredentialController::readAll);
+      .handler(validationHandler::readCredentials)
+      .handler(microCredentialController::readCredentials);
 
     return microCredentialRouter;
   }
