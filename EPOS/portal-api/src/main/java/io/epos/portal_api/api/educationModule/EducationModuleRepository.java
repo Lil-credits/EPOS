@@ -1,6 +1,7 @@
 package io.epos.portal_api.api.educationModule;
 
 import io.epos.portal_api.api.common.exception.NotFoundException;
+import io.epos.portal_api.domain.Account;
 import io.epos.portal_api.domain.EducationModule;
 import io.epos.portal_api.domain.EducationModuleVersion;
 import io.smallrye.mutiny.Uni;
@@ -69,5 +70,18 @@ public class EducationModuleRepository {
       .chain(() -> session.persist(educationModuleVersion.getImage()))
       .chain(() -> session.persist(educationModuleVersion))
       .replaceWith(educationModuleVersion);
+  }
+
+  public Uni<EducationModuleVersion> getEducationModuleVersion(Mutiny.Session session, Integer versionId) {
+    return session.find(EducationModuleVersion.class, versionId)
+      .onItem().ifNull().failWith(new NotFoundException("No education module version with ID " + versionId));
+  }
+
+  public Uni<List<Account>> getIssuedCredentialsAccounts(Mutiny.Session session, Integer educationModuleVersionId) {
+String query = "SELECT a FROM Account a JOIN a.receivedCredentials ic WHERE ic.educationModuleVersion.id = :versionId";
+
+    return session.createQuery(query, Account.class)
+      .setParameter("versionId", educationModuleVersionId)
+      .getResultList();
   }
 }

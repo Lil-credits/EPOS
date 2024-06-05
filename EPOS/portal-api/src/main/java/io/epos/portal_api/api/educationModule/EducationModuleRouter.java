@@ -61,6 +61,10 @@ public class EducationModuleRouter {
       .handler(validationHandler::create)
       .handler(educationModuleController::createEducationModule);
 
+    educationModuleRouter.get("/education-modules/:id/versions/:versionId/issued-credentials").handler(LoggerHandler.create(LoggerFormat.DEFAULT))
+      .handler(validationHandler::listIssuedCredentials)
+      .handler(educationModuleController::getissuedCredentialsAccounts);
+
     // Log route configuration
     logger.info("Education module API routes configured successfully");
 

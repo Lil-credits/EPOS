@@ -97,4 +97,16 @@ public class EducationModuleController {
         }
       );
   }
+
+  public void getissuedCredentialsAccounts(RoutingContext routingContext) {
+
+    educationModuleService.getIssuedCredentialsAccounts(Integer.valueOf(routingContext.request().getParam("id")),Integer.valueOf(routingContext.request().getParam("versionId")))
+      .subscribe().with(
+        account -> ResponseBuilder.buildOkResponse(routingContext, account),
+        error -> {
+          logger.error("Failed to list issued credentials", error);
+          ResponseBuilder.buildErrorResponse(routingContext, error);
+        }
+      );
+  }
 }

@@ -1,5 +1,6 @@
 package io.epos.portal_api.api.educationModule.dto;
 
+import io.epos.portal_api.domain.Account;
 import io.epos.portal_api.domain.EducationModule;
 import io.epos.portal_api.domain.EducationModuleVersion;
 
@@ -50,6 +51,17 @@ public class EducationModuleMapper {
       dto.setImageData(version.getImage().getImageData());
     }
     dto.setCreatedAt(version.getCreatedAt());
+    return dto;
+  }
+
+  public static AccountDTO toDTO(Account account){
+    if (account == null) {
+      return null;
+    }
+
+    AccountDTO dto = new AccountDTO();
+    dto.setId(account.getId());
+    dto.setName(account.getName());
     return dto;
   }
 }
