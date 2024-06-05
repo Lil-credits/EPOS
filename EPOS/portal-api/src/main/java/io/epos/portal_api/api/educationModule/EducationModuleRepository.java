@@ -78,7 +78,7 @@ public class EducationModuleRepository {
   }
 
   public Uni<List<Account>> getIssuedCredentialsAccounts(Mutiny.Session session, Integer educationModuleVersionId) {
-String query = "SELECT a FROM Account a JOIN a.receivedCredentials ic WHERE ic.educationModuleVersion.id = :versionId";
+    String query = "SELECT a FROM Account a JOIN a.receivedCredentials ic WHERE ic.educationModuleVersion.id = :versionId ORDER BY ic.createdAt DESC";
 
     return session.createQuery(query, Account.class)
       .setParameter("versionId", educationModuleVersionId)
