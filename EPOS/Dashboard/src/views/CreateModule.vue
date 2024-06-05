@@ -1,7 +1,6 @@
 <template>
   <v-container class="container">
-    <v-row align="center" justify="center" class="fill-height">
-      <v-col cols="12" class="fill-height">
+
     <v-stepper
     :elevation="0">
       <v-stepper-header>
@@ -15,7 +14,6 @@
         <v-divider></v-divider>
         <v-stepper-item :complete="step > 5" step="5" value="5" @click="step = 5"/>
       </v-stepper-header>
-<!---->
 <!-- Step 1 -->
       <div class="steps">
         <div step="1" v-if="step === 1">
@@ -128,20 +126,38 @@
       </div>
     </v-stepper>
 
-<!-- stepbuttons -->    
-<div class="stepbutton">
-      <div v-if="step===5">
-        <v-icon class="btn" @click="prevStep">mdi-arrow-left</v-icon>
-        <v-icon class="btn" @click="submitForm">mdi-check</v-icon>
-      </div>
-      <div v-else>
-        <v-icon class="btn" @click="prevStep">mdi-arrow-left</v-icon>
-        <v-icon class="btn" @click="nextStep">mdi-arrow-right</v-icon>
-      </div>
-    </div>
-  </v-col>
-  </v-row>
   </v-container>
+
+
+<!-- stepbuttons -->    
+<div class="stepbutton" style="width: 100%;">
+  <v-divider></v-divider>
+  <v-container>
+<div class="px-8" style="width: 100%;">
+  
+  <div v-if="step===5" class="d-flex justify-space-between" style="width: 100%;">
+        <div>
+        <v-icon class="btn" @click="prevStep">mdi-arrow-left</v-icon>
+
+        </div>
+        <div>
+        <v-icon class="btn" @click="submitForm">mdi-check</v-icon>
+
+        </div>
+
+      </div>
+      <div v-else class="d-flex justify-space-between" style="width: 100%;">
+        <div>
+          <v-icon class="btn" @click="prevStep">mdi-arrow-left</v-icon>
+        </div>
+        <div>
+          <v-icon class="btn" @click="nextStep">mdi-arrow-right</v-icon>
+        </div>
+      </div>
+   
+</div>
+</v-container>
+    </div>
 </template>
 
 <script>
@@ -288,9 +304,7 @@ export default {
 <style scoped>
 
 .stepbutton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
   position: fixed;
   bottom: 25px;
   left: 50%;
@@ -299,12 +313,12 @@ export default {
 }
 
 
-.container {
+/* .container {
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
+} */
 
 .fill-height {
   height: 100%;

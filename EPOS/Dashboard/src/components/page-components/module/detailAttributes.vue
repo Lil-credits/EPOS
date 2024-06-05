@@ -4,9 +4,9 @@
       <v-sheet
   class="mx-auto"
 >
-  <v-slide-group
+  <v-slide-group id="slide-group"
     v-model="model"
-    class="pa-2"
+    class="py-2"
     mandatory
     show-arrows
   >
@@ -41,7 +41,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .info-sectionSlider {
   color: white;
   background-color: #00A4E7;
@@ -50,5 +50,12 @@ export default {
   text-align: center;
   width: 100%; /* Set the width to 100% */
 }
+
+.slidegroup > .v-slide-group__next, .v-slide-group__prev {
+max-width: 30px !important;
+margin: 0 -10px !important;
+
+}
+
 
 </style>
