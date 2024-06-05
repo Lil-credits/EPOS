@@ -9,7 +9,13 @@ services:
     ports:
       - "8080:8080"  # Mapping container port 8080 to host port 8080
     environment:
-      DOCKER: "true"
+      DB_HOST: epos-postgresql
+      DB_NAME: epos
+      DB_USER: postgres
+      DB_PASSWORD: AXEe263eqPFqwy4z
+      DB_PORT: 5432
+      WALTID_HOST: docker-compose-issuer-api-1
+      WALTID_PORT: 7002
     depends_on:
       epos-postgresql:
         condition: service_healthy
@@ -41,6 +47,5 @@ volumes:
 
 networks:
   epos_network:
-      name: epos_network
-      external: true
-
+    name: epos_network
+    external: true

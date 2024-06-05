@@ -1,5 +1,8 @@
 package io.epos.portal_api.util;
 
+/**
+ * Utility class for logging operations.
+ */
 public enum LogUtils {
 
   REGULAR_CALL_SUCCESS_MESSAGE("%s called w/ success - %s"),
@@ -17,6 +20,13 @@ public enum LogUtils {
   LogUtils(final String message) {
     this.message = message;
   }
+
+  /**
+   * Build a message with arguments.
+   *
+   * @param argument Arguments
+   * @return Message
+   */
 
   public String buildMessage(Object... argument) {
     return String.format(message, argument);

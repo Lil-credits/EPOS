@@ -1,52 +1,61 @@
 package io.epos.portal_api.domain;
 
-import java.util.ArrayList;
+import jakarta.persistence.*;
+
 import java.util.List;
 
+@Entity
+@Table(name = "education_modules")
 public class EducationModule {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
 
-  private Integer id;
-  private String name;
-  private String imageUrl;
-  private Integer teamId;
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "company_id", nullable = false)
+  private Company company;
 
-  private String team;
-  private String teamFaculty;
-  private String teamOrganization;
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "subsidiary_id", nullable = false)
+  private Subsidiary subsidiary;
 
-  private List<EducationModuleVersion> educationModuleVersions = new ArrayList<>();
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "organisational_unit_id", nullable = false)
+  private OrganisationalUnit organisationalUnit;
 
+  @OneToMany(mappedBy = "educationModule", cascade = CascadeType.ALL, orphanRemoval = true) // Cascade type all for education module versions
+  private List<EducationModuleVersion> educationModuleVersions;
 
-  public Integer getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(int id) {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public Company getCompany() {
+    return company;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setCompany(Company company) {
+    this.company = company;
   }
 
-  public String getImageUrl() {
-    return imageUrl;
+  public Subsidiary getSubsidiary() {
+    return subsidiary;
   }
 
-  public void setImageUrl(String imageUrl) {
-    this.imageUrl = imageUrl;
+  public void setSubsidiary(Subsidiary subsidiary) {
+    this.subsidiary = subsidiary;
   }
 
-  public Integer getTeamId() {
-    return teamId;
+  public OrganisationalUnit getOrganisationalUnit() {
+    return organisationalUnit;
   }
 
-  public void setTeamId(Integer teamId) {
-    this.teamId = teamId;
+  public void setOrganisationalUnit(OrganisationalUnit organisationalUnit) {
+    this.organisationalUnit = organisationalUnit;
   }
 
   public List<EducationModuleVersion> getEducationModuleVersions() {
@@ -57,38 +66,4 @@ public class EducationModule {
     this.educationModuleVersions = educationModuleVersions;
   }
 
-  @Override
-  public String toString() {
-    return "EducationModule{" +
-      "id=" + id +
-      ", name='" + name + '\'' +
-      ", imageUrl='" + imageUrl + '\'' +
-      ", teamId=" + teamId +
-      ", educationModuleVersions=" + educationModuleVersions +
-      '}';
-  }
-
-  public String getTeam() {
-    return team;
-  }
-
-  public void setTeam(String team) {
-    this.team = team;
-  }
-
-  public String getTeamFaculty() {
-    return teamFaculty;
-  }
-
-  public void setTeamFaculty(String teamFaculty) {
-    this.teamFaculty = teamFaculty;
-  }
-
-  public String getTeamOrganization() {
-    return teamOrganization;
-  }
-
-  public void setTeamOrganization(String teamOrganization) {
-    this.teamOrganization = teamOrganization;
-  }
 }

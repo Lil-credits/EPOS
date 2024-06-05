@@ -1,56 +1,68 @@
 package io.epos.portal_api.api.educationModule;
 
-import io.vertx.core.Vertx;
-import io.vertx.core.impl.logging.Logger;
-import io.vertx.core.impl.logging.LoggerFactory;
-import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
-import io.vertx.ext.web.RoutingContext;
-import io.vertx.json.schema.*;
+import io.epos.portal_api.api.common.BaseValidationHandler;
+import io.epos.portal_api.api.common.exception.InvalidPathParameterException;
+import io.vertx.mutiny.core.Vertx;
+import io.vertx.mutiny.ext.web.RoutingContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static io.epos.portal_api.api.common.ResponseBuilder.buildErrorResponse;
 import static io.epos.portal_api.util.FileUtils.readJsonSchema;
 
-public class EducationModuleValidationHandler {
-  // logger
-  private static final Logger LOGGER = LoggerFactory.getLogger(EducationModuleValidationHandler.class);
-  private final SchemaRepository schemaRepository = SchemaRepository.create(new JsonSchemaOptions().setBaseUri("app://"));
+/**
+ * Handles validation for education module related API requests.
+ */
+public class EducationModuleValidationHandler extends BaseValidationHandler {
+
+  private static final String SCHEMA_CREATE = "create_education_module.json";
+  private static final Logger logger = LoggerFactory.getLogger(EducationModuleValidationHandler.class);
+
+
+  /**
+   * Constructor for EducationModuleValidationHandler.
+   *
+   * @param vertx The Vert.x instance.
+   */
   public EducationModuleValidationHandler(Vertx vertx) {
-    schemaRepository.dereference("education_module.json", readJsonSchema("education_module.json", vertx));
-  }
-  public void readOne(RoutingContext routingContext){
-    // check if the id is a number
-    String id = routingContext.request().getParam("id");
-    if (id == null || !id.matches("\\d+")) {
-      routingContext.fail(400, new Exception());
-    }
-    else {
-      routingContext.next();
-    }
+    super(vertx);
   }
 
-
-  public void create(RoutingContext routingContext){
-    JsonObject requestBody = routingContext.body().asJsonObject();
-    OutputUnit result = schemaRepository.validator("education_module.json").validate(requestBody);
-    LOGGER.info("Validation result: " + result.getValid());
-    if (!result.getValid()) {
-      routingContext.fail(400, new Exception());
-    }
-    else {
-      routingContext.next();
-    }
+  /**
+   * Loads the JSON schemas for validation.
+   *
+   * @param vertx The Vert.x instance.
+   */
+  @Override
+  protected void loadSchemas(Vertx vertx) {
+    logger.info("Loading JSON schema for education module creation validation");
+    schemaRepository.dereference(SCHEMA_CREATE, readJsonSchema(SCHEMA_CREATE, vertx));
   }
 
-  public void readAll(RoutingContext routingContext) {
-    // check for optional query parameters limit and page
-    String limit = routingContext.request().getParam("limit");
-    String page = routingContext.request().getParam("page");
-    if (limit != null && !limit.matches("\\d+")) {
-      routingContext.fail(400, new Exception());
-    }
-    if (page != null && !page.matches("\\d+")) {
-      routingContext.fail(400, new Exception());
-    }
-    routingContext.next();
-
+  /**
+   * Validates the request for creating an education module.
+   *
+   * @param routingContext The routing context of the request.
+   */
+  public void create(RoutingContext routingContext) {
+    logger.debug("Validating request for creating an education module");
+    validateCreate(routingContext, SCHEMA_CREATE);
   }
+
+    public void listIssuedCredentials(RoutingContext routingContext) {
+      logger.debug("Validating request for listing issued credentials");
+      if (isInvalidIntId(routingContext.request().getParam("id"))) {
+        logger.error("Invalid path parameter: id must be a number" );
+        buildErrorResponse(routingContext, new InvalidPathParameterException("Invalid id, must be a number"));
+      } else if (isInvalidIntId(routingContext.request().getParam("versionId"))) {
+        logger.error("Invalid path parameter: versionId must be a number");
+        buildErrorResponse(routingContext, new InvalidPathParameterException("Invalid versionId, must be a number"));
+      } else {
+        routingContext.next();
+      }
+    }
+
+    public boolean isInvalidIntId(String parameter){
+        return parameter == null || !parameter.matches("\\d+");
+    }
 }

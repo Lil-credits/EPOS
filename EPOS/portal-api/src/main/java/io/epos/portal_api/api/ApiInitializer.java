@@ -1,67 +1,76 @@
 package io.epos.portal_api.api;
 
-import io.epos.portal_api.api.image.*;
-import io.epos.portal_api.api.common.handler.ErrorHandler;
-import io.epos.portal_api.api.common.router.HealthCheckRouter;
-import io.epos.portal_api.api.educationModule.*;
-import io.epos.portal_api.api.microCredential.*;
-import io.epos.portal_api.api.user.UserRepository;
-import io.epos.portal_api.integration.waltid.WaltidClient;
-import io.vertx.core.Vertx;
+import io.epos.portal_api.api.admin.AdminFactory;
+import io.epos.portal_api.api.educationModule.EducationModuleFactory;
+import io.epos.portal_api.api.microCredential.MicroCredentialFactory;
 import io.vertx.core.http.HttpMethod;
-import io.vertx.ext.web.Router;
-import io.vertx.ext.web.handler.CorsHandler;
-import io.vertx.sqlclient.Pool;
+import io.vertx.mutiny.core.Vertx;
+import io.vertx.mutiny.ext.web.Router;
+import io.vertx.mutiny.ext.web.handler.CorsHandler;
+import org.hibernate.reactive.mutiny.Mutiny;
 
+import java.util.List;
+
+/**
+ * Initializes API components and sets up the router with necessary configurations.
+ */
 public class ApiInitializer {
-  public static void initializeApis(Vertx vertx, Router router, Pool dbClient, WaltidClient waltidClient){
 
-    // add CORS support
-    // Create a CORS handler allowing all origins, methods, and headers
+  /**
+   * Initializes all API components and configures the router.
+   *
+   * @param vertx  The Vert.x instance.
+   * @param router The main router.
+   * @param emf    The Hibernate session factory for database interactions.
+   */
+  public static void initializeApis(Vertx vertx, Router router, Mutiny.SessionFactory emf) {
+    addCorsSupport(router);
+    List<ApiComponentFactory> factories = getApiFactories();
+    initializeFactories(vertx, router, emf, factories);
+  }
+
+  /**
+   * Adds CORS support to the router.
+   *
+   * @param router The router to add CORS support to.
+   */
+  private static void addCorsSupport(Router router) {
     CorsHandler corsHandler = CorsHandler.create()
       .addOrigin("*")
-      .allowedMethod(HttpMethod.GET) // Allow all HTTP methods
+      .allowedMethod(HttpMethod.GET)
       .allowedMethod(HttpMethod.POST)
       .allowedMethod(HttpMethod.PUT)
       .allowedMethod(HttpMethod.DELETE)
-      .allowedMethod(HttpMethod.OPTIONS) // Also allow OPTIONS method
-      .allowedHeader("*"); // Allow all headers
+      .allowedMethod(HttpMethod.OPTIONS)
+      .allowedHeader("*");
 
     router.route().handler(corsHandler);
-    // Error handler for all APIs
-    ErrorHandler.buildHandler(router);
+  }
 
-    // Initialize all APIs here
+  /**
+   * Returns a list of API component factories.
+   *
+   * @return A list of ApiComponentFactory instances.
+   */
+  private static List<ApiComponentFactory> getApiFactories() {
+    return List.of(
+      new EducationModuleFactory(),
+      new MicroCredentialFactory(),
+      new AdminFactory()
+    );
+  }
 
-    // Health check API
-    HealthCheckRouter.buildRouter(vertx, router, dbClient);
-
-
-    // User API
-    UserRepository userRepository = new UserRepository();
-    // Education Module API
-    EducationModuleRepository educationModuleRepository = new EducationModuleRepository();
-    EducationModuleService educationModuleService = new EducationModuleService(dbClient, educationModuleRepository);
-    EducationModuleHandler educationModuleHandler = new EducationModuleHandler(educationModuleService);
-    EducationModuleValidationHandler educationModuleValidationHandler = new EducationModuleValidationHandler(vertx);
-    EducationModuleRouter educationModuleRouter = new EducationModuleRouter(vertx, educationModuleHandler, educationModuleValidationHandler);
-    educationModuleRouter.setRouter(router);
-
-    // Image API
-    ImageRepository imageRepository = new ImageRepository();
-    ImageService imageService = new ImageService(dbClient, imageRepository);
-    ImageHandler imageHandler = new ImageHandler(imageService);
-    ImageValidationHandler imageValidationHandler = new ImageValidationHandler(vertx);
-    ImageRouter imageRouter = new ImageRouter(vertx, imageHandler, imageValidationHandler);
-    imageRouter.setRouter(router);
-
-
-    // MicroCredential API
-    MicroCredentialRepository microCredentialRepository = new MicroCredentialRepository();
-    MicroCredentialService microCredentialService = new MicroCredentialService(dbClient, microCredentialRepository, waltidClient, educationModuleRepository, userRepository);
-    MicroCredentialHandler microCredentialHandler = new MicroCredentialHandler(microCredentialService);
-    MicroCredentialValidationHandler microCredentialValidationHandler = new MicroCredentialValidationHandler(vertx);
-    MicroCredentialRouter microCredentialRouter = new MicroCredentialRouter(vertx, microCredentialHandler, microCredentialValidationHandler);
-    microCredentialRouter.setRouter(router);
+  /**
+   * Initializes each factory and sets up the routes.
+   *
+   * @param vertx     The Vert.x instance.
+   * @param router    The main router.
+   * @param emf       The Hibernate session factory.
+   * @param factories The list of factories to initialize.
+   */
+  private static void initializeFactories(Vertx vertx, Router router, Mutiny.SessionFactory emf, List<ApiComponentFactory> factories) {
+    for (ApiComponentFactory factory : factories) {
+      factory.create(vertx, router, emf);
+    }
   }
 }

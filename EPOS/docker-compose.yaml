@@ -12,7 +12,13 @@ services:
       epos-postgresql:
         condition: service_healthy
     environment:
-      - DOCKER=TRUE
+      DB_HOST: epos-postgresql
+      DB_NAME: epos
+      DB_USER: postgres
+      DB_PASSWORD: AXEe263eqPFqwy4z
+      DB_PORT: 5432
+      WALTID_HOST: docker-compose-issuer-api-1
+      WALTID_PORT: 7002
     networks:
       - epos_network
 

@@ -1,0 +1,51 @@
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+
+  <persistence-unit name="pg-epos">
+    <provider>org.hibernate.reactive.provider.ReactivePersistenceProvider</provider>
+
+    <class>io.epos.portal_api.domain.Account</class>
+    <class>io.epos.portal_api.domain.AccountStudentGroup</class>
+    <class>io.epos.portal_api.domain.Company</class>
+    <class>io.epos.portal_api.domain.EducationModule</class>
+    <class>io.epos.portal_api.domain.EducationModuleVersion</class>
+    <class>io.epos.portal_api.domain.Image</class>
+    <class>io.epos.portal_api.domain.IssuedCredential</class>
+    <class>io.epos.portal_api.domain.Membership</class>
+    <class>io.epos.portal_api.domain.OrganisationalUnit</class>
+    <class>io.epos.portal_api.domain.StudentGroup</class>
+    <class>io.epos.portal_api.domain.Subsidiary</class>
+
+    <properties>
+
+      <!-- Postgresql -->
+      <property name="javax.persistence.jdbc.url"
+                value="jdbc:postgresql://localhost:5432/epos"/>
+
+      <!-- Credentials -->
+      <property name="javax.persistence.jdbc.user"
+                value="postgres"/>
+      <property name="javax.persistence.jdbc.password"
+                value="AXEe263eqPFqwy4z"/>
+
+
+      <!-- The Vert.x SQL Client connection pool size -->
+      <property name="hibernate.connection.pool_size"
+                value="10"/>
+
+
+      <!-- Automatic schema export -->
+      <property name="jakarta.persistence.schema-generation.database.action"
+                value="create"/>
+
+<!--       SQL statement logging-->
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="true"/>
+      <property name="hibernate.highlight_sql" value="true"/>
+
+    </properties>
+
+  </persistence-unit>
+</persistence>

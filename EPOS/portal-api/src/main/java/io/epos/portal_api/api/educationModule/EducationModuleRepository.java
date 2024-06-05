@@ -1,200 +1,87 @@
 package io.epos.portal_api.api.educationModule;
 
+import io.epos.portal_api.api.common.exception.NotFoundException;
+import io.epos.portal_api.domain.Account;
 import io.epos.portal_api.domain.EducationModule;
 import io.epos.portal_api.domain.EducationModuleVersion;
-import io.epos.portal_api.util.LogUtils;
-import io.vertx.core.Future;
-import io.vertx.core.impl.logging.Logger;
-import io.vertx.core.impl.logging.LoggerFactory;
-import io.vertx.core.json.JsonObject;
-import io.vertx.sqlclient.Row;
-import io.vertx.sqlclient.RowIterator;
-import io.vertx.sqlclient.SqlConnection;
-import io.vertx.sqlclient.templates.RowMapper;
-import io.vertx.sqlclient.templates.SqlTemplate;
+import io.smallrye.mutiny.Uni;
+import org.hibernate.reactive.mutiny.Mutiny;
+import java.util.List;
 
-import java.util.*;
-
+/**
+ * Repository class for handling CRUD operations related to education modules.
+ */
 public class EducationModuleRepository {
-  private static final Logger LOGGER = LoggerFactory.getLogger(EducationModuleRepository.class);
-  private static final String SQL_INSERT_EDUCATION_MODULE = "INSERT INTO EducationModule (Name, ImageUrl, TeamID)" +
-    "VALUES (#{name}, #{imageUrl}, #{teamId}) RETURNING id";
-  private static final String SQL_INSERT_EDUCATION_MODULE_VERSION =
-    "INSERT INTO EducationModuleVersion (version, description, attributes, requiredachievements, skills, educationmoduleid, status)" +
-      "VALUES (#{version}, #{description}, #{attributes}, #{requiredAchievements}, #{skills}, #{educationModuleID}, #{status}) RETURNING id";
 
-  private static final String SQL_SELECT_EDUCATION_MODULE_BY_ID =
-    "SELECT em.id as edu_id, em.name, em.teamid, em.imageurl, " +
-      "ev.id AS version_id, ev.version AS version, ev.description AS version_description, " +
-      "ev.attributes AS version_attributes, ev.requiredachievements AS version_required_achievements, " +
-      "ev.skills AS version_skills, ev.status AS version_status " +
-      "FROM EducationModule em " +
-      "LEFT JOIN EducationModuleVersion ev ON em.id = ev.EducationModuleID " +
-      "WHERE em.id = #{id}";
-  private static final String SQL_SELECT_EDUCATION_MODULE_BY_ID_JOIN_ALL =
-    "SELECT em.id as edu_id, em.name, em.teamid, em.imageurl, " +
-      "ev.id AS version_id, ev.version AS version, ev.description AS version_description, " +
-      "ev.attributes AS version_attributes, ev.requiredachievements AS version_required_achievements, " +
-      "ev.skills AS version_skills, ev.status AS version_status, " +
-      "t.name AS team, tf.name AS team_faculty, o.name as organisation " +
-      "FROM EducationModule em " +
-      "LEFT JOIN EducationModuleVersion ev ON em.id = ev.EducationModuleID " +
-      "LEFT JOIN Teams t ON em.teamid = t.id " +
-      "LEFT JOIN teamfaculty tf ON t.facultyid = tf.id " +
-      "LEFT JOIN organisation o ON tf.organsationid = o.id " +
-      "WHERE em.id = #{id}";
-  private static final String SQL_SELECT_ALL_EDUCATION_MODULES =     "SELECT em.id as edu_id, em.name, em.teamid, em.imageurl, " +
-    "ev.id AS version_id, ev.version AS version, ev.description AS version_description, " +
-    "ev.attributes AS version_attributes, ev.requiredachievements AS version_required_achievements, " +
-    "ev.skills AS version_skills, ev.status AS version_status " +
-    "FROM EducationModule em " +
-    "LEFT JOIN EducationModuleVersion ev ON em.id = ev.EducationModuleID " +
-    "ORDER BY em.id DESC LIMIT #{limit} OFFSET #{offset} ;";
-  private static final String SQL_COUNT_EDUCATION_MODULES = "SELECT COUNT(*) AS total FROM EducationModule;";
-
-  private static final RowMapper<EducationModule> EDUCATION_MODULE_ROW_MAPPER = row -> {
-    EducationModule educationModule = new EducationModule();
-    EducationModuleVersion educationModuleVersion = new EducationModuleVersion();
-    educationModule.setId(row.getInteger("edu_id"));
-    educationModule.setName(row.getString("edu_name"));
-    educationModule.setImageUrl(row.getString("edu_imageurl"));
-    educationModule.setTeamId(row.getInteger("edu_teamid"));
-
-    return educationModule;
-  };
-  public Future<EducationModule> getEducationModule(SqlConnection connection, int id) {
-    return SqlTemplate
-      .forQuery(connection, SQL_SELECT_EDUCATION_MODULE_BY_ID_JOIN_ALL)
-      .execute(Collections.singletonMap("id", id))
-      .map(rowSet -> {
-        final RowIterator<Row> iterator = rowSet.iterator();
-        if (iterator.hasNext()) {
-          Row row = iterator.next();
-          EducationModule educationModule = mapRowToEducationModuleJoined(row);
-          educationModule.getEducationModuleVersions().add(mapRowToEducationModuleVersion(row));
-
-          while (iterator.hasNext()) {
-            educationModule.getEducationModuleVersions().add(mapRowToEducationModuleVersion(iterator.next()));
-          }
-          return educationModule;
-        } else {
-          throw new NoSuchElementException(LogUtils.NO_EDUCATION_MODULE_WITH_ID_MESSAGE.buildMessage(id));
-        }
-      })
-      .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read education module by id", SQL_SELECT_EDUCATION_MODULE_BY_ID)))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read education module by id", throwable.getMessage())));
-  }
-  public Future<List<EducationModule>> getAllEducationModules(SqlConnection connection, int limit, int offset) {
-    return SqlTemplate
-      .forQuery(connection, SQL_SELECT_ALL_EDUCATION_MODULES)
-      .execute(Map.of("limit", limit, "offset", offset))
-      .map(rowSet -> {
-        final Map<Integer, EducationModule> moduleMap = new LinkedHashMap<>();
-        rowSet.forEach(row -> {
-          int moduleId = row.getInteger("edu_id");
-          EducationModule educationModule;
-          if (moduleMap.containsKey(moduleId)) {
-            educationModule = moduleMap.get(moduleId);
-          } else {
-            educationModule = mapRowToEducationModule(row);
-            moduleMap.put(moduleId, educationModule);
-          }
-          if (row.getInteger("version_id") != null) {
-            EducationModuleVersion version = mapRowToEducationModuleVersion(row);
-            educationModule.getEducationModuleVersions().add(version);
-          }
-        });
-        return (List<EducationModule>) new ArrayList<>(moduleMap.values());
-      })
-      .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Read all education modules")))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Read all education modules", throwable.getMessage())));
+  /**
+   * Retrieves an education module by its ID.
+   *
+   * @param session Hibernate session.
+   * @param id      ID of the education module to retrieve.
+   * @return A Uni that emits the retrieved education module.
+   */
+  public Uni<EducationModule> getEducationModule(Mutiny.Session session, int id) {
+    return session.find(EducationModule.class, id)
+      .onItem().ifNull().failWith(new NotFoundException("No education module with ID " + id))
+      .call(module ->
+        Mutiny.fetch(module.getEducationModuleVersions())
+          .replaceWith(module));
   }
 
-  public Future<EducationModule> insertEducationModule(SqlConnection connection,
-                                        EducationModule educationModule) {
-    return SqlTemplate
-      .forUpdate(connection, SQL_INSERT_EDUCATION_MODULE)
-      .mapFrom(EducationModule.class)
-      .mapTo(EducationModule.class)
-      .execute(educationModule)
-      .map(rowSet -> {
-        final RowIterator<EducationModule> iterator = rowSet.iterator();
+  /**
+   * Lists education modules with pagination.
+   *
+   * @param session Hibernate session.
+   * @param limit   Maximum number of education modules to retrieve.
+   * @param offset  Offset for pagination.
+   * @return A Uni that emits a list of education modules.
+   */
+  public Uni<List<EducationModule>> listEducationModules(Mutiny.Session session, int limit, int offset) {
+    String query = "SELECT em FROM EducationModule em LEFT JOIN FETCH em.educationModuleVersions";
 
-        if (iterator.hasNext()) {
-          educationModule.setId(iterator.next().getId());
-          return educationModule;
-        } else {
-          throw new IllegalStateException(LogUtils.CANNOT_CREATE_EDUCATION_MODULE_MESSAGE.buildMessage());
-        }
-      })
-      .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Insert education module", SQL_INSERT_EDUCATION_MODULE)))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Insert education module error", throwable.getMessage())));
+    return session.createQuery(query, EducationModule.class)
+      .setFirstResult(offset)
+      .setMaxResults(limit)
+      .getResultList();
   }
 
-  public Future<EducationModuleVersion> insertEducationModuleVersion(SqlConnection connection, EducationModuleVersion educationModuleVersion) {
-    return SqlTemplate
-      .forUpdate(connection, SQL_INSERT_EDUCATION_MODULE_VERSION)
-      .mapFrom(EducationModuleVersion.class)
-      .mapTo(EducationModuleVersion.class)
-      .execute(educationModuleVersion)
-      .map(rowSet -> {
-        final RowIterator<EducationModuleVersion> iterator = rowSet.iterator();
+  /**
+   * Counts the total number of education modules.
+   *
+   * @param session Hibernate session.
+   * @return A Uni that emits the count of education modules.
+   */
+  public Uni<Long> countEducationModules(Mutiny.Session session) {
+    String query = "SELECT COUNT(em) FROM EducationModule em";
 
-        if (iterator.hasNext()) {
-          educationModuleVersion.setId(iterator.next().getId());
-          return educationModuleVersion;
-        } else {
-          throw new IllegalStateException(LogUtils.CANNOT_CREATE_EDUCATION_MODULE_MESSAGE.buildMessage());
-        }
-      })
-      .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Insert education module version", SQL_INSERT_EDUCATION_MODULE_VERSION)))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Insert education module version error", throwable.getMessage())));
+    return session.createQuery(query, Long.class)
+      .getSingleResult();
   }
 
-  public Future<Integer> count(SqlConnection connection) {
-    final RowMapper<Integer> ROW_MAPPER = row -> row.getInteger("total");
-
-    return SqlTemplate
-      .forQuery(connection, SQL_COUNT_EDUCATION_MODULES)
-      .mapTo(ROW_MAPPER)
-      .execute(Collections.emptyMap())
-      .map(rowSet -> rowSet.iterator().next())
-      .onSuccess(success -> LOGGER.info(LogUtils.REGULAR_CALL_SUCCESS_MESSAGE.buildMessage("Count education modules", SQL_COUNT_EDUCATION_MODULES)))
-      .onFailure(throwable -> LOGGER.error(LogUtils.REGULAR_CALL_ERROR_MESSAGE.buildMessage("Count education module", throwable.getMessage())));
-  }
-  private static EducationModule mapRowToEducationModule(Row row) {
-    EducationModule educationModule = new EducationModule();
-    educationModule.setId(row.getInteger("edu_id"));
-    educationModule.setName(row.getString("name"));
-    educationModule.setImageUrl(row.getString("imageurl"));
-    educationModule.setTeamId(row.getInteger("teamid"));
-    educationModule.setEducationModuleVersions(new ArrayList<>());
-    return educationModule;
+  /**
+   * Creates a new education module version.
+   *
+   * @param session              Hibernate session.
+   * @param educationModuleVersion The education module version to create.
+   * @return A Uni that emits the created education module version.
+   */
+  public Uni<EducationModuleVersion> createEducationModule(Mutiny.Session session, EducationModuleVersion educationModuleVersion) {
+    return session.persist(educationModuleVersion.getEducationModule())
+      .chain(() -> session.persist(educationModuleVersion.getImage()))
+      .chain(() -> session.persist(educationModuleVersion))
+      .replaceWith(educationModuleVersion);
   }
 
-  private static EducationModule mapRowToEducationModuleJoined(Row row) {
-    EducationModule educationModule = new EducationModule();
-    educationModule.setId(row.getInteger("edu_id"));
-    educationModule.setName(row.getString("name"));
-    educationModule.setImageUrl(row.getString("imageurl"));
-    educationModule.setTeamId(row.getInteger("teamid"));
-    educationModule.setTeam(row.getString("team"));
-    educationModule.setTeamFaculty(row.getString("team_faculty"));
-    educationModule.setTeamOrganization(row.getString("organisation"));
-    educationModule.setEducationModuleVersions(new ArrayList<>());
-    return educationModule;
+  public Uni<EducationModuleVersion> getEducationModuleVersion(Mutiny.Session session, Integer versionId) {
+    return session.find(EducationModuleVersion.class, versionId)
+      .onItem().ifNull().failWith(new NotFoundException("No education module version with ID " + versionId));
   }
 
-  private static EducationModuleVersion mapRowToEducationModuleVersion(Row row) {
-    EducationModuleVersion educationModuleVersion = new EducationModuleVersion();
-    educationModuleVersion.setId(row.getInteger("version_id"));
-    educationModuleVersion.setVersion(row.getInteger("version"));
-    educationModuleVersion.setDescription(row.getString("version_description"));
-    educationModuleVersion.setAttributes(row.getJsonObject("version_attributes"));
-    educationModuleVersion.setRequiredAchievements(row.getJsonArray("version_required_achievements"));
-    educationModuleVersion.setSkills(row.getJsonArray("version_skills"));
-    educationModuleVersion.setEducationModuleID(row.getInteger("edu_id"));
-    educationModuleVersion.setStatus(row.getString("version_status"));
-    return educationModuleVersion;
+  public Uni<List<Account>> getIssuedCredentialsAccounts(Mutiny.Session session, Integer educationModuleVersionId) {
+    String query = "SELECT a FROM Account a JOIN a.receivedCredentials ic WHERE ic.educationModuleVersion.id = :versionId ORDER BY ic.createdAt DESC";
+
+    return session.createQuery(query, Account.class)
+      .setParameter("versionId", educationModuleVersionId)
+      .getResultList();
   }
 }

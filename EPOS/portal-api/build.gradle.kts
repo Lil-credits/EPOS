@@ -17,7 +17,7 @@ repositories {
 val vertxVersion = "4.5.7"
 val junitJupiterVersion = "5.9.1"
 
-val mainVerticleName = "io.epos.portal_api.verticle.MainVerticle"
+val mainVerticleName = "io.epos.portal_api.MainVerticle"
 val launcherClassName = "io.vertx.core.Launcher"
 
 val watchForChange = "src/**/*"
@@ -29,27 +29,26 @@ application {
 
 dependencies {
   implementation(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
-  implementation("io.vertx:vertx-web-client")
-  implementation("io.vertx:vertx-web-validation")
-  implementation("io.vertx:vertx-sql-client-templates")
-  implementation("io.vertx:vertx-web")
-  implementation("io.vertx:vertx-pg-client")
-  implementation("io.vertx:vertx-json-schema")
-  // https://mvnrepository.com/artifact/io.vertx/vertx-health-check
-  implementation("io.vertx:vertx-health-check:4.5.7")
+  // https://mvnrepository.com/artifact/io.smallrye.reactive/smallrye-mutiny-vertx-core
+  implementation("io.smallrye.reactive:smallrye-mutiny-vertx-core:3.12.0")
+  // https://mvnrepository.com/artifact/io.smallrye.reactive/smallrye-mutiny-vertx-web
+  implementation("io.smallrye.reactive:smallrye-mutiny-vertx-web:3.12.0")
+  // https://mvnrepository.com/artifact/io.smallrye.reactive/smallrye-mutiny-vertx-json-schema
+  implementation("io.smallrye.reactive:smallrye-mutiny-vertx-json-schema:3.12.0")
+  // https://mvnrepository.com/artifact/io.smallrye.reactive/smallrye-mutiny-vertx-web-client
+  implementation("io.smallrye.reactive:smallrye-mutiny-vertx-web-client:3.12.0")
+  // https://mvnrepository.com/artifact/io.smallrye.reactive/smallrye-mutiny-vertx-pg-client
+  implementation("io.smallrye.reactive:smallrye-mutiny-vertx-pg-client:3.12.0")
+// https://mvnrepository.com/artifact/org.hibernate.reactive/hibernate-reactive-core
+  implementation("org.hibernate.reactive:hibernate-reactive-core:2.3.0.Final")
+  // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
+  implementation("ch.qos.logback:logback-classic:1.5.6")
   // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-  implementation("com.fasterxml.jackson.core:jackson-databind:2.17.0")
-// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-  implementation("com.fasterxml.jackson.core:jackson-core:2.17.0")
-// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
-  implementation("com.fasterxml.jackson.core:jackson-annotations:2.17.0")
-  implementation("com.ongres.scram:client:2.1")
-  // https://mvnrepository.com/artifact/org.flywaydb/flyway-core
-  implementation("org.flywaydb:flyway-core:10.11.0")
-// https://mvnrepository.com/artifact/org.postgresql/postgresql
-  implementation("org.postgresql:postgresql:42.7.3")
-// https://mvnrepository.com/artifact/org.flywaydb/flyway-database-postgresql
-  runtimeOnly("org.flywaydb:flyway-database-postgresql:10.11.0")
+  implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
+  // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
+  implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1")
+  // https://mvnrepository.com/artifact/org.testcontainers/postgresql
+  implementation("org.testcontainers:postgresql:1.19.8")
   testImplementation("io.vertx:vertx-junit5")
   testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
 }
