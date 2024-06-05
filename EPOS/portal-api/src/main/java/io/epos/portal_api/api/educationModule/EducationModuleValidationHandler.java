@@ -1,11 +1,13 @@
 package io.epos.portal_api.api.educationModule;
 
 import io.epos.portal_api.api.common.BaseValidationHandler;
+import io.epos.portal_api.api.common.exception.InvalidPathParameterException;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.ext.web.RoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static io.epos.portal_api.api.common.ResponseBuilder.buildErrorResponse;
 import static io.epos.portal_api.util.FileUtils.readJsonSchema;
 
 /**
@@ -46,4 +48,21 @@ public class EducationModuleValidationHandler extends BaseValidationHandler {
     logger.debug("Validating request for creating an education module");
     validateCreate(routingContext, SCHEMA_CREATE);
   }
+
+    public void listIssuedCredentials(RoutingContext routingContext) {
+      logger.debug("Validating request for listing issued credentials");
+      if (isInvalidIntId(routingContext.request().getParam("id"))) {
+        logger.error("Invalid path parameter: id must be a number" );
+        buildErrorResponse(routingContext, new InvalidPathParameterException("Invalid id, must be a number"));
+      } else if (isInvalidIntId(routingContext.request().getParam("versionId"))) {
+        logger.error("Invalid path parameter: versionId must be a number");
+        buildErrorResponse(routingContext, new InvalidPathParameterException("Invalid versionId, must be a number"));
+      } else {
+        routingContext.next();
+      }
+    }
+
+    public boolean isInvalidIntId(String parameter){
+        return parameter == null || !parameter.matches("\\d+");
+    }
 }

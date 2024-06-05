@@ -1,9 +1,7 @@
 package io.epos.portal_api.api.educationModule;
 
-import io.epos.portal_api.api.educationModule.dto.EducationModuleListResponseDTO;
-import io.epos.portal_api.api.educationModule.dto.EducationModuleMapper;
-import io.epos.portal_api.api.educationModule.dto.EducationModuleResponseDTO;
-import io.epos.portal_api.api.educationModule.dto.EducationModuleVersionResponseDTO;
+import io.epos.portal_api.api.educationModule.dto.*;
+import io.epos.portal_api.domain.Account;
 import io.epos.portal_api.domain.EducationModule;
 import io.epos.portal_api.domain.EducationModuleVersion;
 import io.epos.portal_api.domain.Image;
@@ -81,4 +79,17 @@ public class EducationModuleService {
     educationModuleVersion.setImage(image);
     return emf.withTransaction(session -> repository.createEducationModule(session, educationModuleVersion)).map(EducationModuleMapper::toDTO);
   }
+
+  public Uni<List<AccountDTO>> getIssuedCredentialsAccounts(Integer id, Integer versionId) {
+    Uni<EducationModule> educationModuleUni = emf.withSession(session -> repository.getEducationModule(session, id));
+    Uni<EducationModuleVersion> educationModuleVersionUni = emf.withSession(session -> repository.getEducationModuleVersion(session, versionId));
+
+    return Uni.combine().all().unis(educationModuleUni, educationModuleVersionUni).asTuple()
+      .onItem().transformToUni(tuple -> {
+        EducationModuleVersion educationModuleVersion = tuple.getItem2();
+        return emf.withSession(session -> repository.getIssuedCredentialsAccounts(session, educationModuleVersion.getId()))
+          .map(accounts -> accounts.stream().map(EducationModuleMapper::toDTO).collect(Collectors.toList()));
+      });
+  }
+
 }
