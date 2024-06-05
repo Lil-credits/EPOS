@@ -7,6 +7,9 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.ext.web.Router;
 import io.vertx.mutiny.ext.web.handler.CorsHandler;
+import io.vertx.mutiny.ext.web.handler.SessionHandler;
+import io.vertx.mutiny.ext.web.sstore.LocalSessionStore;
+import io.vertx.mutiny.ext.web.sstore.SessionStore;
 import org.hibernate.reactive.mutiny.Mutiny;
 
 import java.util.List;
@@ -24,9 +27,23 @@ public class ApiInitializer {
    * @param emf    The Hibernate session factory for database interactions.
    */
   public static void initializeApis(Vertx vertx, Router router, Mutiny.SessionFactory emf) {
+    addSessionStorage(vertx, router);
     addCorsSupport(router);
     List<ApiComponentFactory> factories = getApiFactories();
     initializeFactories(vertx, router, emf, factories);
+  }
+
+  /**
+   * Adds Session Storage to the router.
+   *
+   * @param vertx The Vert.x instance.
+   * @param router The router to add session storage to.
+   */
+
+  private static void addSessionStorage(Vertx vertx, Router router) {
+    SessionStore sessionStore = LocalSessionStore.create(vertx);
+    SessionHandler sessionHandler = SessionHandler.create(sessionStore);
+    router.route().handler(sessionHandler);
   }
 
   /**
