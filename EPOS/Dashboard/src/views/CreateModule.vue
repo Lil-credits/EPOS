@@ -78,30 +78,42 @@
     </v-form>
         </div>
 <!-- Step 3 -->
-        <div step="3" v-if="step === 3">
-          <div class="list">
+<!-- Step 3 -->
+<div step="3" v-if="step === 3">
+  <div class="list">
     <div class="skills-container">
       <h2>Skills</h2>
       <ul class="skills-list">
-        <li v-for="(skill, index) in skills" :key="index">{{ skill }}</li>
+        <li v-for="(skill, index) in skills" :key="index" class="skill-item">
+          {{ skill }}
+          <v-btn icon="mdi-trash-can-outline" variant="text" @click="deleteSkill(index)">
+          </v-btn>
+        </li>
       </ul>
       <v-text-field type="text" v-model="newSkill" label="Add more skills..." @keyup.enter="addSkill"></v-text-field>
     </div>
+  </div>
 </div>
-        </div>
+
 
 <!-- Step 4 -->
-        <div step="4" v-if="step === 4">
-          <div class="list">
-        <div class="requirements-container">
+<!-- Step 4 -->
+<div step="4" v-if="step === 4">
+  <div class="list">
+    <div class="requirements-container">
       <h2>Admission Requirements</h2>
       <ul class="requirements-list">
-        <li v-for="(requirement, index) in requirements" :key="index">{{ requirement }}</li>
+        <li v-for="(requirement, index) in requirements" :key="index" class="requirement-item">
+          {{ requirement }}
+          <v-btn icon="mdi-trash-can-outline" variant="text" @click="deleteRequirement(index)">
+          </v-btn>
+        </li>
       </ul>
       <v-text-field type="text" v-model="newRequirement" label="Add more Admission Requirements..." @keyup.enter="addRequirement"></v-text-field>
     </div>
   </div>
-        </div>
+</div>
+
 
 <!-- Step 5 -->
 
@@ -252,6 +264,12 @@ export default {
       }
     };
 
+    const deleteRequirement = (index) => {
+  requirements.value.splice(index, 1);
+  formData.value.requiredAdmission = requirements.value;
+};
+
+
     const skills = ref([]);
     const newSkill = ref('');
 
@@ -262,6 +280,12 @@ export default {
         formData.value.skills = skills.value;
       }
     };
+
+    const deleteSkill = (index) => {
+  skills.value.splice(index, 1);
+  formData.value.skills = skills.value;
+};
+
 
     const handleDropdown = (label, value) => {
       formData.value.attributes[label] = value;
@@ -288,9 +312,11 @@ export default {
       requirements,
       newRequirement,
       addRequirement,
+      deleteRequirement,
       skills,
       newSkill,
       addSkill,
+      deleteSkill,
       handleDropdown,
       attributes,
       newAttribute,
@@ -448,6 +474,8 @@ textarea {
 
 /* ------------------------------------styling of step 3------------------------------------ */
 
+/* ------------------------------------styling of step 3------------------------------------ */
+
 .skills-container {
   text-align: left;
   margin: 20px;
@@ -458,12 +486,15 @@ textarea {
   padding-left: 0; /* Remove default padding */
 }
 
-.skills-list li {
+.skills-list .skill-item {
   background-color: #007bff; /* Blue background */
   color: white;
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 10px; /* Rounded corners */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 input[type="text"] {
@@ -474,6 +505,9 @@ input[type="text"] {
   border-radius: 10px; /* Rounded corners */
   font-size: 1rem;
 }
+
+
+/* ------------------------------------styling of step 4------------------------------------ */
 
 /* ------------------------------------styling of step 4------------------------------------ */
 
@@ -487,12 +521,15 @@ input[type="text"] {
   padding-left: 0; /* Remove default padding */
 }
 
-.requirements-list li {
+.requirements-list .requirement-item {
   background-color: #007bff; /* Blue background */
   color: white;
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 10px; /* Rounded corners */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 input[type="text"] {
@@ -503,6 +540,7 @@ input[type="text"] {
   border-radius: 10px; /* Rounded corners */
   font-size: 1rem;
 }
+
 
 /* ------------------------------------styling of step 5------------------------------------ */
 .informationbox {
