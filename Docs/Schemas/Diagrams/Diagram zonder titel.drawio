@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-06-05T17:25:51.274Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="NfRFFRDQtYAOEy_xe8hZ" version="24.4.12" type="github">
+<mxfile host="app.diagrams.net" modified="2024-06-06T06:53:58.335Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="fXfOMUO6YgheFFEv22VR" version="24.4.12" type="github">
   <diagram name="Pagina-1" id="NsCIWlI-wsy2xXNKLtzi">
-    <mxGraphModel dx="2547" dy="696" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2665" dy="642" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -345,7 +345,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="BFUgVyRbVtO_Cfpt6LdI-1" value="" style="group" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="1170" y="440" width="711" height="360" as="geometry" />
+          <mxGeometry x="1660" y="360" width="711" height="360" as="geometry" />
         </mxCell>
         <mxCell id="zvpY97_QarNmOb90CFdL-78" value="Issueing micro credential&amp;nbsp; extern" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=0;startSize=20;horizontalStack=0;html=1;" parent="BFUgVyRbVtO_Cfpt6LdI-1" vertex="1">
           <mxGeometry y="120" width="710.0138696255201" height="360" as="geometry">
