@@ -1,9 +1,8 @@
 <template>
     <div class="circle-container">
-      <v-btn class="circle-button module" fab small @click="$router.push('/modules/create')">
-        <v-icon>mdi-plus</v-icon>
+      <v-btn prepend-icon="mdi-plus"  size="x-large" @click="$router.push('/modules/create')">
+        Create your own
       </v-btn>
-      <div class="circle-text">Create your own</div>
     </div>
   </template>
   

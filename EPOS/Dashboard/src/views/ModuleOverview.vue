@@ -1,7 +1,12 @@
 <template>
   <v-container>
-    <v-row align="center" justify="space-around" class="overview">
-      <v-col 
+      <div class="empty" v-if="!educationModules.length">
+        <h2>No Modules Yet</h2>
+        <p>Create your own module by clicking the button below.</p>
+      </div>
+      <div>
+        <v-row align="center" justify="space-around" class="overview">
+        <v-col 
         v-for="module in educationModules" 
         :key="module.id" 
         class="module-item"
@@ -12,16 +17,19 @@
           :moduleId="module.id"
         />
       </v-col>
-      <v-col cols="12" sm="6" md="4" lg="4" class="module-item">
-        <overviewAdd />
-      </v-col>
     </v-row>
+
+      </div>
+    <div class="add">
+      <v-btn prepend-icon="mdi-plus"  size="x-large" class="addButton" @click="$router.push('/modules/create')">
+        Create your own
+      </v-btn>
+    </div>
   </v-container>
 </template>
 
 <script>
 import { ref, onMounted } from 'vue';
-import overviewAdd from '@/components/page-components/module/overviewAdd.vue';
 import overviewItem from '@/components/page-components/module/overviewItem.vue';
 
 import api from '@/api/api.js'; // Ensure the correct path
@@ -29,7 +37,6 @@ import api from '@/api/api.js'; // Ensure the correct path
 export default {
   name: 'ModuleOverview',
   components: {
-    overviewAdd,
     overviewItem,
   },
   setup() {
@@ -67,5 +74,30 @@ export default {
 }
 .module-item {
   margin-bottom: 20px;
+}
+
+.add {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  position: fixed;
+  bottom: 4em;
+}
+
+.empty {
+  text-align: center;
+  margin-top: 10em;
+}
+
+.empty h2 {
+  padding-bottom: 0;
+  font-size: 3em;
+  margin-bottom: 1em;
+}
+
+.empty p {
+  margin-top: 0;
+  font-size: 1.5em;
 }
 </style>
