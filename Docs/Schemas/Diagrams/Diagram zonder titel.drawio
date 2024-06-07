@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-06-06T14:58:09.797Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="rrH-quGRrdyadNuXjVtU" version="24.4.12" type="github">
+<mxfile host="app.diagrams.net" modified="2024-06-07T10:40:49.237Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="gsAdkpDXMwrqqWzcVKg7" version="24.4.12" type="github">
   <diagram name="Pagina-1" id="NsCIWlI-wsy2xXNKLtzi">
-    <mxGraphModel dx="3815" dy="1380" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1502" dy="348" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -510,6 +510,9 @@
         </mxCell>
         <mxCell id="EHAu2jdZxgm3HHLdkp7--189" value="&lt;font style=&quot;font-size: 17px;&quot;&gt;Diagram &quot;uitdelen van een micro credential&quot; ideaal - extern NL&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;fontStyle=1;fontSize=17;spacingTop=0;spacing=10;" vertex="1" parent="EHAu2jdZxgm3HHLdkp7--190">
           <mxGeometry width="1640" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="EHAu2jdZxgm3HHLdkp7--191" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;Bronnen&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;https://www.health.state.mn.us/communities/practice/resources/phqitoolbox/swimlanemap.html#:~:text=A%20swim%20lane%20map%20is,)%2C%20and%20tasks%2Fprocesses.&quot;&gt;Bron 1&lt;/a&gt;&lt;/p&gt;" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="-800" y="40" width="180" height="120" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
