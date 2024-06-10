@@ -2,7 +2,7 @@
     <div class="list" :class="{folded: folded}" @click="toggleFold">
         <h2>{{ listTitle }}</h2>
         <ul>
-            <li v-for="requirement in list" :key="requirement">
+            <li v-for="requirement in list" :key="requirement" class="detailList">
               {{ requirement }}
             </li>
         </ul>
@@ -57,5 +57,9 @@ methods: {
     cursor: pointer;
     display: block;
     text-align: center;
+}
+
+ul {
+    list-style-type: none;
 }
 </style>

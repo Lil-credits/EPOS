@@ -1,10 +1,11 @@
 <template>
+  <pageHeading />
   <v-container>
       <div class="empty" v-if="!educationModules.length">
         <h2>No Modules Yet</h2>
         <p>Create your own module by clicking the button below.</p>
       </div>
-      <div>
+      <div v-else>
         <v-row align="center" justify="space-around" class="overview">
         <v-col 
         v-for="module in educationModules" 
@@ -32,12 +33,15 @@
 import { ref, onMounted } from 'vue';
 import overviewItem from '@/components/page-components/module/overviewItem.vue';
 
+import pageHeading from '@/components/pageHeading.vue';
+
 import api from '@/api/api.js'; // Ensure the correct path
 
 export default {
   name: 'ModuleOverview',
   components: {
     overviewItem,
+    pageHeading
   },
   setup() {
     const educationModules = ref([]); // Reactive variable to store module data
