@@ -5,16 +5,7 @@
         <v-icon class="backButton" @click="goBack">mdi-arrow-left</v-icon>
       </v-col>
       <v-col cols="auto">
-        <div v-if="title != null">
-          <v-breadcrumbs class="title"
-                      :items="['HU', 'IDE', 'TBK', title]"                      
-                      divider="/"/>
-        </div>
-        <div v-else>
-          <v-breadcrumbs class="title"
-                      :items="['HU', 'IDE', 'TBK']"
-                      divider="/"/>
-        </div>
+        <v-breadcrumbs class="title" :items="breadcrumbItems" divider="/" />
       </v-col>
       <v-col cols="auto">
         <v-avatar size="40">
@@ -32,6 +23,12 @@ export default {
     title: {
       type: String,
       required: false,
+    },
+  },
+  computed: {
+    breadcrumbItems() {
+      const defaultItems = ['HU', 'IDE', 'TBK'];
+      return this.title ? [...defaultItems, this.title] : defaultItems;
     },
   },
   methods: {
@@ -52,7 +49,7 @@ export default {
   color: black;
 }
 
-.title>ul>li {
+.title > ul > li {
   text-transform: capitalize;
 }
 </style>
