@@ -281,9 +281,13 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  height: 100%;
+}
 .stepbutton {
+  background: linear-gradient(to bottom, rgba(128, 128, 128, 0.5), rgba(128, 128, 128, 0.5));
   position: fixed;
-  bottom: 25px;
+  bottom: 0px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 40px;

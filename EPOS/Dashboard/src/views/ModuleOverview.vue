@@ -1,28 +1,19 @@
 <template>
   <pageHeading />
   <v-container>
-      <div class="empty" v-if="!educationModules.length">
-        <h2>No Modules Yet</h2>
-        <p>Create your own module by clicking the button below.</p>
-      </div>
-      <div v-else>
-        <v-row align="center" justify="space-around" class="overview">
-        <v-col 
-        v-for="module in educationModules" 
-        :key="module.id" 
-        class="module-item"
-      >
-        <overviewItem 
-          :title="module.versions[0].name" 
-          :image="module.versions[0].imageData" 
-          :moduleId="module.id"
-        />
-      </v-col>
-    </v-row>
-
-      </div>
+    <div class="empty" v-if="!educationModules.length">
+      <h2>No Modules Yet</h2>
+      <p>Create your own module by clicking the button below.</p>
+    </div>
+    <div v-else>
+      <v-row align="center" justify="space-around" class="overview">
+        <v-col v-for="module in educationModules" :key="module.id" class="module-item">
+          <overviewItem :title="module.versions[0].name" :image="module.versions[0].imageData" :moduleId="module.id" />
+        </v-col>
+      </v-row>
+    </div>
     <div class="add">
-      <v-btn prepend-icon="mdi-plus"  size="x-large" class="addButton" @click="$router.push('/modules/create')">
+      <v-btn prepend-icon="mdi-plus" size="x-large" class="addButton" @click="$router.push('/modules/create')">
         Create your own
       </v-btn>
     </div>
@@ -32,10 +23,8 @@
 <script>
 import { ref, onMounted } from 'vue';
 import overviewItem from '@/components/page-components/module/overviewItem.vue';
-
 import pageHeading from '@/components/pageHeading.vue';
-
-import api from '@/api/api.js'; // Ensure the correct path
+import api from '@/api/api.js';
 
 export default {
   name: 'ModuleOverview',
@@ -44,24 +33,22 @@ export default {
     pageHeading
   },
   setup() {
-    const educationModules = ref([]); // Reactive variable to store module data
+    const educationModules = ref([]);
 
     const fetchData = async () => {
-      console.log('fetchData called'); // Debugging statement
+      console.log('fetchData called');
       try {
-        const response = await api.getModules(); // Await the response of the API call
-        educationModules.value = response.data.educationModules; // Set the data
+        const response = await api.getModules();
+        educationModules.value = response.data.educationModules;
       } catch (error) {
-        console.log("Can't get data", error); // Debugging statement
+        console.log("Can't get data", error);
       }
     };
 
-    onMounted(() => {
-      fetchData();
-    });
+    onMounted(fetchData);
 
     const goBack = () => {
-      this.$router.go(-1); // Logic to go back to the previous page
+      this.$router.go(-1);
     };
 
     return {
@@ -76,17 +63,16 @@ export default {
 .overview {
   margin-top: 20px;
 }
+
 .module-item {
   margin-bottom: 20px;
 }
 
 .add {
   position: fixed;
-  bottom: 20px;
+  bottom: 4em;
   left: 50%;
   transform: translateX(-50%);
-  position: fixed;
-  bottom: 4em;
 }
 
 .empty {

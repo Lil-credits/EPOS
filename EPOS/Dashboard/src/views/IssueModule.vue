@@ -6,33 +6,26 @@
       @close="closeModal"
       class="modal"
     >
-    <p class="url-box" :class="{ copied: isCopied }" @click="copyToClipboard">
-      <span class="url-text">{{ invitationUrl }}</span>
-      <span class="copy-text">Copy</span>
-    </p>
+      <p class="url-box" :class="{ copied: isCopied }" @click="copyToClipboard">
+        <span class="url-text">{{ invitationUrl }}</span>
+        <span class="copy-text">Copy</span>
+      </p>
     </ModalComponent>
 
     <div class="summary-page">
       <div class="header">
         <div class="image-container">
-          <img :src="responseData['imageUrl']" alt="Course Badge" class="badge-image" />
+          <img :src="responseData.imageUrl" alt="Course Badge" class="badge-image" />
         </div>
-        <div class="course-title">{{ responseData['name'] }}</div>
+        <div class="course-title">{{ responseData.name }}</div>
       </div>
     </div>
 
     <v-form @submit.prevent="issueCredential" class="issue-credential-form">
-      <v-text-field
-        v-model="userId"
-        label="Student ID"
-        type="number"
-        required
-      ></v-text-field>
+      <v-text-field v-model="userId" label="Student ID" type="number" required></v-text-field>
       <v-btn type="submit" color="primary">Reward</v-btn>
     </v-form>
-
   </div>
-
 </template>
 
 <script>
@@ -50,7 +43,7 @@ export default {
     const route = useRoute();
     const id = route.params.id;
     const responseData = ref({});
-    let invitationUrl = ref("");
+    const invitationUrl = ref("");
     const userId = ref("");
     const isModalVisible = ref(false);
     const isCopied = ref(false);
@@ -65,34 +58,32 @@ export default {
 
     const issueCredential = async () => {
       const payload = {
-          "userId": parseInt(userId.value),
-          "educationModuleId": parseInt(id)
+        userId: parseInt(userId.value),
+        educationModuleId: parseInt(id)
       };
       try {
-          const response = await axios.post('http://localhost:8080/api/v1/micro-credentials/issue', payload);
-          invitationUrl.value = response.data["invitationLink"];
+        const response = await axios.post('http://localhost:8080/api/v1/micro-credentials/issue', payload);
+        invitationUrl.value = response.data.invitationLink;
       } catch (error) {
-          console.log("Submission failed: " + error);
+        console.log("Submission failed: " + error);
       }
       showModal();
     };
 
     const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(invitationUrl.value);
-      isCopied.value = true; // Set the flag to true when copied
-      setTimeout(() => {
-        isCopied.value = false; // Reset the flag after some time
-      }, 2000); // Change border back after 2 seconds
-    } catch (err) {
-      console.error('Failed to copy: ', err);
-    }
-};
-
-
+      try {
+        await navigator.clipboard.writeText(invitationUrl.value);
+        isCopied.value = true;
+        setTimeout(() => {
+          isCopied.value = false;
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy: ', err);
+      }
+    };
 
     const fetchData = async () => {
-      const response = await axios.get("http://localhost:8080/api/v1/education-modules/" + id);
+      const response = await axios.get(`http://localhost:8080/api/v1/education-modules/${id}`);
       responseData.value = response.data;
     };
 
@@ -126,11 +117,6 @@ export default {
 
 .header {
   margin-bottom: 20px;
-}
-
-.badge-container {
-  display: flex;
-  justify-content: center;
 }
 
 .image-container {
@@ -191,7 +177,7 @@ export default {
 }
 
 .url-box.copied {
-  border-color: green; /* Green border when copied */
+  border-color: green;
   background-color: rgb(133, 255, 133);
 }
 </style>
