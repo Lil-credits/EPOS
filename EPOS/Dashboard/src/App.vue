@@ -16,7 +16,4 @@ export default {
 </script>
 
 <style>
-  v-app {
-    background-color: white;
-  }
 </style>
