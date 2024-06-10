@@ -1,4 +1,5 @@
 <template>
+  <pageHeading :title="title" />
   <container class="detailcontainer">
     <div class="informationbox">
       <div class="image-container">
@@ -27,6 +28,8 @@ import detailAttributes from '@/components/page-components/module/detailAttribut
 import detailDescription from '@/components/page-components/module/detailDescription.vue';
 import detailList from '@/components/page-components/module/detailList.vue'; // Ensure the correct path
 
+import pageHeading from '@/components/pageHeading.vue';
+
 import api from '@/api/api.js'; // Ensure the correct path
 
 export default {
@@ -35,7 +38,8 @@ export default {
     detailHeading,
     detailAttributes,
     detailDescription,
-    detailList
+    detailList,
+    pageHeading,
   },
   setup() {
     const route = useRoute(); // Use the useRoute hook to get route information

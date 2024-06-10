@@ -5,16 +5,16 @@
         <v-icon class="backButton" @click="goBack">mdi-arrow-left</v-icon>
       </v-col>
       <v-col cols="auto">
-        <v-breadcrumbs class="title"
-                      :items="[{
-                        text: 'Dashboard',
-                        disabled: false,
-                        href: '/',
-                      }, {
-                        text: title,
-                        disabled: true,
-                      }]"
+        <div v-if="title != null">
+          <v-breadcrumbs class="title"
+                      :items="['HU', 'IDE', 'TBK', title]"                      
                       divider="/"/>
+        </div>
+        <div v-else>
+          <v-breadcrumbs class="title"
+                      :items="['HU', 'IDE', 'TBK']"
+                      divider="/"/>
+        </div>
       </v-col>
       <v-col cols="auto">
         <v-avatar size="40">
@@ -31,7 +31,7 @@ export default {
   props: {
     title: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   methods: {
@@ -50,5 +50,9 @@ export default {
 .backButton {
   cursor: pointer;
   color: black;
+}
+
+.title>ul>li {
+  text-transform: capitalize;
 }
 </style>

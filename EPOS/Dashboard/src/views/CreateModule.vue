@@ -1,4 +1,6 @@
 <template>
+  <pageHeading title="Create"/>
+
   <v-container class="container">
 
     <v-stepper
@@ -17,6 +19,7 @@
 <!-- Step 1 -->
       <div class="steps">
         <div step="1" v-if="step === 1">
+          <h3 class="step-title">Step title</h3>
           <v-form>
         <div class="image-upload">
         <input
@@ -48,6 +51,8 @@
         </div>
 <!-- Step 2 -->
         <div step="2" v-if="step === 2">
+          <h3 class="step-title">Step title</h3>
+
         <v-form>
 <div class="dropdown">
     <v-select
@@ -78,8 +83,9 @@
     </v-form>
         </div>
 <!-- Step 3 -->
-<!-- Step 3 -->
 <div step="3" v-if="step === 3">
+  <h3 class="step-title">Step title</h3>
+
   <div class="list">
     <div class="skills-container">
       <h2>Skills</h2>
@@ -97,8 +103,9 @@
 
 
 <!-- Step 4 -->
-<!-- Step 4 -->
 <div step="4" v-if="step === 4">
+  <h3 class="step-title">Step title</h3>
+
   <div class="list">
     <div class="requirements-container">
       <h2>Admission Requirements</h2>
@@ -117,7 +124,10 @@
 
 <!-- Step 5 -->
 
+
 <div step="5" v-if="step === 5">
+  <h3 class="step-title">Confirm module</h3>
+
           <container class="detailcontainer">
           <div class="informationbox">
           <div class="image-container">
@@ -179,6 +189,9 @@ import detailHeading from '@/components/page-components/module/detailHeading.vue
 import detailAttributes from '@/components/page-components/module/detailAttributes.vue';
 import detailList from '@/components/page-components/module/detailList.vue';  
 import detailDescription from '@/components/page-components/module/detailDescription.vue';
+
+import pageHeading from '@/components/pageHeading.vue';
+
 import api from '@/api/api.js'; // Ensure the correct path
 import router from '@/router';
 
@@ -190,6 +203,7 @@ export default {
     detailAttributes,
     detailList,
     detailDescription,
+    pageHeading
   },
   setup() {
     const step = ref(1);
@@ -360,6 +374,11 @@ export default {
   justify-content: space-between;
 }
 
+.step-title {
+  margin-bottom: 2em;
+  font-size: 2em;
+}
+
 /* ------------------------------------styling of step 1------------------------------------ */
 .step-one {
   max-width: 400px;
@@ -471,9 +490,6 @@ textarea {
     margin: 10px;
   }
 
-
-/* ------------------------------------styling of step 3------------------------------------ */
-
 /* ------------------------------------styling of step 3------------------------------------ */
 
 .skills-container {
@@ -505,9 +521,6 @@ input[type="text"] {
   border-radius: 10px; /* Rounded corners */
   font-size: 1rem;
 }
-
-
-/* ------------------------------------styling of step 4------------------------------------ */
 
 /* ------------------------------------styling of step 4------------------------------------ */
 
