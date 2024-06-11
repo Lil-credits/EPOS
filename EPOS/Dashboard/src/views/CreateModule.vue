@@ -197,6 +197,7 @@ export default {
       console.log('Form Submitted', formData.value);
       let requestBody = {
         name: formData.value.title,
+        organisationalUnitId: 1,
         imageData: formData.value.image,
         baseCredential: {
           courseName: formData.value.title,
