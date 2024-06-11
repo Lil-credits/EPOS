@@ -1,5 +1,5 @@
 <template>
-  <pageHeading :title="title" />
+  <pageHeading title="DETAIL" />
   <container class="detailcontainer">
     <div class="informationbox">
       <div class="image-container">
