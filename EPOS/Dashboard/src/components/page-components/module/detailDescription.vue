@@ -1,36 +1,33 @@
 <template>
   <div>
-    <div class="description" :class="{folded: folded}"  @click="toggleFold" >
+    <div class="description" :class="{ folded: folded }" @click="toggleFold">
       <h2>Description</h2>
-      <p>
-        {{ description }}
-      </p>
+      <p>{{ description }}</p>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-    name: 'DetailDescription',
-    props: {
-        description: {
-            type: String,
-            required: true
-        }
-    },
+  name: 'DetailDescription',
+  props: {
+    description: {
+      type: String,
+      required: true
+    }
+  },
   data() {
-  return {
-    folded: false
-  };
-},
-methods: {
-  toggleFold() {
-    this.folded = !this.folded;
-    console.log(this.folded);
+    return {
+      folded: false
+    };
+  },
+  methods: {
+    toggleFold() {
+      this.folded = !this.folded;
+      console.log(this.folded);
+    }
   }
-}
-}
-
+};
 </script>
 
 <style scoped>
@@ -61,5 +58,4 @@ methods: {
   text-align: center;
   margin-top: 10px;
 }
-
 </style>

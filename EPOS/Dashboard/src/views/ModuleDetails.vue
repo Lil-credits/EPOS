@@ -1,33 +1,34 @@
 <template>
+  <pageHeading :title="title" />
   <container class="detailcontainer">
     <div class="informationbox">
       <div class="image-container">
         <detailHeading :title="title" :imageUrl="imageUrl" />
       </div>
-        <detailAttributes :attributes="attributes" />
-        <div class="info-section">
+      <detailAttributes :attributes="attributes" />
+      <div class="info-section">
         <detailDescription :description="description" />
-        </div>
-        <div class="info-section">
+      </div>
+      <div class="info-section">
         <detailList listTitle="Skills" :list="skills" />
-        </div>
-        <div class="info-sectionalt">
+      </div>
+      <div class="info-sectionalt">
         <detailList listTitle="Required Achievements" :list="requiredAchievements" />
-        </div>
+      </div>
     </div>
   </container>
 </template>
 
 <script>
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router'; // Import useRoute from vue-router
+import { useRoute } from 'vue-router';
 
 import detailHeading from '@/components/page-components/module/detailHeading.vue';
 import detailAttributes from '@/components/page-components/module/detailAttributes.vue';
 import detailDescription from '@/components/page-components/module/detailDescription.vue';
-import detailList from '@/components/page-components/module/detailList.vue'; // Ensure the correct path
-
-import api from '@/api/api.js'; // Ensure the correct path
+import detailList from '@/components/page-components/module/detailList.vue';
+import pageHeading from '@/components/pageHeading.vue';
+import api from '@/api/api.js';
 
 export default {
   name: 'ModuleDetails',
@@ -35,11 +36,12 @@ export default {
     detailHeading,
     detailAttributes,
     detailDescription,
-    detailList
+    detailList,
+    pageHeading,
   },
   setup() {
-    const route = useRoute(); // Use the useRoute hook to get route information
-    const moduleId = route.params.id; // Get the module ID from the route params
+    const route = useRoute();
+    const moduleId = route.params.id;
 
     const title = ref('');
     const imageUrl = ref('');
@@ -50,7 +52,7 @@ export default {
 
     onMounted(async () => {
       try {
-        const call = await api.getModule(moduleId); // Use the module ID from the route
+        const call = await api.getModule(moduleId);
         const data = call.data;
         title.value = data.versions[0].name;
         imageUrl.value = data.versions[0].imageData;
@@ -78,14 +80,16 @@ export default {
 <style scoped>
 .informationbox {
   width: 100%;
-    margin: 0 20px;
+  margin: 0 20px;
 }
+
 .info-section {
-  background-color: #f0f0f0; /* Light grey background */
+  background-color: #f0f0f0;
   border-radius: 10px;
   margin-bottom: 15px;
   padding: 15px;
 }
+
 .image-container {
   display: flex;
   justify-content: center;
@@ -96,12 +100,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 20px; /* Add padding of 20px on both sides */
+  padding: 0 20px;
 }
 
 .info-sectionalt {
   color: white;
-  background-color:  #00A4E7;
+  background-color: #00A4E7;
   border-radius: 10px;
   margin-bottom: 15px;
   padding: 15px;

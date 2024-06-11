@@ -1,8 +1,9 @@
 <template>
+  <pageHeading title="Create"/>
+
   <v-container class="container">
 
-    <v-stepper
-    :elevation="0">
+    <v-stepper :elevation="0">
       <v-stepper-header>
         <v-stepper-item :complete="step > 1" step="1" value="1" @click="step = 1"/>
         <v-divider></v-divider>
@@ -14,150 +15,127 @@
         <v-divider></v-divider>
         <v-stepper-item :complete="step > 5" step="5" value="5" @click="step = 5"/>
       </v-stepper-header>
-<!-- Step 1 -->
+
+      <!-- Step 1 -->
       <div class="steps">
         <div step="1" v-if="step === 1">
+          <h3 class="step-title">Step title</h3>
           <v-form>
-        <div class="image-upload">
-        <input
-          type="file"
-          id="course-badge"
-          @change="handleImageUpload"
-          accept="image/*"
-          hidden
-        />
-        <label for="course-badge" class="upload-label">
-          <div v-if="formData.image" class="image-preview">
-            <img
-              :src="formData.image"
-              alt="Uploaded image preview"
-              class="preview-image"
-            />
-          </div>
-          <div v-else>Add Image</div>
-        </label>
-      </div>
-      <div class="form-group">
-        <v-text-field v-model="formData.title" label="Credential title"></v-text-field>
-      </div>
-      <div class="description-container">
-      <v-textarea v-model="formData.description" no-resize label="Description" variant="solo-filled" rows="10"></v-textarea>
-
-    </div>
-    </v-form>
+            <div class="image-upload">
+              <input type="file" id="course-badge" @change="handleImageUpload" accept="image/*" hidden/>
+              <label for="course-badge" class="upload-label">
+                <div v-if="formData.image" class="image-preview">
+                  <img :src="formData.image" alt="Uploaded image preview" class="preview-image"/>
+                </div>
+                <div v-else>Add Image</div>
+              </label>
+            </div>
+            <div class="form-group">
+              <v-text-field v-model="formData.title" label="Credential title"></v-text-field>
+            </div>
+            <div class="description-container">
+              <v-textarea v-model="formData.description" no-resize label="Description" variant="solo-filled" rows="10"></v-textarea>
+            </div>
+          </v-form>
         </div>
-<!-- Step 2 -->
+
+        <!-- Step 2 -->
         <div step="2" v-if="step === 2">
-        <v-form>
-<div class="dropdown">
-    <v-select
-        :items="['Nederlands', 'Deutsch', 'English', 'Español', 'Zhōngguó ren']"
-        label="Select Language"
-        required
-        variant="outlined"
-        v-model:model-value="formData.attributes['language']"
-        @update:model-value="handleDropdown('language', $event)"
-        ></v-select>
-    <v-select
-        :items="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
-        label="Select Study Load"
-        required
-        variant="outlined"
-        v-model:model-value="formData.attributes['ects']"
-        @update:model-value="handleDropdown('ects', $event)"
-        ></v-select>
-    <v-select
-        :items="[5, 7, 8, 9, 10]"
-        label="Select EQF Level"
-        required
-        variant="outlined"
-        v-model:model-value="formData.attributes['eqf']"
-        @update:model-value="handleDropdown('eqf', $event)"
-        ></v-select>
-</div>
-    </v-form>
+          <h3 class="step-title">Step title</h3>
+          <v-form>
+            <div class="dropdown">
+              <v-select :items="['Nederlands', 'Deutsch', 'English', 'Español', 'Zhōngguó ren']" label="Select Language" required variant="outlined" v-model:model-value="formData.attributes['language']" @update:model-value="handleDropdown('language', $event)"></v-select>
+              <v-select :items="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]" label="Select Study Load" required variant="outlined" v-model:model-value="formData.attributes['ects']" @update:model-value="handleDropdown('ects', $event)"></v-select>
+              <v-select :items="[5, 7, 8, 9, 10]" label="Select EQF Level" required variant="outlined" v-model:model-value="formData.attributes['eqf']" @update:model-value="handleDropdown('eqf', $event)"></v-select>
+            </div>
+          </v-form>
         </div>
-<!-- Step 3 -->
+
+        <!-- Step 3 -->
         <div step="3" v-if="step === 3">
+          <h3 class="step-title">Step title</h3>
           <div class="list">
-    <div class="skills-container">
-      <h2>Skills</h2>
-      <ul class="skills-list">
-        <li v-for="(skill, index) in skills" :key="index">{{ skill }}</li>
-      </ul>
-      <v-text-field type="text" v-model="newSkill" label="Add more skills..." @keyup.enter="addSkill"></v-text-field>
-    </div>
-</div>
-        </div>
-
-<!-- Step 4 -->
-        <div step="4" v-if="step === 4">
-          <div class="list">
-        <div class="requirements-container">
-      <h2>Admission Requirements</h2>
-      <ul class="requirements-list">
-        <li v-for="(requirement, index) in requirements" :key="index">{{ requirement }}</li>
-      </ul>
-      <v-text-field type="text" v-model="newRequirement" label="Add more Admission Requirements..." @keyup.enter="addRequirement"></v-text-field>
-    </div>
-  </div>
-        </div>
-
-<!-- Step 5 -->
-
-<div step="5" v-if="step === 5">
-          <container class="detailcontainer">
-          <div class="informationbox">
-          <div class="image-container">
-          <detailHeading :imageUrl="formData.image" :title="formData.title" />
+            <div class="skills-container">
+              <h2>Skills</h2>
+              <ul class="skills-list">
+                <li v-for="(skill, index) in skills" :key="index" class="skill-item">
+                  {{ skill }}
+                  <v-btn icon="mdi-trash-can-outline" variant="text" @click="deleteSkill(index)"></v-btn>
+                </li>
+              </ul>
+              <v-text-field type="text" v-model="newSkill" label="Add more skills..." @keyup.enter="addSkill"></v-text-field>
+            </div>
           </div>
-          <detailAttributes :attributes="formData.attributes" />
-          <div class="info-section">
-          <detailDescription :description="formData.description" /></div>
-          <div class="info-section">
-          <detailList listTitle="Skills" :list="formData.skills" /></div>
-          <div class="info-sectionalt">
-          <detailList listTitle="Admission Requirements" :list="formData.requiredAdmission" />
-          <v-button></v-button>
         </div>
+
+        <!-- Step 4 -->
+        <div step="4" v-if="step === 4">
+          <h3 class="step-title">Step title</h3>
+          <div class="list">
+            <div class="requirements-container">
+              <h2>Admission Requirements</h2>
+              <ul class="requirements-list">
+                <li v-for="(requirement, index) in requirements" :key="index" class="requirement-item">
+                  {{ requirement }}
+                  <v-btn icon="mdi-trash-can-outline" variant="text" @click="deleteRequirement(index)"></v-btn>
+                </li>
+              </ul>
+              <v-text-field type="text" v-model="newRequirement" label="Add more Admission Requirements..." @keyup.enter="addRequirement"></v-text-field>
+            </div>
+          </div>
         </div>
-        </container>
+
+        <!-- Step 5 -->
+        <div step="5" v-if="step === 5">
+          <h3 class="step-title">Confirm module</h3>
+          <container class="detailcontainer">
+            <div class="informationbox">
+              <div class="image-container">
+                <detailHeading :imageUrl="formData.image" :title="formData.title" />
+              </div>
+              <detailAttributes :attributes="formData.attributes" />
+              <div class="info-section">
+                <detailDescription :description="formData.description" />
+              </div>
+              <div class="info-section">
+                <detailList listTitle="Skills" :list="formData.skills" />
+              </div>
+              <div class="info-sectionalt">
+                <detailList listTitle="Admission Requirements" :list="formData.requiredAdmission" />
+                <v-button></v-button>
+              </div>
+            </div>
+          </container>
         </div>
       </div>
     </v-stepper>
 
   </v-container>
 
-
-<!-- stepbuttons -->    
-<div class="stepbutton" style="width: 100%;">
-  <v-divider></v-divider>
-  <v-container>
-<div class="px-8" style="width: 100%;">
-  
-  <div v-if="step===5" class="d-flex justify-space-between" style="width: 100%;">
-        <div>
-        <v-icon class="btn" @click="prevStep">mdi-arrow-left</v-icon>
-
+  <!-- stepbuttons -->    
+  <div class="stepbutton" style="width: 100%;">
+    <v-divider></v-divider>
+    <v-container>
+      <div class="px-8" style="width: 100%;">
+        <div v-if="step===5" class="d-flex justify-space-between" style="width: 100%;">
+          <div>
+            <v-icon class="btn" @click="prevStep">mdi-arrow-left</v-icon>
+          </div>
+          <div>
+            <v-icon class="btn" @click="submitForm">mdi-check</v-icon>
+          </div>
         </div>
-        <div>
-        <v-icon class="btn" @click="submitForm">mdi-check</v-icon>
-
-        </div>
-
-      </div>
-      <div v-else class="d-flex justify-space-between" style="width: 100%;">
-        <div>
-          <v-icon class="btn" @click="prevStep">mdi-arrow-left</v-icon>
-        </div>
-        <div>
-          <v-icon class="btn" @click="nextStep">mdi-arrow-right</v-icon>
+        <div v-else class="d-flex justify-space-between" style="width: 100%;">
+          <div>
+            <v-icon class="btn" @click="prevStep">mdi-arrow-left</v-icon>
+          </div>
+          <div>
+            <v-icon class="btn" @click="nextStep">mdi-arrow-right</v-icon>
+          </div>
         </div>
       </div>
-   
-</div>
-</v-container>
-    </div>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -167,9 +145,11 @@ import detailHeading from '@/components/page-components/module/detailHeading.vue
 import detailAttributes from '@/components/page-components/module/detailAttributes.vue';
 import detailList from '@/components/page-components/module/detailList.vue';  
 import detailDescription from '@/components/page-components/module/detailDescription.vue';
+
+import pageHeading from '@/components/pageHeading.vue';
+
 import api from '@/api/api.js'; // Ensure the correct path
 import router from '@/router';
-
 
 export default {
   name: 'MultiStepForm',
@@ -178,6 +158,7 @@ export default {
     detailAttributes,
     detailList,
     detailDescription,
+    pageHeading
   },
   setup() {
     const step = ref(1);
@@ -185,7 +166,7 @@ export default {
       title: '',
       image: '',
       description: '',
-      attributes: {language:null, ects:null, eqf:null},
+      attributes: { language: null, ects: null, eqf: null },
       skills: [],
       requiredAdmission: [],
     });
@@ -222,23 +203,24 @@ export default {
           attributes: {
             language: formData.value.attributes.language,
             EC: formData.value.attributes.ects,
-            EQF: formData.value.attributes.eqf},
+            EQF: formData.value.attributes.eqf
+          },
           description: formData.value.description,
           skills: formData.value.skills,
           requiredAchievements: formData.value.requiredAdmission,
           imageUrl: formData.value.image,
           studyYear: 2024,
-        }};
-        api.createModule(requestBody).then((response) => {
+        }
+      };
+      api.createModule(requestBody)
+        .then((response) => {
           console.log(response);
           // go to module overview
           router.push("/modules");
-        }).catch((error) => {
+        })
+        .catch((error) => {
           console.error(error);
         });
-
-
-
     };
 
     const requirements = ref([]);
@@ -252,6 +234,11 @@ export default {
       }
     };
 
+    const deleteRequirement = (index) => {
+      requirements.value.splice(index, 1);
+      formData.value.requiredAdmission = requirements.value;
+    };
+
     const skills = ref([]);
     const newSkill = ref('');
 
@@ -263,19 +250,13 @@ export default {
       }
     };
 
-    const handleDropdown = (label, value) => {
-      formData.value.attributes[label] = value;
+    const deleteSkill = (index) => {
+      skills.value.splice(index, 1);
+      formData.value.skills = skills.value;
     };
 
-    const attributes = ref({});
-    const newAttribute = ref('');
-
-    const addAttribute = () => {
-      if (newAttribute.value.trim() !== '') {
-        attributes.value.push(newAttribute.value);
-        newAttribute.value = '';
-        formData.value.attributes = attributes.value;
-      }
+    const handleDropdown = (label, value) => {
+      formData.value.attributes[label] = value;
     };
 
     return {
@@ -288,37 +269,29 @@ export default {
       requirements,
       newRequirement,
       addRequirement,
+      deleteRequirement,
       skills,
       newSkill,
       addSkill,
+      deleteSkill,
       handleDropdown,
-      attributes,
-      newAttribute,
-      addAttribute,
     };
   },
-
 };
 </script>
 
 <style scoped>
-
+.container {
+  height: 100%;
+}
 .stepbutton {
-
+  background: linear-gradient(to bottom, rgba(128, 128, 128, 0.5), rgba(128, 128, 128, 0.5));
   position: fixed;
-  bottom: 25px;
+  bottom: 0px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 40px;
 }
-
-
-/* .container {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-} */
 
 .fill-height {
   height: 100%;
@@ -332,6 +305,11 @@ export default {
 
 .v-stepper-header {
   justify-content: space-between;
+}
+
+.step-title {
+  margin-bottom: 2em;
+  font-size: 2em;
 }
 
 /* ------------------------------------styling of step 1------------------------------------ */
@@ -417,6 +395,7 @@ export default {
   max-width: 100%;
   max-height: 100%;
 }
+
 .description-container {
   margin-bottom: 20px;
 }
@@ -439,12 +418,12 @@ textarea {
 /* ------------------------------------styling of step 2------------------------------------ */
 
 .dropdown {
-    margin-top: 10px;
-  }
-  .v-select label{
-    margin: 10px;
-  }
+  margin-top: 10px;
+}
 
+.v-select label {
+  margin: 10px;
+}
 
 /* ------------------------------------styling of step 3------------------------------------ */
 
@@ -458,12 +437,15 @@ textarea {
   padding-left: 0; /* Remove default padding */
 }
 
-.skills-list li {
+.skills-list .skill-item {
   background-color: #007bff; /* Blue background */
   color: white;
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 10px; /* Rounded corners */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 input[type="text"] {
@@ -487,12 +469,15 @@ input[type="text"] {
   padding-left: 0; /* Remove default padding */
 }
 
-.requirements-list li {
+.requirements-list .requirement-item {
   background-color: #007bff; /* Blue background */
   color: white;
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 10px; /* Rounded corners */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 input[type="text"] {
@@ -507,8 +492,9 @@ input[type="text"] {
 /* ------------------------------------styling of step 5------------------------------------ */
 .informationbox {
   width: 100%;
-    margin: 0 20px;
+  margin: 0 20px;
 }
+
 .info-section {
   background-color: #f0f0f0;
   border-radius: 10px;
@@ -527,12 +513,11 @@ input[type="text"] {
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
 .info-sectionalt {
   color: white;
-  background-color:  #00A4E7;
+  background-color: #00A4E7;
   border-radius: 10px;
   margin-bottom: 15px;
   padding: 15px;
@@ -541,7 +526,4 @@ input[type="text"] {
 .info-section h2 {
   text-align: center;
 }
-
 </style>
-
-
