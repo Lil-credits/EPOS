@@ -4,9 +4,11 @@ import io.epos.portal_api.api.common.exception.NotFoundException;
 import io.epos.portal_api.domain.Account;
 import io.epos.portal_api.domain.EducationModule;
 import io.epos.portal_api.domain.EducationModuleVersion;
+import io.epos.portal_api.domain.OrganisationalUnit;
 import io.smallrye.mutiny.Uni;
 import org.hibernate.reactive.mutiny.Mutiny;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Repository class for handling CRUD operations related to education modules.
@@ -83,5 +85,10 @@ public class EducationModuleRepository {
     return session.createQuery(query, Account.class)
       .setParameter("versionId", educationModuleVersionId)
       .getResultList();
+  }
+
+  public Uni<OrganisationalUnit> getOrganisationalUnit(Mutiny.Session session, Integer organisationUnitId) {
+    return session.find(OrganisationalUnit.class, organisationUnitId)
+      .onItem().ifNull().failWith(new NotFoundException("Organisational unit with id " + organisationUnitId + " not found"));
   }
 }

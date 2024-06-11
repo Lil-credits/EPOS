@@ -58,7 +58,7 @@ public class EducationModuleController {
     EducationModuleVersion educationModuleVersion = createEducationModuleVersion(moduleName, baseCredential);
     Image image = createImage(imageData);
     // Create and save the education module
-    educationModuleService.createEducationModule(new EducationModule(), educationModuleVersion, image)
+    educationModuleService.createEducationModule(new EducationModule(), educationModuleVersion, body.getInteger("organisationalUnitId"), image)
       .subscribe().with(
         createdEducationModule -> ResponseBuilder.buildOkResponse(routingContext, createdEducationModule),
         error -> {

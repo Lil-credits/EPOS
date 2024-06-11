@@ -1,10 +1,7 @@
 package io.epos.portal_api.api.educationModule;
 
 import io.epos.portal_api.api.educationModule.dto.*;
-import io.epos.portal_api.domain.Account;
-import io.epos.portal_api.domain.EducationModule;
-import io.epos.portal_api.domain.EducationModuleVersion;
-import io.epos.portal_api.domain.Image;
+import io.epos.portal_api.domain.*;
 import io.epos.portal_api.util.QueryUtils;
 import io.smallrye.mutiny.Uni;
 import org.hibernate.reactive.mutiny.Mutiny;
@@ -71,13 +68,21 @@ public class EducationModuleService {
    *
    * @param educationModule       Education module entity.
    * @param educationModuleVersion Education module version entity.
+   * @param organisationUnitId    Organisation unit ID.
    * @param image                 Image entity.
    * @return A Uni that emits the education module version response DTO.
    */
-  public Uni<EducationModuleVersionResponseDTO> createEducationModule(EducationModule educationModule, EducationModuleVersion educationModuleVersion, Image image) {
-    educationModuleVersion.setEducationModule(educationModule);
-    educationModuleVersion.setImage(image);
-    return emf.withTransaction(session -> repository.createEducationModule(session, educationModuleVersion)).map(EducationModuleMapper::toDTO);
+  public Uni<EducationModuleVersionResponseDTO> createEducationModule(EducationModule educationModule, EducationModuleVersion educationModuleVersion, Integer organisationUnitId, Image image) {
+    Uni<OrganisationalUnit> organisationalUnitUni = emf.withSession(session -> repository.getOrganisationalUnit(session, organisationUnitId));
+    return organisationalUnitUni.onItem().transformToUni(organisationalUnit -> {
+      educationModule.setOrganisationalUnit(organisationalUnit);
+      educationModule.setCompany(organisationalUnit.getCompany());
+      educationModule.setSubsidiary(organisationalUnit.getSubsidiary());
+      educationModuleVersion.setEducationModule(educationModule);
+      educationModuleVersion.setImage(image);
+      return emf.withTransaction(session -> repository.createEducationModule(session, educationModuleVersion))
+        .map(EducationModuleMapper::toDTO);
+    });
   }
 
   public Uni<List<AccountDTO>> getIssuedCredentialsAccounts(Integer id, Integer versionId) {
