@@ -80,6 +80,7 @@ export default {
 <style scoped>
 .v-card {
   border-radius: 20px;
+  
 }
 .v-card-title {
   border-radius: 20px 20px 0 0;
