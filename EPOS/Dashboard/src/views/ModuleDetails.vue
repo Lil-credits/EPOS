@@ -15,6 +15,7 @@
       <div class="info-sectionalt">
         <detailList listTitle="Required Achievements" :list="requiredAchievements" />
       </div>
+      <v-btn @click="goBack" class="backButton">Back</v-btn>
     </div>
   </container>
 </template>
