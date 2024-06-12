@@ -1,21 +1,90 @@
 <template>
+  <PageHeading/>
   <div class="container">
-    <DetailDescription
-      class="info-section"
-      description="This is a test description"
-    />
+    <div class="image-container">
+      <detailHeading :title="title" :imageUrl="imageUrl" />
+    </div>
+    <v-card color="#00bfff">
+      <v-card-title class="white--text font-weight-medium d-flex justify-center">Students with this Micro-Credentials</v-card-title>
+      <v-expansion-panels
+        class="px-2 pb-2"
+        v-model="panel"
+        :readonly="readonly"
+        multiple
+      >
+        <v-expansion-panel>
+          <v-expansion-panel-title>2024/2025</v-expansion-panel-title>
+          <v-expansion-panel-text>
+            <v-list lines="one">
+  <v-list-item
+    v-for="n in 3"
+    :key="n"
+    :title="'Student ' + n"
+  ></v-list-item>
+</v-list>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+
+        <v-expansion-panel>
+          <v-expansion-panel-title>2023/2024</v-expansion-panel-title>
+          <v-expansion-panel-text>
+            Some content
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+
+        <v-expansion-panel>
+          <v-expansion-panel-title>2022/2023</v-expansion-panel-title>
+          <v-expansion-panel-text>
+            Some content
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </v-card>
   </div>
 </template>
 
 <script>
-import DetailDescription from '@/components/page-components/module/detailDescription.vue';
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import api from '@/api/api.js';
+
+import PageHeading from '@/components/pageHeading.vue';
+import detailHeading from '@/components/page-components/module/detailHeading.vue';
 
 export default {
   name: 'ComponentTest',
   components: {
-    DetailDescription
+    PageHeading,
+    detailHeading,
   },
-}
+  setup() {
+    const route = useRoute();
+    const moduleId = route.params.id;
+
+    const title = ref('');
+    const imageUrl = ref('');
+
+    onMounted(async () => {
+      try {
+        const call = await api.getModule(moduleId);
+        const data = call.data;
+        title.value = data.versions[0].name;
+        imageUrl.value = data.versions[0].imageData;
+      } catch (error) {
+        console.error("Error fetching module data:", error);
+      }
+    });
+
+    return {
+      title,
+      imageUrl,
+    };
+  },
+  data: () => ({
+    panel: [0],
+    readonly: false,
+  }),
+};
 </script>
 
 <style scoped>
@@ -25,10 +94,9 @@ export default {
   padding: 20px;
 }
 
-.info-section {
-  background-color: #f0f0f0; /* Light grey background */
-  border-radius: 10px;
-  margin-bottom: 15px;
-  padding: 15px;
+.image-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 </style>
