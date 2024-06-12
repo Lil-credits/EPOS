@@ -58,8 +58,9 @@ export default {
 
     const issueCredential = async () => {
       const payload = {
-        userId: parseInt(userId.value),
-        educationModuleId: parseInt(id)
+        subjectId: parseInt(userId.value),
+        issuerId: 1,
+        educationModuleVersionId: responseData.value.versions[0].id
       };
       try {
         const response = await axios.post('http://localhost:8080/api/v1/micro-credentials/issue', payload);
