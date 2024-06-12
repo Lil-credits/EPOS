@@ -6,6 +6,7 @@
       <p>Create your own module by clicking the button below.</p>
     </div>
     <div v-else>
+      <v-divider class="divider"><h2 class="divider-text" style="text-align: center;">Modules Overview</h2></v-divider>
       <v-row align="center" justify="space-around" class="overview">
         <v-col v-for="module in educationModules" :key="module.id" class="module-item">
           <overviewItem :title="module.versions[0].name" :image="module.versions[0].imageData" :moduleId="module.id" />

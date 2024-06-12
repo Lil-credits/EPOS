@@ -17,7 +17,7 @@
               height="100"
               width="150"
               class="info-sectionSlider"
-              style="border: 1px solid black;"
+              style="border: 3px solid white;"
             >
               <h2>{{ key }}</h2>
               <p>{{ value }}</p>
