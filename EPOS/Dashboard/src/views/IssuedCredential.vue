@@ -1,5 +1,5 @@
 <template>
-    <PageHeading/>
+    <PageHeading title="STUDENTS"/>
     <div class="container">
       <div class="image-container">
         <detailHeading :title="title" :imageUrl="imageUrl" />

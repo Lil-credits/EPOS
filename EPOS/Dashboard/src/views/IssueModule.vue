@@ -1,4 +1,5 @@
 <template>
+  <pageHeading title="Issue" />
   <div class="container">
     <ModalComponent
       :visible="isModalVisible"
@@ -23,7 +24,7 @@
 
     <v-form @submit.prevent="issueCredential" class="issue-credential-form">
       <v-text-field v-model="userId" label="Student ID" type="number" required></v-text-field>
-      <v-btn type="submit" color="primary">Reward</v-btn>
+      <v-btn type="submit" color="#00A4E7">Reward</v-btn>
     </v-form>
   </div>
 </template>
@@ -33,11 +34,13 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRoute } from "vue-router";
 import ModalComponent from "../components/page-components/module/old/ModalComponent.vue";
+import pageHeading from "@/components/pageHeading.vue";
 
 export default {
   name: 'IssueModule',
   components: {
-    ModalComponent
+    ModalComponent,
+    pageHeading
   },
   setup() {
     const route = useRoute();
