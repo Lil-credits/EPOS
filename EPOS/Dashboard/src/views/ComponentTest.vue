@@ -16,12 +16,12 @@
           <v-expansion-panel-title>2024/2025</v-expansion-panel-title>
           <v-expansion-panel-text>
             <v-list lines="one">
-  <v-list-item
-    v-for="n in 3"
-    :key="n"
-    :title="'Student ' + n"
-  ></v-list-item>
-</v-list>
+              <v-list-item
+                v-for="(student, index) in students"
+                :key="index"
+                :title="student.name"
+              ></v-list-item>
+            </v-list>
           </v-expansion-panel-text>
         </v-expansion-panel>
 
@@ -63,21 +63,27 @@ export default {
 
     const title = ref('');
     const imageUrl = ref('');
+    const students = ref([]);
 
     onMounted(async () => {
       try {
-        const call = await api.getModule(moduleId);
-        const data = call.data;
-        title.value = data.versions[0].name;
-        imageUrl.value = data.versions[0].imageData;
+        const moduleCall = await api.getModule(moduleId);
+        const moduleData = moduleCall.data;
+        title.value = moduleData.versions[0].name;
+        imageUrl.value = moduleData.versions[0].imageData;
+
+        const studentsCall = await fetch('http://localhost:8080/api/v1/education-modules/1/versions/1/issued-credentials');
+        const studentsData = await studentsCall.json();
+        students.value = studentsData.map(credential => ({ name: credential.studentName }));
       } catch (error) {
-        console.error("Error fetching module data:", error);
+        console.error("Error fetching data:", error);
       }
     });
 
     return {
       title,
       imageUrl,
+      students,
     };
   },
   data: () => ({
