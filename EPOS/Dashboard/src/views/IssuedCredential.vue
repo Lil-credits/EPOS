@@ -17,11 +17,14 @@
             <v-expansion-panel-text>
               <v-list lines="one">
                 <v-list-item
-                  v-for="(student, index) in students"
-                  :key="index"
-                  :title="student.name"
-                ></v-list-item>
-              </v-list>
+                v-for="(student, index) in students"
+                :key="index"
+                >
+                <v-list-item-content>
+                {{ student.name }}
+                </v-list-item-content>
+                </v-list-item>
+                      </v-list>
             </v-expansion-panel-text>
           </v-expansion-panel>
   
@@ -72,9 +75,10 @@
           title.value = moduleData.versions[0].name;
           imageUrl.value = moduleData.versions[0].imageData;
   
-          const studentsCall = await fetch('http://localhost:8080/api/v1/education-modules/1/versions/1/issued-credentials');
+          const studentsCall = await fetch(`http://localhost:8080/api/v1/education-modules/${moduleId}/versions/${moduleId}/issued-credentials`);
           const studentsData = await studentsCall.json();
-          students.value = studentsData.map(credential => ({ name: credential.studentName }));
+          console.log(studentsData);
+          students.value = studentsData.map(credential => ({ name: credential.name }));
         } catch (error) {
           console.error("Error fetching data:", error);
         }

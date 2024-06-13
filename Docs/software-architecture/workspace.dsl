@@ -12,13 +12,19 @@ workspace {
             web-backend = container "Education Web Portal API" "" "" "HU"{
                 web -> this "Reads from and writes to"
             }
-            
             database = container "Database" "" "" "Database" {
                 web-backend -> this "Reads from and writes to" 
             }
+            keycloak = container "Keycloak" "" "" "" {
+                web-backend -> this "Uses"
+            }
+
             issuer-service = container "Issuer Service" "" "" "Walt.id" {
                 web-backend -> this "Reads from and writes to"
                 this -> ebsi "Uses"
+            }
+            vault = container "Vault" "" "" "" {
+                issuer-service -> this "Uses"
             }
             wallet = container "Wallet" "" "" "Walt.id" {
                 holder -> this "Uses"
