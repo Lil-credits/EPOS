@@ -11,7 +11,7 @@ const apiClient = axios.create({
 
 export default {
   getModule(id) {
-    return apiClient.get(`/education-modules/${id}`);
+    return apiClient.get(`/education-modules/${id}`, {timeout: 10000});
   },
 
   getModules() {
@@ -24,5 +24,9 @@ export default {
 
   issueCredential(payload) {
     return apiClient.post('/micro-credentials/issue', payload);
+  },
+
+  issuedCredential(moduleId) {
+    return apiClient.get(`education-modules/${moduleId}/versions/${moduleId}/issued-credentials`);
   },
 };

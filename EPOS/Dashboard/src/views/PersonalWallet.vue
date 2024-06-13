@@ -29,7 +29,7 @@
         </v-card>
 
         <!-- Memberships Section -->
-        <v-card class="mt-2" color="secondary">
+        <v-card class="mt-2" color="#FB0017">
           <v-card-title class="white--text font-weight-bold text-h6 d-flex justify-center">Memberships</v-card-title>
           <v-card-text class="d-flex justify-center">
             <v-avatar size="80" class="mx-3" @click="$router.push('/modules')">

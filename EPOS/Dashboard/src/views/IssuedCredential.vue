@@ -75,7 +75,7 @@
           title.value = moduleData.versions[0].name;
           imageUrl.value = moduleData.versions[0].imageData;
   
-          const studentsCall = await fetch(`http://localhost:8080/api/v1/education-modules/${moduleId}/versions/${moduleId}/issued-credentials`);
+          const studentsCall = await api.issuedCredential(moduleId);
           const studentsData = await studentsCall.json();
           console.log(studentsData);
           students.value = studentsData.map(credential => ({ name: credential.name }));

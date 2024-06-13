@@ -37,7 +37,7 @@ const routes = [
     props: true
   },
   {
-    path: '/modules/:id/students',
+    path: '/modules/:id/issued',
     name: 'IssuedCredential',
     component: IssuedCredential,
     props: true
