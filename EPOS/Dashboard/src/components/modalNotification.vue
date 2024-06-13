@@ -1,15 +1,20 @@
 <template>
     <div>
-        <v-dialog v-model="dialogVisible" max-width="500px">
+        <v-dialog v-model="dialogVisible" max-width="500px" isActive>
             <v-card>
                 <v-card-title>
-                    <!-- Your dialog title goes here -->
+                    {{ title }}
                 </v-card-title>
                 <v-card-text>
-                    <!-- Your dialog content goes here -->
+                    <slot></slot>
                 </v-card-text>
                 <v-card-actions>
-                    <!-- Your dialog actions go here -->
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                        text="Close Dialog"
+                        @click="isActive.value = false">
+                    </v-btn>                
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -21,10 +26,6 @@ export default {
     name: 'ModalNotification',
     props: {
         title: {
-            type: String,
-            required: true
-        },
-        content: {
             type: String,
             required: true
         },

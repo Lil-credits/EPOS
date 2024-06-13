@@ -1,17 +1,22 @@
 <template>
   <pageHeading title="Issue" />
   <div class="container">
-    <ModalComponent
+    <modalNotification
+      title="Receive credential">
+      <qrcodeGenerator url="https://google.com" />
+    </modalNotification>
+    <!-- <ModalComponent
       :visible="isModalVisible"
       title="Invite URL"
       @close="closeModal"
       class="modal"
     >
+      <qrcodeGenerator :url=invitationUrl />
       <p class="url-box" :class="{ copied: isCopied }" @click="copyToClipboard">
         <span class="url-text">{{ invitationUrl }}</span>
         <span class="copy-text">Copy</span>
       </p>
-    </ModalComponent>
+    </ModalComponent> -->
 
     <div class="summary-page">
       <div class="header">
@@ -33,14 +38,18 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRoute } from "vue-router";
-import ModalComponent from "../components/page-components/module/old/ModalComponent.vue";
+// import ModalComponent from "../components/page-components/module/old/ModalComponent.vue";
+import modalNotification from "@/components/modalNotification.vue";
+import qrcodeGenerator from "@/components/qrcodeGenerator.vue";
 import pageHeading from "@/components/pageHeading.vue";
 
 export default {
   name: 'IssueModule',
   components: {
-    ModalComponent,
-    pageHeading
+    // ModalComponent,
+    pageHeading,
+    qrcodeGenerator,
+    modalNotification,
   },
   setup() {
     const route = useRoute();
