@@ -185,6 +185,21 @@
         </div>
       </div>
     </v-container>
+
+    <v-snackbar
+    v-model="snackbar"
+    class="snackbar">
+    {{ snackbarText }}
+
+    <template v-slot:actions> 
+      <v-btn 
+      color="red"
+      variant="text"
+      @click="snackbar = false">
+      Close
+    </v-btn>
+    </template>
+  </v-snackbar>
   </div>
 </template>
 
@@ -220,6 +235,9 @@ export default {
       skills: [],
       requiredAdmission: [],
     });
+
+    const snackbar = ref(false);
+    const snackbarText = ref('');
 
     const nextStep = () => {
       if (step.value < 5) step.value++;
@@ -267,9 +285,13 @@ export default {
         .then((response) => {
           console.log(response);
           // go to module overview
+          snackbarText.value = 'Module created successfully';
+          snackbar.value = true;
           router.push("/modules");
         })
         .catch((error) => {
+          snackbarText.value = 'Error creating module';
+          snackbar.value = true;
           console.error(error);
         });
     };
@@ -326,6 +348,8 @@ export default {
       addSkill,
       deleteSkill,
       handleDropdown,
+      snackbar,
+      snackbarText,
     };
   },
 };
@@ -576,5 +600,11 @@ input[type="text"] {
 
 .info-section h2 {
   text-align: center;
+}
+
+.snackbar {
+  margin-bottom: 7em;
+  display: flex;
+  align-content: center;
 }
 </style>

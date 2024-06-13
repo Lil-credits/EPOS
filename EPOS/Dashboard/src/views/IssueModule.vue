@@ -1,29 +1,27 @@
 <template>
-  <pageHeading title="Issue" />
+  <pageHeading title="ISSUE" />
   <div class="container">
-    <modalNotification
-      title="Receive credential">
-      <qrcodeGenerator url="https://google.com" />
-    </modalNotification>
-    <!-- <ModalComponent
-      :visible="isModalVisible"
-      title="Invite URL"
-      @close="closeModal"
-      class="modal"
-    >
-      <qrcodeGenerator :url=invitationUrl />
-      <p class="url-box" :class="{ copied: isCopied }" @click="copyToClipboard">
-        <span class="url-text">{{ invitationUrl }}</span>
-        <span class="copy-text">Copy</span>
-      </p>
-    </ModalComponent> -->
+
+    <v-dialog v-model="isDialogVisible" max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Collect Credential</span>
+        </v-card-title>
+        <v-card-text>
+          <qrcodeGenerator :url=invitationUrl />
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="#00A4E7" text @click="closeDialog">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <div class="summary-page">
       <div class="header">
         <div class="image-container">
-          <img :src="responseData.imageUrl" alt="Course Badge" class="badge-image" />
+          <img :src=imageUrl alt="Course Badge" class="badge-image" />
         </div>
-        <div class="course-title">{{ responseData.name }}</div>
+        <div class="course-title">{{ title }}</div>
       </div>
     </div>
 
@@ -32,16 +30,31 @@
       <v-btn type="submit" color="#00A4E7">Reward</v-btn>
     </v-form>
   </div>
+
+  <v-snackbar
+    v-model="snackbar"
+    class="snackbar">
+    Error issuing credential
+
+    <template v-slot:actions> 
+      <v-btn 
+      color="red"
+      variant="text"
+      @click="snackbar = false">
+      Close
+    </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
 <script>
 import { ref, onMounted } from "vue";
-import axios from "axios";
+// import axios from "axios";
 import { useRoute } from "vue-router";
 // import ModalComponent from "../components/page-components/module/old/ModalComponent.vue";
-import modalNotification from "@/components/modalNotification.vue";
 import qrcodeGenerator from "@/components/qrcodeGenerator.vue";
 import pageHeading from "@/components/pageHeading.vue";
+import api from "@/api/api";
 
 export default {
   name: 'IssueModule',
@@ -49,7 +62,6 @@ export default {
     // ModalComponent,
     pageHeading,
     qrcodeGenerator,
-    modalNotification,
   },
   setup() {
     const route = useRoute();
@@ -57,16 +69,11 @@ export default {
     const responseData = ref({});
     const invitationUrl = ref("");
     const userId = ref("");
-    const isModalVisible = ref(false);
-    const isCopied = ref(false);
+    const title = ref("");
+    const imageUrl = ref("");
+    const isDialogVisible = ref(false);
+    const snackbar = ref(false);
 
-    const showModal = () => {
-      isModalVisible.value = true;
-    };
-
-    const closeModal = () => {
-      isModalVisible.value = false;
-    };
 
     const issueCredential = async () => {
       const payload = {
@@ -75,29 +82,27 @@ export default {
         educationModuleVersionId: responseData.value.versions[0].id
       };
       try {
-        const response = await axios.post('http://localhost:8080/api/v1/micro-credentials/issue', payload);
+        const response = await api.issueCredential(payload);
+        // const response = await axios.post('http://localhost:8080/api/v1/micro-credentials/issue', payload);
         invitationUrl.value = response.data.invitationLink;
+        isDialogVisible.value = true;
       } catch (error) {
         console.log("Submission failed: " + error);
+        snackbar.value = true;
       }
-      showModal();
-    };
 
-    const copyToClipboard = async () => {
-      try {
-        await navigator.clipboard.writeText(invitationUrl.value);
-        isCopied.value = true;
-        setTimeout(() => {
-          isCopied.value = false;
-        }, 2000);
-      } catch (err) {
-        console.error('Failed to copy: ', err);
-      }
+      };
+
+    const closeDialog = () => {
+      isDialogVisible.value = false;
     };
 
     const fetchData = async () => {
-      const response = await axios.get(`http://localhost:8080/api/v1/education-modules/${id}`);
+      const response = await api.getModule(id);
+      // const response = await axios.get(`http://localhost:8080/api/v1/education-modules/${id}`);
       responseData.value = response.data;
+      title.value = response.data['versions'][0]['name'];
+      imageUrl.value = response.data['versions'][0]['imageData'];
     };
 
     onMounted(fetchData);
@@ -107,11 +112,11 @@ export default {
       userId,
       issueCredential,
       responseData,
-      isModalVisible,
-      showModal,
-      closeModal,
-      copyToClipboard,
-      isCopied
+      title,
+      imageUrl,
+      isDialogVisible,
+      closeDialog,
+      snackbar,
     };
   }
 };
@@ -192,5 +197,11 @@ export default {
 .url-box.copied {
   border-color: green;
   background-color: rgb(133, 255, 133);
+}
+
+.snackbar {
+  margin-bottom: 2em;
+  display: flex;
+  align-content: center;
 }
 </style>
