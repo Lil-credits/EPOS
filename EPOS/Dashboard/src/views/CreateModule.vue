@@ -4,7 +4,7 @@
   <v-container class="container">
 
     <v-stepper :elevation="0">
-      <v-stepper-header>
+      <v-stepper-header class="elevation-0" >
         <v-stepper-item :complete="step > 1" step="1" value="1" @click="step = 1"/>
         <v-divider></v-divider>
         <v-stepper-item :complete="step > 2" step="2" value="2" @click="step = 2"/>
@@ -19,7 +19,17 @@
       <!-- Step 1 -->
       <div class="steps">
         <div step="1" v-if="step === 1">
-          <h3 class="step-title">Step title</h3>
+          <v-row class="mt-n5" wrap no-gutters>
+        <v-col cols="3" class="text-center">
+            <v-divider class="mt-4" />
+        </v-col>
+        <v-col cols="6" class="text-center text-h6">
+          Basic Information
+        </v-col>
+        <v-col cols="3" class="text-center">
+            <v-divider class="mt-4" />
+        </v-col>
+    </v-row>
           <v-form>
             <div class="image-upload">
               <input type="file" id="course-badge" @change="handleImageUpload" accept="image/*" hidden/>
@@ -41,7 +51,17 @@
 
         <!-- Step 2 -->
         <div step="2" v-if="step === 2">
-          <h3 class="step-title">Step title</h3>
+          <v-row class="mt-n5" wrap no-gutters>
+        <v-col cols="3" class="text-center">
+            <v-divider class="mt-4" />
+        </v-col>
+        <v-col cols="6" class="text-center text-h6">
+          Define Attributes
+        </v-col>
+        <v-col cols="3" class="text-center">
+            <v-divider class="mt-4" />
+        </v-col>
+    </v-row>
           <v-form>
             <div class="dropdown">
               <v-select :items="['Nederlands', 'Deutsch', 'English', 'Español', 'Zhōngguó ren']" label="Select Language" required variant="outlined" v-model:model-value="formData.attributes['language']" @update:model-value="handleDropdown('language', $event)"></v-select>
@@ -53,7 +73,17 @@
 
         <!-- Step 3 -->
         <div step="3" v-if="step === 3">
-          <h3 class="step-title">Step title</h3>
+          <v-row class="mt-n5" wrap no-gutters>
+        <v-col cols="3" class="text-center">
+            <v-divider class="mt-4" />
+        </v-col>
+        <v-col cols="6" class="text-center text-h6">
+          Specify Skills
+        </v-col>
+        <v-col cols="3" class="text-center">
+            <v-divider class="mt-4" />
+        </v-col>
+    </v-row>
           <div class="list">
             <div class="skills-container">
               <h2>Skills</h2>
@@ -70,7 +100,17 @@
 
         <!-- Step 4 -->
         <div step="4" v-if="step === 4">
-          <h3 class="step-title">Step title</h3>
+          <v-row class="mt-n5" wrap no-gutters>
+        <v-col cols="1.5" class="text-center">
+            <v-divider class="mt-4" />
+        </v-col>
+        <v-col cols="9" class="text-center text-h6">
+          Set Admission Requirements
+        </v-col>
+        <v-col cols="1.5" class="text-center">
+            <v-divider class="mt-4" />
+        </v-col>
+    </v-row>
           <div class="list">
             <div class="requirements-container">
               <h2>Admission Requirements</h2>
@@ -87,7 +127,17 @@
 
         <!-- Step 5 -->
         <div step="5" v-if="step === 5">
-          <h3 class="step-title">Confirm module</h3>
+          <v-row class="mt-n5" wrap no-gutters>
+        <v-col cols="3" class="text-center">
+            <v-divider class="mt-4" />
+        </v-col>
+        <v-col cols="6" class="text-center text-h6">
+          Review and Confirm
+        </v-col>
+        <v-col cols="3" class="text-center">
+            <v-divider class="mt-4" />
+        </v-col>
+    </v-row>
           <container class="detailcontainer">
             <div class="informationbox">
               <div class="image-container">

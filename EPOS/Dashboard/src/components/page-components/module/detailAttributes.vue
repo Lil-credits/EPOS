@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container style="padding: 0;">
+    <v-container style="padding: 0;" >
       <v-sheet class="mx-auto">
         <v-slide-group
           id="slide-group"
@@ -49,6 +49,7 @@ export default {
   padding: 15px;
   text-align: center;
   width: 100%;
+  box-shadow: none;
 }
 
 .slidegroup > .v-slide-group__next,
