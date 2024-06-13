@@ -76,7 +76,8 @@
           imageUrl.value = moduleData.versions[0].imageData;
   
           const studentsCall = await api.issuedCredential(moduleId);
-          const studentsData = await studentsCall.json();
+          console.log(studentsCall);
+          const studentsData = studentsCall.data;
           console.log(studentsData);
           students.value = studentsData.map(credential => ({ name: credential.name }));
         } catch (error) {
