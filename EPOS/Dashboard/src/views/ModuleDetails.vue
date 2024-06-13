@@ -62,7 +62,7 @@ export default {
     const requiredAchievements = ref([]);
 
     const goToAwardedStudents = () => {
-      router.push(`/modules/${moduleId}/students`);
+      router.push(`/modules/${moduleId}/issued`);
     };
 
     const goToAwardStudent = () => {
