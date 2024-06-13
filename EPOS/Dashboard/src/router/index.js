@@ -5,6 +5,8 @@ import CreateModule from '../views/CreateModule.vue';
 import IssueModule from '../views/IssueModule.vue';
 import ComponentTest from '../views/ComponentTest.vue';
 import Personalwallet from '../views/PersonalWallet.vue';
+import IssuedCredential from '@/views/IssuedCredential.vue';
+
 
 const routes = [
   {
@@ -32,6 +34,12 @@ const routes = [
     path: '/modules/:id/issue',
     name: 'IssueModule',
     component: IssueModule,
+    props: true
+  },
+  {
+    path: '/modules/:id/students',
+    name: 'IssuedCredential',
+    component: IssuedCredential,
     props: true
   },
   {

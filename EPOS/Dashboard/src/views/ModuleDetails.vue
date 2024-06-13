@@ -3,26 +3,35 @@
   <container class="detailcontainer">
     <div class="informationbox">
       <div class="image-container">
-        <detailHeading :title="title" :imageUrl="imageUrl" />
+      <detailHeading :title="title" :imageUrl="imageUrl" />
       </div>
       <detailAttributes :attributes="attributes" />
       <div class="info-section">
-        <detailDescription :description="description" />
+      <detailDescription :description="description" />
       </div>
       <div class="info-section">
-        <detailList listTitle="Skills" :list="skills" />
+      <detailList listTitle="Skills" :list="skills" />
       </div>
       <div class="info-sectionalt">
-        <detailList listTitle="Required Achievements" :list="requiredAchievements" />
+      <detailList listTitle="Required Achievements" :list="requiredAchievements" />
       </div>
-      <v-btn @click="goBack" class="backButton">Back</v-btn>
     </div>
   </container>
+  <div class="StudentsButton">
+      <v-row align="center" justify="center">
+        <v-col cols="auto">
+        <v-btn @click="goToAwardedStudents" class="actionButton">Awarded students</v-btn>
+        </v-col>
+        <v-col cols="auto">
+        <v-btn @click="goToAwardStudent" class="actionButton">Issue credential</v-btn>
+        </v-col>
+      </v-row>
+      </div>
 </template>
 
 <script>
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 import detailHeading from '@/components/page-components/module/detailHeading.vue';
 import detailAttributes from '@/components/page-components/module/detailAttributes.vue';
@@ -42,6 +51,7 @@ export default {
   },
   setup() {
     const route = useRoute();
+    const router = useRouter();
     const moduleId = route.params.id;
 
     const title = ref('');
@@ -50,6 +60,14 @@ export default {
     const description = ref('');
     const skills = ref([]);
     const requiredAchievements = ref([]);
+
+    const goToAwardedStudents = () => {
+      router.push(`/modules/${moduleId}/students`);
+    };
+
+    const goToAwardStudent = () => {
+      router.push(`/modules/${moduleId}/issue`);
+    };
 
     onMounted(async () => {
       try {
@@ -72,13 +90,16 @@ export default {
       attributes,
       description,
       skills,
-      requiredAchievements
+      requiredAchievements,
+      goToAwardedStudents,
+      goToAwardStudent
     };
   }
 };
 </script>
 
 <style scoped>
+
 .informationbox {
   width: 100%;
   margin: 0 20px;
@@ -115,4 +136,19 @@ export default {
 .info-section h2 {
   text-align: center;
 }
+.actionButton {
+  background-color: #00A4E7;
+  color: white;
+  width: 185px;
+}
+
+.StudentsButton {
+  
+  background: linear-gradient(to bottom, rgba(128, 128, 128, 0.5), rgba(128, 128, 128, 0.5));
+  position: fixed;
+  bottom: 0px;
+width: 100%;
+  font-size: 60px;
+}
+
 </style>
