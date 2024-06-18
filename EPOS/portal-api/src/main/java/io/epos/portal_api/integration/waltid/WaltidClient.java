@@ -24,8 +24,10 @@ public class WaltidClient {
    * @param vertx Vert.x instance
    */
   public WaltidClient(Vertx vertx) {
-    this.port = AppConfiguration.getWaltIdPort();
-    this.host = AppConfiguration.getWaltIdHost();
+//    this.port = AppConfiguration.getWaltIdPort();
+//    this.host = AppConfiguration.getWaltIdHost();
+    this.port = "7002";
+    this.host = "localhost";
     this.client = WebClient.create(vertx);
   }
   /**
@@ -75,10 +77,10 @@ public class WaltidClient {
    */
   private JsonObject createOnboardRequestBody() {
     return new JsonObject()
-      .put("issuanceKeyConfig", new JsonObject()
-        .put("type", "local")
-        .put("algorithm", "secp256r1"))
-      .put("issuerDidConfig", new JsonObject()
+      .put("key", new JsonObject()
+        .put("backend", "jwk")
+        .put("keyType", "secp256r1"))
+      .put("did", new JsonObject()
         .put("method", "jwk"));
   }
 
@@ -90,9 +92,17 @@ public class WaltidClient {
    */
   private JsonObject processOnboardResponse(String responseBody) {
     JsonObject onboardResponse = new JsonObject(responseBody);
-    JsonObject issuanceKey = onboardResponse.getJsonObject("issuanceKey");
+    JsonObject issuanceKey = onboardResponse.getJsonObject("issuerKey");
     issuanceKey.put("jwk", issuanceKey.getJsonObject("jwk").encode());
-    onboardResponse.put("issuanceKey", issuanceKey);
+    onboardResponse.put("issuerKey", issuanceKey);
     return onboardResponse;
+  }
+
+  public static void main(String[] args) {
+    WaltidClient client = new WaltidClient(Vertx.vertx());
+    client.onboard().subscribe().with(
+      response -> System.out.println("Onboarding response: "),
+      error -> System.out.println("Error: " + error.getMessage())
+    );
   }
 }
