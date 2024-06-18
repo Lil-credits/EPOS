@@ -125,8 +125,8 @@ public class AdminService {
       membership.setAccount(tuple.getItem1());
       membership.setOrganisationalUnit(tuple.getItem2());
       JsonObject onboardResponse = tuple.getItem3();
-      membership.setDid(onboardResponse.getString("issueDid"));
-      membership.setIssuanceKey(onboardResponse.getJsonObject("issueKey"));
+      membership.setDid(onboardResponse.getString("issuerDid"));
+      membership.setIssuanceKey(onboardResponse.getJsonObject("issuerKey"));
       return emf.withTransaction(session -> repository.createMembership(session, membership)).map(AdminMapper::toDTO);
     });
   }

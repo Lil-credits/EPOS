@@ -6,11 +6,15 @@ import io.smallrye.mutiny.Uni;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.ext.web.client.WebClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Client for interacting with the Walt.id service to issue micro credentials and perform onboarding.
  */
 public class WaltidClient {
+  Logger logger = LoggerFactory.getLogger(WaltidClient.class);
 
   private final String port;
   private final String host;
@@ -70,6 +74,7 @@ public class WaltidClient {
         }
       });
   }
+
   /**
    * Creates a JSON object for onboarding with default configurations.
    *
@@ -91,18 +96,19 @@ public class WaltidClient {
    * @return The modified JSON object with encoded "jwk" field in the "issuanceKey" object
    */
   private JsonObject processOnboardResponse(String responseBody) {
-    JsonObject onboardResponse = new JsonObject(responseBody);
-    JsonObject issuanceKey = onboardResponse.getJsonObject("issuerKey");
-    issuanceKey.put("jwk", issuanceKey.getJsonObject("jwk").encode());
-    onboardResponse.put("issuerKey", issuanceKey);
-    return onboardResponse;
+    return new JsonObject(responseBody);
   }
 
   public static void main(String[] args) {
     WaltidClient client = new WaltidClient(Vertx.vertx());
     client.onboard().subscribe().with(
-      response -> System.out.println("Onboarding response: "),
+      response -> {
+        System.out.println("Onboarding response: " + response);
+//        JsonObject onboardResponse = new JsonObject(response);
+        System.out.println("Onboarding response (encoded): " + response.encode());
+      },
       error -> System.out.println("Error: " + error.getMessage())
     );
   }
+
 }
