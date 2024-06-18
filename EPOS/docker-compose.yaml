@@ -1,10 +1,10 @@
-version: '3.8'
+version: '3.9'
 
 services:
   api:
     build:
-        context: ./portal-api/
-        dockerfile: Dockerfile
+      context: ./portal-api/
+      dockerfile: Dockerfile
     container_name: API
     ports:
       - "8080:8080"  # Mapping container port 8080 to host port 8080
@@ -19,8 +19,13 @@ services:
       DB_PORT: 5432
       WALTID_HOST: docker-compose-issuer-api-1
       WALTID_PORT: 7002
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s -o /dev/null http://localhost:8080 || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
     networks:
-      - epos_network
+      - epos
 
   dashboard:
     build:
@@ -33,7 +38,7 @@ services:
     depends_on:
       - api
     networks:
-      - epos_network
+      - epos
         
   epos-postgresql:
     container_name: epos-postgresql
@@ -53,11 +58,30 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - epos_network
+      - epos
+
+  init-db:
+    build:
+      context: ./portal-api/initialise_database
+      dockerfile: Dockerfile
+    container_name: init-db
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      DB_HOST: epos-postgresql
+      DB_NAME: epos
+      DB_USER: postgres
+      DB_PASSWORD: AXEe263eqPFqwy4z
+      DB_PORT: 5432
+      WALTID_HOST: issuer-api
+      WALTID_PORT: 7002
+    networks:
+      - epos
+
 volumes:
   epos-postgresql-local:  # Defining a named volume for PostgreSQL data
 
 networks:
-  epos_network:
-      name: epos_network
-      external: true
+  epos:
+    external: true

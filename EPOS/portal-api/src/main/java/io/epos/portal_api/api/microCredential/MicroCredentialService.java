@@ -90,7 +90,7 @@ public class MicroCredentialService {
     AchievementCredential achievementCredential = createAchievementCredential(issuer, subject, educationModuleVersion);
     JsonObject vc = convertAchievementCredentialToJsonObject(achievementCredential);
 
-    microCredential.put("vc", vc);
+    microCredential.put("credentialData", vc);
     return microCredential;
   }
 
@@ -102,7 +102,7 @@ public class MicroCredentialService {
    */
   private void fillMicroCredentialWithIssuerData(JsonObject microCredential, Membership issuer) {
     microCredential.put("issuerDid", issuer.getDid());
-    microCredential.put("issuanceKey", issuer.getIssuanceKey());
+    microCredential.put("issuerKey", issuer.getIssuanceKey());
   }
 
   /**

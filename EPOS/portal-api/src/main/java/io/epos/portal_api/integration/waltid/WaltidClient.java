@@ -28,10 +28,8 @@ public class WaltidClient {
    * @param vertx Vert.x instance
    */
   public WaltidClient(Vertx vertx) {
-//    this.port = AppConfiguration.getWaltIdPort();
-//    this.host = AppConfiguration.getWaltIdHost();
-    this.port = "7002";
-    this.host = "localhost";
+    this.port = AppConfiguration.getWaltIdPort();
+    this.host = AppConfiguration.getWaltIdHost();
     this.client = WebClient.create(vertx);
   }
   /**
@@ -98,17 +96,4 @@ public class WaltidClient {
   private JsonObject processOnboardResponse(String responseBody) {
     return new JsonObject(responseBody);
   }
-
-  public static void main(String[] args) {
-    WaltidClient client = new WaltidClient(Vertx.vertx());
-    client.onboard().subscribe().with(
-      response -> {
-        System.out.println("Onboarding response: " + response);
-//        JsonObject onboardResponse = new JsonObject(response);
-        System.out.println("Onboarding response (encoded): " + response.encode());
-      },
-      error -> System.out.println("Error: " + error.getMessage())
-    );
-  }
-
 }
