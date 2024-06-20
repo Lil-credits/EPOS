@@ -20,10 +20,10 @@
   <div class="StudentsButton">
       <v-row align="center" justify="center">
         <v-col cols="auto">
-        <v-btn @click="goToAwardedStudents" class="actionButton">Awarded students</v-btn>
+          <v-btn @click="goToAwardedStudents" class="actionButton" size="large" height="60px">Awarded students</v-btn>
         </v-col>
         <v-col cols="auto">
-        <v-btn @click="goToAwardStudent" class="actionButton">Issue credential</v-btn>
+          <v-btn @click="goToAwardStudent" class="actionButton" size="large" height="60px">Issue credential</v-btn>
         </v-col>
       </v-row>
       </div>
@@ -143,12 +143,7 @@ export default {
 }
 
 .StudentsButton {
-  
-  background: linear-gradient(to bottom, rgba(128, 128, 128, 0.5), rgba(128, 128, 128, 0.5));
-  position: fixed;
-  bottom: 0px;
 width: 100%;
-  font-size: 60px;
 }
 
 </style>
