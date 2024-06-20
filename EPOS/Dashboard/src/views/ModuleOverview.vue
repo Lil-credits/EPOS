@@ -24,7 +24,7 @@
       </v-row>
     </div>
     <div class="add">
-      <v-btn prepend-icon="mdi-plus" size="x-large" class="addButton" @click="$router.push('/modules/create')">
+      <v-btn prepend-icon="mdi-plus" size="x-large" class="addButton" color="#007bff"  @click="$router.push('/modules/create')">
         Create your own
       </v-btn>
     </div>
@@ -85,6 +85,7 @@ export default {
   left: 50%;
   transform: translateX(-50%);
 }
+
 
 .empty {
   text-align: center;
