@@ -47,7 +47,7 @@
         <!-- Tasks Section -->
         <v-card class="mt-2" color="#00bfff">
           <v-card-title class="white--text font-weight-bold text-h6 d-flex justify-center">Tasks</v-card-title>
-          <v-card-text>
+          <v-card-text class="pt-0">
             <v-card class="mb-2" link>
               <v-card-text>
                 <v-list-item-icon>
