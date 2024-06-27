@@ -49,6 +49,8 @@ dependencies {
   implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1")
   // https://mvnrepository.com/artifact/org.testcontainers/postgresql
   implementation("org.testcontainers:postgresql:1.19.8")
+  // https://mvnrepository.com/artifact/io.smallrye.reactive/smallrye-mutiny-vertx-auth-oauth2
+  implementation("io.smallrye.reactive:smallrye-mutiny-vertx-auth-oauth2:3.13.1")
   testImplementation("io.vertx:vertx-junit5")
   testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
 }

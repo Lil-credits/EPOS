@@ -185,3 +185,5 @@ nbdist/
 !.vscode/extensions.json
 
 venv/
+
+run_local_env.bat

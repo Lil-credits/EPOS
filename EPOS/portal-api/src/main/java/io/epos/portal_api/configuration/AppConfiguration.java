@@ -15,6 +15,8 @@ public class AppConfiguration {
   private static final String WALTID_HOST = System.getenv("WALTID_HOST");
   private static final String WALTID_PORT = System.getenv("WALTID_PORT");
 
+  private static final String KEYCLOAK_SECRET = System.getenv("KEYCLOAK_SECRET");
+
   // Getters for database configurations
   public static String getDbHost() {
     return DB_HOST;
@@ -44,4 +46,6 @@ public class AppConfiguration {
   public static String getWaltIdPort() {
     return WALTID_PORT;
   }
+
+  public static String getKeycloakSecret() { return KEYCLOAK_SECRET; }
 }
